@@ -1,32 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../common/ColorConstants.dart';
 import '../common/widgetConstants.dart';
 
 class OwnTextfield extends StatelessWidget {
-  const OwnTextfield({super.key, required this.label, required this.hint});
+  const OwnTextfield(
+      {super.key,
+      required this.label,
+      required this.hint,
+      required this.validator,
+      this.mask,
+      this.readonly = false,
+      this.textInputType = TextInputType.text,
+      this.containMask = false,
+      required this.controller});
 
   final String label;
   final String hint;
+  final FormFieldValidator<String> validator;
+  final MaskTextInputFormatter? mask;
+  final bool? containMask;
+  final bool? readonly;
+  final TextInputType? textInputType;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: mainAppColor.withOpacity(0.2), // shadow color
-            spreadRadius: 1, // spread radius
-            blurRadius: 4, // blur radius
-            offset: Offset(0, 3), // changes position of shadow
-          )
-        ],
+        borderRadius: BorderRadius.circular(12.r),
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: mainAppColor.withOpacity(0.2), // shadow color
+        //     spreadRadius: 1, // spread radius
+        //     blurRadius: 4, // blur radius
+        //     offset: Offset(0, 3), // changes position of shadow
+        //   )
+        // ],
       ),
       child: TextFormField(
         autofocus: true,
+        readOnly: readonly!,
+        controller: controller,
+        keyboardType: textInputType,
+        validator: validator,
         cursorColor: Color(0xFF444444),
+        inputFormatters: containMask! ? [mask!] : [],
         decoration: InputDecoration(
           contentPadding:
               EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
@@ -41,6 +62,9 @@ class OwnTextfield extends StatelessWidget {
               )),
 
           //enabledBorder: InputBorder.none,
+
+          errorStyle: style.copyWith(
+              color: Colors.red, fontSize: 13.sp, fontWeight: FontWeight.w500),
           border: OutlineInputBorder(
               borderSide: BorderSide(
                 width: 2,
