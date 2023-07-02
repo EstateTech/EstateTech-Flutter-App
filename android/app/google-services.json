@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "903415962027",
+    "project_id": "cryptoestatetech-aaadd",
+    "storage_bucket": "cryptoestatetech-aaadd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903415962027:android:5db4f9744d4d3bd7191aee",
+        "android_client_info": {
+          "package_name": "com.kumarsatesh.crypto_estate_tech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903415962027-am1a687escjvcrvv5kusghl0l94edmgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kumarsatesh.crypto_estate_tech",
+            "certificate_hash": "b74ec22546a1dffec81b29119d4e6d1179df5a6d"
+          }
+        },
+        {
+          "client_id": "903415962027-l0hjrv4h31e6c09c3tlif4aj4vj37cha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALSnIvrsQbD8z6nvLw9_h-MMigj12bx08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903415962027-l0hjrv4h31e6c09c3tlif4aj4vj37cha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
