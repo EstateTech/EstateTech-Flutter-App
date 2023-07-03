@@ -385,6 +385,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => DeveloperAgencyInfo2(
+                                      selectedMember: selectedMember,
                                       userId: FirebaseAuth
                                           .instance.currentUser!.uid,
                                       firstName: firstName.text,

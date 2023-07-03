@@ -36,9 +36,12 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
         backgroundColor: Color(0xFF5F43B2),
         body: Stack(
           children: [
-            Image.asset(
-              'assets/images/walkthrough_background.png',
-              fit: BoxFit.cover,
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              child: Image.asset(
+                'assets/images/walkthrough_background.png',
+                fit: BoxFit.fill,
+              ),
             ),
             Positioned(
               left: 14.w,

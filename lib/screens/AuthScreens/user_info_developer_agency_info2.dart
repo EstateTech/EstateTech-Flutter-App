@@ -26,7 +26,8 @@ class DeveloperAgencyInfo2 extends StatefulWidget {
       this.email,
       this.dateOfBirth,
       required this.idCarddNumber,
-      required this.userId});
+      required this.userId,
+      required this.selectedMember});
 
   final String userId;
   final String? firstName;
@@ -35,6 +36,7 @@ class DeveloperAgencyInfo2 extends StatefulWidget {
   final String? email;
   final String? dateOfBirth;
   final String idCarddNumber;
+  final String selectedMember;
 
   @override
   State<DeveloperAgencyInfo2> createState() => _DeveloperAgencyInfo2State();
@@ -342,7 +344,9 @@ class _DeveloperAgencyInfo2State extends State<DeveloperAgencyInfo2> {
                                                   'photoUrl': profilePicUrl,
                                                   'cnicImage': idCardImage,
                                                   'profileCompleted': true,
-                                                  'cnic': widget.idCarddNumber
+                                                  'cnic': widget.idCarddNumber,
+                                                  'memberType':
+                                                      widget.selectedMember
                                                 }).then((value) {
                                                   setState(() {
                                                     loading = false;
