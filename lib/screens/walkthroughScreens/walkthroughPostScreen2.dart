@@ -3,12 +3,18 @@ import 'package:crypto_estate_tech/common/custom_button_widget.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTypeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../bottomNavigation/profile/amenitiesScreen.dart';
+
 class WalkThroughScreenPost2 extends StatefulWidget {
   final bool isStep2;
-  const WalkThroughScreenPost2({super.key, this.isStep2 = false});
+  final PostModel postmodel;
+  const WalkThroughScreenPost2(
+      {super.key, this.isStep2 = false, required this.postmodel});
 
   @override
   State<WalkThroughScreenPost2> createState() => _WalkThroughScreenPost2State();
@@ -86,8 +92,16 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
                   child: customPostCreateBottomWidget(
                     OnPressedNextButton: () {
                       widget.isStep2
-                          ? Navigator.pushNamed(context, MorePropertyScreen)
-                          : Navigator.pushNamed(context, propertyTypeScreen);
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AmenitiesScreen(
+                                        postmodel: widget.postmodel,
+                                      )))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PropertyTypeScreen()));
                     },
                     OnPressedbackButton: () {
                       Navigator.pop(context);

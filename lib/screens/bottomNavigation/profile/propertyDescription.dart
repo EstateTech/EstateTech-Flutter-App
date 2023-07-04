@@ -3,11 +3,15 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughStep3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PropertyDescriptionScreen extends StatefulWidget {
-  const PropertyDescriptionScreen({super.key});
+  const PropertyDescriptionScreen({super.key, required this.postModel});
+
+  final PostModel postModel;
 
   @override
   State<PropertyDescriptionScreen> createState() =>
@@ -15,9 +19,15 @@ class PropertyDescriptionScreen extends StatefulWidget {
 }
 
 class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
+  TextEditingController descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print(widget.postModel.toJson());
+        },
+      ),
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
@@ -61,6 +71,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                       Expanded(
                         child: TextField(
                           maxLines: null,
+                          controller: descriptionController,
                           decoration: InputDecoration(
                             hintText: 'Type your motto here .....',
                             border: InputBorder.none,
@@ -94,7 +105,15 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(context, walkthroughStep3);
+                  widget.postModel.propertyDescription =
+                      descriptionController.text;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WalkthroughStep3(
+                                postModel: widget.postModel,
+                              )));
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);

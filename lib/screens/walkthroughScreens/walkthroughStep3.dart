@@ -2,11 +2,15 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/additionalinfoScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WalkthroughStep3 extends StatefulWidget {
-  const WalkthroughStep3({super.key});
+  const WalkthroughStep3({super.key, required this.postModel});
+
+  final PostModel postModel;
 
   @override
   State<WalkthroughStep3> createState() => _WalkthroughStep3State();
@@ -77,7 +81,13 @@ class _WalkthroughStep3State extends State<WalkthroughStep3> {
                       EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
                   child: customPostCreateBottomWidget(
                     OnPressedNextButton: () {
-                      Navigator.pushNamed(context, additionalInfoScreen);
+                      // Navigator.pushNamed(context, additionalInfoScreen);
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdditionalInfoScreen(
+                                  postModel: widget.postModel)));
                     },
                     OnPressedbackButton: () {
                       Navigator.pop(context);

@@ -1,37 +1,28 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/addPhotosScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/offeredSpaceScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-
-import 'package:crypto_estate_tech/common/ColorConstants.dart';
-import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
-import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
-import 'package:crypto_estate_tech/common/list_constants.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTypeGridWidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../common/ColorConstants.dart';
+import '../../../common/custom_create_post_header.dart';
+import '../../../common/custom_post_create_bottom.dart';
 import '../../../common/widgetConstants.dart';
 import '../../../components/grid_item_widet.dart';
+import '../../../model/postModel.dart';
 
-class PropertyTypeScreen extends StatefulWidget {
-  final bool isMorePropertyScreen;
-  const PropertyTypeScreen({
-    Key? key,
-    this.isMorePropertyScreen = false,
-  }) : super(key: key);
+class AmenitiesScreen extends StatefulWidget {
+  const AmenitiesScreen({super.key, required this.postmodel});
+
+  final PostModel postmodel;
 
   @override
-  State<PropertyTypeScreen> createState() => _PropertyTypeScreenState();
+  State<AmenitiesScreen> createState() => _AmenitiesScreenState();
 }
 
-class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
-  String propertyType = '';
-
-  PostModel postModel = PostModel();
-
+class _AmenitiesScreenState extends State<AmenitiesScreen> {
+  List<String> utilities = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,31 +66,49 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 1.4,
                   ),
-                  itemCount: selectPropertyTypeMap.length,
+                  itemCount: selectPropertyFeaturesMap.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          propertyType = selectPropertyTypeMap.keys
-                              .elementAt(index)
-                              .toString();
+                          if (utilities.contains(selectPropertyFeaturesMap.keys
+                                  .elementAt(index)
+                                  .toString()) ==
+                              true) {
+                            print('1');
+                            print(selectPropertyFeaturesMap.keys
+                                .elementAt(index)
+                                .toString());
+                            //  setState(() {
+                            utilities.removeWhere((element) =>
+                                element ==
+                                selectPropertyFeaturesMap.keys
+                                    .elementAt(index)
+                                    .toString());
+                            //  });
+                          } else {
+                            print('2');
+                            // setState(() {
+                            utilities.add(selectPropertyFeaturesMap.keys
+                                .elementAt(index)
+                                .toString());
+                            //  });
+                          }
 
-                          postModel.propertyType = selectPropertyTypeMap.keys
-                              .elementAt(index)
-                              .toString();
-
-                          // print(selectPropertyTypeMap.values
-                          //     .elementAt(index)
-                          //     .toString());
+                          print(utilities);
                         });
                       },
                       child: GridItemWidget(
-                          selectedText: propertyType ==
-                                  selectPropertyTypeMap.keys.elementAt(index)
+                          selectedText: utilities.contains(
+                                  selectPropertyFeaturesMap.keys
+                                      .elementAt(index)
+                                      .toString())
                               ? true
                               : false,
-                          icon: selectPropertyTypeMap.values.elementAt(index),
-                          text: selectPropertyTypeMap.keys.elementAt(index)),
+                          icon:
+                              selectPropertyFeaturesMap.values.elementAt(index),
+                          text:
+                              selectPropertyFeaturesMap.keys.elementAt(index)),
                     );
                   },
                 ),
@@ -108,23 +117,20 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
                 padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 10.h),
                 child: customPostCreateBottomWidget(
                   OnPressedNextButton: () {
-                    if (propertyType.length != 0) {
-                      widget.isMorePropertyScreen
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddPhotoScreen(
-                                        postModel: postModel,
-                                      )))
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OfferedSpaceScreen(
-                                        postModel: postModel,
-                                      )));
+                    setState(() {
+                      widget.postmodel.utilities = utilities;
+                    });
+
+                    if (utilities.length != 0) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPhotoScreen(
+                                    postModel: widget.postmodel,
+                                  )));
                     } else {
                       Fluttertoast.showToast(
-                          msg: 'Please select the property type');
+                          msg: 'Please select atleast one utility type');
                     }
                   },
                   OnPressedbackButton: () {

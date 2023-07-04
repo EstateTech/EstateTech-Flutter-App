@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/featuresScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTextAdressScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,12 +13,16 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 
 import '../../../common/widgetConstants.dart';
+import '../../../model/postModel.dart';
 
 class PropertyMappedScreen extends StatefulWidget {
   final bool isConfirmPinScreen;
 
+  final PostModel postModel;
+
   PropertyMappedScreen({
     Key? key,
+    required this.postModel,
     this.isConfirmPinScreen = false,
   }) : super(key: key);
 
@@ -47,6 +53,13 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
     getCurrentLocation();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
+  }
+
   void getCurrentLocation() async {
     Location location = new Location();
 
@@ -74,7 +87,7 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
 
     _latLng = LatLng(_locationData.latitude!, _locationData.longitude!);
 
-    _kGooglePlex = CameraPosition(target: _latLng!, zoom: 14.4746);
+    _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
 
     await Future.delayed(const Duration(seconds: 1));
     final GoogleMapController controller = await _controller.future;
@@ -180,9 +193,23 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
+                  setState(() {
+                    widget.postModel.latLong = _latLng;
+                  });
+
                   widget.isConfirmPinScreen
-                      ? Navigator.pushNamed(context, featuresScreen)
-                      : Navigator.pushNamed(context, propertyTextAddressScreen);
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FeatureScreen(
+                                    postModel: widget.postModel,
+                                  )))
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PropertyTextAddressScreen(
+                                    postModel: widget.postModel,
+                                  )));
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);

@@ -3,12 +3,19 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/components/custom_white_box.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PropertyTextAddressScreen extends StatefulWidget {
-  const PropertyTextAddressScreen({super.key});
+  const PropertyTextAddressScreen({
+    required this.postModel,
+    super.key,
+  });
+
+  final PostModel postModel;
 
   @override
   State<PropertyTextAddressScreen> createState() =>
@@ -16,6 +23,7 @@ class PropertyTextAddressScreen extends StatefulWidget {
 }
 
 class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
   final List<String> hintTexts = [
     "Address line 1",
     "Address line 2 (if applicable)",
@@ -32,6 +40,9 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(widget.postModel.toJson());
+      }),
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
         width: MediaQuery.of(context).size.width,
@@ -72,7 +83,21 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(context, propertyMappedwithPinScreen);
+                  if (_key.currentState!.validate()) {
+                    widget.postModel.propertyAddressLine1 = controllers[0].text;
+                    widget.postModel.propertyAddressLine2 = controllers[1].text;
+                    widget.postModel.city = controllers[3].text;
+                    widget.postModel.state = controllers[4].text;
+                    widget.postModel.postalCode = controllers[5].text;
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PropertyMappedScreen(
+                                  isConfirmPinScreen: true,
+                                  postModel: widget.postModel,
+                                )));
+                  }
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);
@@ -113,11 +138,14 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
               ],
             ),
           ),
-          Column(
-            children: List.generate(
-              hintTexts.length,
-              (index) => CustomWhiteTextField(
-                  hintText: hintTexts[index], controller: controllers[index]),
+          Form(
+            key: _key,
+            child: Column(
+              children: List.generate(
+                hintTexts.length,
+                (index) => CustomWhiteTextField(
+                    hintText: hintTexts[index], controller: controllers[index]),
+              ),
             ),
           )
         ],
@@ -136,8 +164,13 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.r),
         ),
-        child: TextField(
+        child: TextFormField(
           controller: controller,
+          validator: (v) {
+            if (v!.isEmpty) {
+              return 'field shouldn\'t be empty';
+            }
+          },
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: style.copyWith(color: textwalktrough, fontSize: 14.sp),

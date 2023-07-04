@@ -2,7 +2,9 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
+import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,7 +16,9 @@ class CounterItem {
 }
 
 class FeatureScreen extends StatefulWidget {
-  const FeatureScreen({super.key});
+  const FeatureScreen({super.key, required this.postModel});
+
+  final PostModel postModel;
 
   @override
   State<FeatureScreen> createState() => _FeatureScreenState();
@@ -113,10 +117,24 @@ class _FeatureScreenState extends State<FeatureScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(context, walkthroughStep2);
+                  widget.postModel.guest = counterItems[0].counter;
+                  widget.postModel.bedrooms = counterItems[1].counter;
+                  widget.postModel.bathrooms = counterItems[2].counter;
+                  widget.postModel.propertyArea = counterItems[3].counter;
+                  widget.postModel.propertyBuildArea = counterItems[4].counter;
+                  widget.postModel.propertyPlotArea = counterItems[5].counter;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WalkThroughScreenPost2(
+                                isStep2: true,
+                                postmodel: widget.postModel,
+                              )));
                 },
                 OnPressedbackButton: () {
-                  Navigator.pop(context);
+                  print(widget.postModel.toJson());
+                  //  Navigator.pop(context);
                 },
               ),
             ),

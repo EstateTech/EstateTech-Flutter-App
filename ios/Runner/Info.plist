@@ -68,10 +68,10 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<key>UIBackgroundModes</key>
-	<array> 
+	<!-- <key>UIBackgroundModes</key> -->
+	<!-- <array> 
 	<string>location</string>
-	</array>
-	<false/>
+	</array> -->
+	<!-- <false/> -->
 </dict>
 </plist>

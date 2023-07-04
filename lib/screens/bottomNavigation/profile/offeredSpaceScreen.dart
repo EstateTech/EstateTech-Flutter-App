@@ -2,12 +2,17 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../model/postModel.dart';
 
 class OfferedSpaceScreen extends StatefulWidget {
-  const OfferedSpaceScreen({super.key});
+  const OfferedSpaceScreen({super.key, required this.postModel});
+  final PostModel postModel;
 
   @override
   State<OfferedSpaceScreen> createState() => _OfferedSpaceScreenState();
@@ -34,6 +39,8 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
     SvgPicture.asset("assets/images/single_room_icon.svg"),
     SvgPicture.asset("assets/images/double_room_icon.svg")
   ];
+
+  String selectedTile = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,15 +72,35 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
                     3,
-                    (index) => buildItem(index, "${data[index]['title']}",
-                        "${data[index]['description']}")),
+                    (index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              print(data[index]['title']);
+                              selectedTile = data[index]['title'];
+
+                              widget.postModel.propertyPortion =
+                                  data[index]['title'];
+                            });
+                          },
+                          child: buildItem(index, "${data[index]['title']}",
+                              "${data[index]['description']}", selectedTile),
+                        )),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(context, propertyMappedScreen);
+                  if (selectedTile.length != 0) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PropertyMappedScreen(
+                                  postModel: widget.postModel,
+                                )));
+                  } else {
+                    Fluttertoast.showToast(msg: 'Please select the space');
+                  }
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);
@@ -86,13 +113,16 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
     );
   }
 
-  Widget buildItem(int index, String title, String description) {
+  Widget buildItem(
+      int index, String title, String description, String selectedTile) {
     return Container(
       padding: EdgeInsets.all(8.h),
       height: 100.0,
       width: double.infinity,
       margin: EdgeInsets.all(10.h),
       decoration: BoxDecoration(
+        color:
+            title == selectedTile ? Colors.grey.shade200 : Colors.transparent,
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: textwalktrough),
       ),

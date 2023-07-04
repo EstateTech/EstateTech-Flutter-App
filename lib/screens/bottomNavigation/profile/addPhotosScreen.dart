@@ -5,20 +5,25 @@ import 'package:crypto_estate_tech/common/custom_button_widget.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyDescription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddPhotoScreen extends StatefulWidget {
-  const AddPhotoScreen({super.key});
+  const AddPhotoScreen({super.key, required this.postModel});
+
+  final PostModel postModel;
 
   @override
   State<AddPhotoScreen> createState() => _AddPhotoScreenState();
 }
 
 class _AddPhotoScreenState extends State<AddPhotoScreen> {
-  List<XFile> _selectedImages = [];
+  List<XFile?> _selectedImages = [];
   ImageSource? globalImageSource;
 
   Future<void> _getImage(ImageSource source) async {
@@ -35,6 +40,9 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(widget.postModel.toJson());
+      }),
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
@@ -85,7 +93,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return PostImageWidget(
                                 ValueKey(_selectedImages[index]),
-                                File(_selectedImages[index].path), () {
+                                File(_selectedImages[index]!.path), () {
                               setState(() {
                                 _selectedImages.removeAt(index);
                               });
@@ -118,7 +126,20 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(context, productDescriptionScreen);
+                  if (_selectedImages.length != 0) {
+                    setState(() {
+                      widget.postModel.propertyPhotos = _selectedImages;
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PropertyDescriptionScreen(
+                                  postModel: widget.postModel,
+                                )));
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Please select at least one image');
+                  }
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);

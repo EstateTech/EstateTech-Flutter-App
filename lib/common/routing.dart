@@ -45,25 +45,33 @@ class Router {
         case walkThroughPostScreenRoute:
           return WalkthroughPostScreen();
 
-        case walkThroughPostScreenRoute2:
-          return WalkThroughScreenPost2();
+        // case walkThroughPostScreenRoute2:
+        //   return WalkThroughScreenPost2();
 
         case propertyTypeScreen:
           return PropertyTypeScreen();
 
-        case offeredSpaceScreen:
-          return OfferedSpaceScreen();
+        // case offeredSpaceScreen:
+        //   return OfferedSpaceScreen(
+        //     propertyType: '',
+        //   );
 
-        case propertyMappedScreen:
-          return PropertyMappedScreen();
+        // case propertyMappedScreen:
+        //   return PropertyMappedScreen(
+        //     propertyPortion: '',
+        //     propertyType: '',
+        //     isConfirmPinScreen: false,
+        //   );
 
-        case propertyMappedwithPinScreen:
-          return PropertyMappedScreen(
-            isConfirmPinScreen: true,
-          );
+        // case propertyMappedwithPinScreen:
+        //   return PropertyMappedScreen(
+        //     propertyPortion: '',
+        //     propertyType: '',
+        //     isConfirmPinScreen: true,
+        //   );
 
-        case propertyTextAddressScreen:
-          return PropertyTextAddressScreen();
+        // case propertyTextAddressScreen:
+        //   return PropertyTextAddressScreen();
 
         case MorePropertyScreen:
           return PropertyTypeScreen(
@@ -73,25 +81,25 @@ class Router {
         case postCompletedCongratulationsScreen:
           return PostCompleteCongratulationScreen();
 
-        case productDescriptionScreen:
-          return PropertyDescriptionScreen();
+        // case productDescriptionScreen:
+        //   return PropertyDescriptionScreen();
 
-        case additionalInfoScreen:
-          return AdditionalInfoScreen();
+        // case additionalInfoScreen:
+        //   return AdditionalInfoScreen();
 
-        case addPhotoScreen:
-          return AddPhotoScreen();
+        // case addPhotoScreen:
+        //   return AddPhotoScreen();
 
-        case walkthroughStep3:
-          return WalkthroughStep3();
+        // case walkthroughStep3:
+        //   return WalkthroughStep3();
 
-        case walkthroughStep2:
-          return WalkThroughScreenPost2(
-            isStep2: true,
-          );
+        // case walkthroughStep2:
+        //   return WalkThroughScreenPost2(
+        //     isStep2: true,
+        //   );
 
-        case featuresScreen:
-          return FeatureScreen();
+        // case featuresScreen:
+        //   return FeatureScreen();
 
         case homeScreenRoute:
           return HomeScreen();

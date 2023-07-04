@@ -2,21 +2,29 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdditionalInfoScreen extends StatefulWidget {
-  const AdditionalInfoScreen({super.key});
+  const AdditionalInfoScreen({super.key, required this.postModel});
+
+  final PostModel postModel;
 
   @override
   State<AdditionalInfoScreen> createState() => _AdditionalInfoScreenState();
 }
 
 class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
+  TextEditingController additionaltextEditingController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   print(widget.postModel.toJson());
+      // }),
       body: Container(
         height: size.height,
         width: size.width,
@@ -60,6 +68,7 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                       borderRadius: BorderRadius.circular(15.r)),
                   child: TextField(
                     maxLines: null,
+                    controller: additionaltextEditingController,
                     decoration: InputDecoration(
                       hintText: 'Additional info',
                       border: InputBorder.none,
@@ -72,8 +81,13 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  Navigator.pushNamed(
-                      context, postCompletedCongratulationsScreen);
+                  setState(() {
+                    widget.postModel.additionalInfo =
+                        additionaltextEditingController.text;
+                  });
+
+                  // Navigator.pushNamed(
+                  //     context, postCompletedCongratulationsScreen);
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);
