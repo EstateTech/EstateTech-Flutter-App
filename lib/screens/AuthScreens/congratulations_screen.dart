@@ -78,7 +78,7 @@ class CongratulationScreen extends StatelessWidget {
               ),
               CustomButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, WalkThroughScreenRoute);
+                  Navigator.pushNamed(context, walkThroughScreenRoute);
                 },
                 textStyle: style.copyWith(
                   color: Colors.white,

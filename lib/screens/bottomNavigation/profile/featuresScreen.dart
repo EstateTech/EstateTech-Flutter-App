@@ -1,0 +1,196 @@
+import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
+import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
+import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class CounterItem {
+  String title;
+  int counter;
+
+  CounterItem({required this.title, required this.counter});
+}
+
+class FeatureScreen extends StatefulWidget {
+  const FeatureScreen({super.key});
+
+  @override
+  State<FeatureScreen> createState() => _FeatureScreenState();
+}
+
+class _FeatureScreenState extends State<FeatureScreen> {
+  List<CounterItem> counterItems = [
+    CounterItem(title: 'Guests', counter: 2),
+    CounterItem(title: 'Bedrooms', counter: 1),
+    CounterItem(title: "Bathrooms", counter: 2),
+    CounterItem(title: 'Property surface area(m2)', counter: 120),
+    CounterItem(title: 'Built up area(m2)', counter: 120),
+    CounterItem(title: 'Plot area(m2)', counter: 120),
+  ];
+
+  void _incrementCounter(int index) {
+    setState(() {
+      setState(() {
+        counterItems[index].counter++;
+      });
+    });
+  }
+
+  void _decrementCounter(int index) {
+    if (counterItems[index].counter > 0) {
+      if (counterItems[index].counter > 120) {
+        setState(() {
+          counterItems[index].counter--;
+        });
+      } else {
+        if (counterItems[index].counter != 120) {
+          setState(() {
+            counterItems[index].counter--;
+          });
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            CustomCreatePostHeader(),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Share some basics about your place",
+                  style: style.copyWith(
+                      fontSize: 25.sp,
+                      color: textwalktrough,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  "You can add more details later",
+                  style: style.copyWith(
+                      fontSize: 15.sp,
+                      color: textwalktrough,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
+
+            Column(
+              children: counterItems.map((item) {
+                return FeatureCounterWidget(
+                    onIcreament: () {
+                      _incrementCounter(counterItems.indexOf(item));
+                    },
+                    onDecreament: () {
+                      _decrementCounter(counterItems.indexOf(item));
+                    },
+                    title: item.title,
+                    counter: item.counter,
+                    paddingToggle: item.counter >= 120 || item.counter >= 9
+                        ? true
+                        : false);
+              }).toList(),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
+              child: customPostCreateBottomWidget(
+                OnPressedNextButton: () {
+                  Navigator.pushNamed(context, walkthroughStep2);
+                },
+                OnPressedbackButton: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget FeatureCounterWidget(
+      {required VoidCallback onIcreament,
+      required VoidCallback onDecreament,
+      required String title,
+      required int counter,
+      bool paddingToggle = false}) {
+    return Container(
+      height: 55.h,
+      margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: textwalktrough))),
+      alignment: Alignment.topCenter,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              width: 170.w,
+              child: Text(
+                title,
+                style: style.copyWith(
+                    color: textwalktrough,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: 40.h,
+                decoration: BoxDecoration(
+                    border: Border.all(color: textwalktrough),
+                    shape: BoxShape.circle),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(Icons.remove),
+                  onPressed: onDecreament,
+                ),
+              ),
+              Container(
+                padding: paddingToggle
+                    ? EdgeInsets.symmetric(horizontal: 10.h)
+                    : EdgeInsets.symmetric(horizontal: 23.h),
+                child: Text(
+                  counter.toString(),
+                  style: style.copyWith(fontSize: 20.sp, color: textwalktrough),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                height: 40.h,
+                decoration: BoxDecoration(
+                    border: Border.all(color: textwalktrough),
+                    shape: BoxShape.circle),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(Icons.add),
+                  onPressed: onIcreament,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
