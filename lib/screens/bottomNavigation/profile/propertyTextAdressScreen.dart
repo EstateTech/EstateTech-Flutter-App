@@ -2,12 +2,10 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/components/custom_white_box.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PropertyTextAddressScreen extends StatefulWidget {
   const PropertyTextAddressScreen({
@@ -40,9 +38,6 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(widget.postModel.toJson());
-      }),
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
         width: MediaQuery.of(context).size.width,

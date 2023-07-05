@@ -10,6 +10,8 @@ const Color textwalktrough = Color(0xff20173C);
 const Color greyButtonColor = Color(0xffCACACA);
 const Color whiteBorderColor = Color(0xffDDDDDD);
 const Color greyTextColor = Color(0xff4A4A4A);
+const Color greyShadeColor = Color(0xff4E4A59);
+const Color blueColor = Color(0xff0D2769);
 
 const Gradient appBackgroundGradient = LinearGradient(
   stops: [0.0, 1.0],

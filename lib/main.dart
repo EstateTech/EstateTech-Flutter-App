@@ -1,8 +1,11 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/SplashScreen.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/WelcomeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'common/routing.dart' as route;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +14,21 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FirebaseStorageProvider>(
+          create: (context) => FirebaseStorageProvider(),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => XFileProvider(),
+        ),
+        // Add more providers if needed
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

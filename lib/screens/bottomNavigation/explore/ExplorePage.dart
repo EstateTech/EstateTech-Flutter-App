@@ -41,7 +41,8 @@ class _ExplorePageState extends State<ExplorePage>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(left: 20.h, right: 20.h),
+      padding:
+          EdgeInsets.only(left: 20.h, right: 20.h, top: size.height * 0.09),
       height: size.height,
       width: size.width,
       child: Column(

@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.1
   flutter_screenutil: ^5.6.0
-  get: ^4.6.5
   flutter_svg: ^1.1.6
   firebase_database: ^10.0.9
   firebase_auth: ^4.2.5
@@ -53,6 +52,9 @@ dependencies:
   uuid: ^3.0.7
   google_maps_flutter: ^2.2.5
   location: ^4.4.0
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

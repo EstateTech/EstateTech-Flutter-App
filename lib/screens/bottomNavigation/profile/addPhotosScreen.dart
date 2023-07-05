@@ -6,12 +6,14 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyDescription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class AddPhotoScreen extends StatefulWidget {
   const AddPhotoScreen({super.key, required this.postModel});
@@ -23,7 +25,7 @@ class AddPhotoScreen extends StatefulWidget {
 }
 
 class _AddPhotoScreenState extends State<AddPhotoScreen> {
-  List<XFile?> _selectedImages = [];
+  List<XFile>? _selectedImages = [];
   ImageSource? globalImageSource;
 
   Future<void> _getImage(ImageSource source) async {
@@ -32,13 +34,14 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
     final List<XFile> selectedGalleryImages = await picker.pickMultiImage();
     if (selectedGalleryImages.isNotEmpty) {
       setState(() {
-        _selectedImages.addAll(selectedGalleryImages);
+        _selectedImages!.addAll(selectedGalleryImages);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final xFileProvider = Provider.of<XFileProvider>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () {
         print(widget.postModel.toJson());
@@ -76,7 +79,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
 
             Column(
               children: [
-                _selectedImages.isEmpty
+                _selectedImages!.isEmpty
                     ? UploadImageContainer()
                     : Container(
                         height: 300.h,
@@ -89,13 +92,13 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                             crossAxisCount: 2,
                             childAspectRatio: 1.4,
                           ),
-                          itemCount: _selectedImages.length,
+                          itemCount: _selectedImages!.length,
                           itemBuilder: (BuildContext context, int index) {
                             return PostImageWidget(
-                                ValueKey(_selectedImages[index]),
-                                File(_selectedImages[index]!.path), () {
+                                ValueKey(_selectedImages![index]),
+                                File(_selectedImages![index].path), () {
                               setState(() {
-                                _selectedImages.removeAt(index);
+                                _selectedImages!.removeAt(index);
                               });
                             });
                           },
@@ -126,10 +129,16 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  if (_selectedImages.length != 0) {
+                  // List<XFile?> nullableImageFiles =
+                  //     widget.postModel.propertyPhotos!;
+                  // List<XFile> imageFiles =
+                  //     nullableImageFiles.whereType<XFile>().toList();
+                  if (_selectedImages!.isNotEmpty) {
                     setState(() {
-                      widget.postModel.propertyPhotos = _selectedImages;
+                      xFileProvider.setXFiles(_selectedImages!);
                     });
+                    // Your updated list
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(

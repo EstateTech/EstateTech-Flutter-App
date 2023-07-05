@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/featuresScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTextAdressScreen.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +195,8 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
                   setState(() {
-                    widget.postModel.latLong = _latLng;
+                    widget.postModel.latLong =
+                        GeoPoint(_latLng.latitude, _latLng.latitude);
                   });
 
                   widget.isConfirmPinScreen
