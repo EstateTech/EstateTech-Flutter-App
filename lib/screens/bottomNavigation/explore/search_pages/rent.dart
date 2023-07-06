@@ -17,6 +17,7 @@ class _RentState extends State<Rent> {
   List<bool> isSelectedList =
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +41,33 @@ class _RentState extends State<Rent> {
             SizedBox(
               height: 10.h,
             ),
-            FilterWidget()
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(25.r)),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25.r),
+                    child: ExpansionTile(
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        "Customized search",
+                        style: style.copyWith(
+                            color: Shade2purple,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      // childrenPadding: EdgeInsets.zero,
+                      trailing: SizedBox.shrink(),
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          _isExpanded = value;
+                        });
+                      },
+
+                      children: <Widget>[
+                        FilterWidget(),
+                      ],
+                    )))
           ],
         ),
       ),
@@ -56,9 +83,6 @@ class _RentState extends State<Rent> {
         borderRadius: BorderRadius.circular(25.r),
         child: ExpansionTile(
           backgroundColor: Colors.white,
-          // tilePadding: EdgeInsets.zero,
-
-          // expandedCrossAxisAlignment: CrossAxisAlignment.center,
           title: Text(
             "Locations",
             style: style.copyWith(
