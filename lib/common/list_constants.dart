@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -37,33 +38,33 @@ Map<String, Widget> descriptionFeature = {
 };
 
 class HomeViews {
-  List<String> homeimages;
+  String images;
+  String name;
   HomeViews({
-    required this.homeimages,
+    required this.images,
+    required this.name,
   });
 }
 
-List<HomeViews> listhomeviews = [
-  HomeViews(homeimages: [
-    "https://images.unsplash.com/photo-1615915613497-0ee591aa2fe6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1100&q=80",
-    "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-    "https://images.unsplash.com/photo-1613685703237-6628de38ddb7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlZCUyMHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
-    "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60"
-  ]),
-  HomeViews(homeimages: [
-    "https://images.unsplash.com/photo-1522050212171-61b01dd24579?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-    "https://images.unsplash.com/photo-1595526051245-4506e0005bd0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmVkJTIwcm9vbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
-    "https://images.unsplash.com/photo-1613685703237-6628de38ddb7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlZCUyMHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60"
-  ]),
-  HomeViews(homeimages: [
-    "https://images.unsplash.com/photo-1615915613497-0ee591aa2fe6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1100&q=80",
-    "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-    "https://media.istockphoto.com/id/88620985/photo/exterior-of-modern-house-and-swimming-pool.jpg?s=1024x1024&w=is&k=20&c=fcfN1iIOMcuhlCn-4noOPYXmUo6Td6gp9sn5s2lxtEE=",
-    "https://images.unsplash.com/photo-1615552269451-903ecf1f7b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-  ]),
-  HomeViews(homeimages: [
-    "https://images.unsplash.com/photo-1522050212171-61b01dd24579?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-    "https://images.unsplash.com/photo-1595526051245-4506e0005bd0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmVkJTIwcm9vbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
-    "https://images.unsplash.com/photo-1613685703237-6628de38ddb7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlZCUyMHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60"
-  ]),
+List<HomeViews> bestlocations = [
+  HomeViews(
+      images:
+          "https://images.unsplash.com/photo-1511091734515-e50d46c37240?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGR1YmFpJTIwcGxhY2VzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
+      name: "Deira"),
+  HomeViews(
+      images:
+          "https://images.unsplash.com/photo-1546412414-e1885259563a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+      name: "Burj Khalifa"),
+  HomeViews(
+      images:
+          "https://images.unsplash.com/photo-1610821659180-2501462655f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=327&q=80",
+      name: "Bur Dubai"),
+  HomeViews(
+      images:
+          "https://images.unsplash.com/photo-1526495124232-a04e1849168c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+      name: "Jumeirah"),
+  HomeViews(
+      images:
+          "https://images.unsplash.com/photo-1533395427226-788cee25cc7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
+      name: "Dubai Marina")
 ];

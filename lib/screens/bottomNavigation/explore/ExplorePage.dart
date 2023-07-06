@@ -1,12 +1,16 @@
-import 'package:crypto_estate_tech/common/ColorConstants.dart';
-import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/explore/BestOffer.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/explore/BestOffer.dart';
+
 class ExplorePage extends StatefulWidget {
-  const ExplorePage({super.key});
+  const ExplorePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
@@ -60,11 +64,17 @@ class _ExplorePageState extends State<ExplorePage>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SvgPicture.asset(
-                          "assets/images/search_icon.svg",
-                          height: 25.h,
-                          width: 25.h,
-                          color: unselectedBoNaBColor,
+                        GestureDetector(
+                          onTap: () {
+                            print("moving to search page");
+                            Navigator.pushNamed(context, searchScreen);
+                          },
+                          child: SvgPicture.asset(
+                            "assets/images/search_icon.svg",
+                            height: 25.h,
+                            width: 25.h,
+                            color: unselectedBoNaBColor,
+                          ),
                         ),
                         SizedBox(
                           width: 10.w,

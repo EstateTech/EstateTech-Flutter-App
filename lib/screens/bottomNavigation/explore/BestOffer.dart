@@ -1,15 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_estate_tech/provider/filterProvider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/PostWidget.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class BestOffers extends StatefulWidget {
-  const BestOffers({super.key});
+  const BestOffers({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BestOffers> createState() => _BestOffersState();
@@ -17,9 +23,18 @@ class BestOffers extends StatefulWidget {
 
 class _BestOffersState extends State<BestOffers> {
   int currentViewIndex = 0;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
+    FilterProvider filterProvider = Provider.of<FilterProvider>(context);
+
+    Stream<QuerySnapshot> queryStream = firestore
+        .collection('posts')
+        .where('propertyType', isEqualTo: filterProvider.propertyType)
+        .where('bedrooms', isEqualTo: filterProvider.bedrooms)
+        .where('bathrooms', isEqualTo: filterProvider.bathrooms)
+        .snapshots();
     return Column(
       children: [
         Row(
@@ -70,31 +85,64 @@ class _BestOffersState extends State<BestOffers> {
           ],
         ),
         Expanded(
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream:
-                  FirebaseFirestore.instance.collection('posts').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<DocumentSnapshot<Map<String, dynamic>>> documents =
-                      snapshot.data!.docs;
-                  int postCount = documents.length;
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: postCount,
-                    itemBuilder: (context, index) {
-                      PostModel post =
-                          PostModel.fromJson(documents[index].data()!);
-                      return Post(postModel: post);
-                      // PostModel post = posts[index];
-                    },
-                  );
-                } else {
-                  print(snapshot.error);
-                  return Container(
-                    child: Text("There is no Property For Display"),
-                  );
-                }
-              }),
+          child: filterProvider.isFilterApplied
+              ? StreamBuilder<QuerySnapshot>(
+                  stream: queryStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Text('No posts found.');
+                    }
+
+                    // Process the data from snapshot
+                    List<DocumentSnapshot<Map<String, dynamic>>> documents =
+                        snapshot.data!.docs
+                            .cast<DocumentSnapshot<Map<String, dynamic>>>();
+
+                    return ListView.builder(
+                      itemCount: documents.length,
+                      itemBuilder: (context, index) {
+                        // Build your UI with the post data from the document
+                        PostModel post =
+                            PostModel.fromJson(documents[index].data()!);
+                        return Post(postModel: post);
+                      },
+                    );
+                  },
+                )
+              : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection('posts')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<DocumentSnapshot<Map<String, dynamic>>> documents =
+                          snapshot.data!.docs;
+                      int postCount = documents.length;
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: postCount,
+                        itemBuilder: (context, index) {
+                          PostModel post =
+                              PostModel.fromJson(documents[index].data()!);
+                          return Post(postModel: post);
+                          // PostModel post = posts[index];
+                        },
+                      );
+                    } else {
+                      print(snapshot.error);
+                      return Container(
+                        child: Text("There is no Property For Display"),
+                      );
+                    }
+                  }),
         )
         //  CourselBuilder()
       ],

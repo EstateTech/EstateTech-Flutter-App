@@ -1,4 +1,5 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
 import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/SplashScreen.dart';
@@ -23,6 +24,10 @@ void main() async {
 
         ChangeNotifierProvider(
           create: (context) => XFileProvider(),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => FilterProvider(),
         ),
         // Add more providers if needed
       ],

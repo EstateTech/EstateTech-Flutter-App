@@ -16,19 +16,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentindex = 0;
 
-  final tabs = [
-    ExplorePage(),
-    Center(
-      child: Text("Search"),
-    ),
-    Center(
-      child: Text("Camera"),
-    ),
-    ProfileScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final tabs = [
+      ExplorePage(),
+      Center(
+        child: Text("Search"),
+      ),
+      Center(
+        child: Text("Camera"),
+      ),
+      ProfileScreen(),
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: tabs[_currentindex],

@@ -10,6 +10,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/postComplete
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyDescription.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
+import 'package:crypto_estate_tech/screens/homeScreen/search_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthrough.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,6 +73,9 @@ class Router {
 
         // case propertyTextAddressScreen:
         //   return PropertyTextAddressScreen();
+
+        case searchScreen:
+          return SearchScreen();
 
         case MorePropertyScreen:
           return PropertyTypeScreen(
