@@ -50,17 +50,13 @@ Future<String> getMemberType(String postID) async {
   if (postID == currentUserId) {
     owner = 'Owner';
   } else {
-    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUserId)
-        .get();
-
-    if (userSnapshot.exists) {
-      SignupSavepDataFirebase savepDataFirebase =
-          userSnapshot.data() as SignupSavepDataFirebase;
-
-      owner = savepDataFirebase.memberType!;
-    }
+        .get()
+        .then((var value) async {
+      owner = value.data()!['memberType'];
+    });
   }
 
   return owner;

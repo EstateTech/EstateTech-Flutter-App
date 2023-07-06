@@ -44,96 +44,98 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      padding:
-          EdgeInsets.only(left: 20.h, right: 20.h, top: size.height * 0.09),
-      height: size.height,
-      width: size.width,
+    return SafeArea(
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(left: 10.h, right: 20.h),
-                  height: size.height * 0.08,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Shade2purple),
-                      borderRadius: BorderRadius.circular(30.r)),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            print("moving to search page");
-                            Navigator.pushNamed(context, searchScreen);
-                          },
-                          child: SvgPicture.asset(
-                            "assets/images/search_icon.svg",
-                            height: 25.h,
-                            width: 25.h,
-                            color: unselectedBoNaBColor,
+          SizedBox(
+            height: 10.h,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10.w, right: 20.w),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10.w, right: 20.h),
+                    height: size.height * 0.08,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Shade2purple),
+                        borderRadius: BorderRadius.circular(30.r)),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              print("moving to search page");
+                              Navigator.pushNamed(context, searchScreen);
+                            },
+                            child: SvgPicture.asset(
+                              "assets/images/search_icon.svg",
+                              height: 25.h,
+                              width: 25.h,
+                              color: unselectedBoNaBColor,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "I'm looking for",
-                                style: style.copyWith(
-                                    color: Shade2purple,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15.sp),
-                              ),
-                              Text(
-                                "Appartment,Studio,Office",
-                                style: style.copyWith(
-                                    color: Shade2purple.withOpacity(0.7),
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 12.sp),
-                              )
-                            ],
+                          SizedBox(
+                            width: 10.w,
                           ),
-                        ),
-                        SvgPicture.asset(
-                          "assets/images/menu_icon.svg",
-                          color: Shade2purple,
-                          height: 18.h,
-                          width: 18.h,
-                        ),
-                      ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "I'm looking for",
+                                  style: style.copyWith(
+                                      color: Shade2purple,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.sp),
+                                ),
+                                Text(
+                                  "Appartment,Studio,Office",
+                                  style: style.copyWith(
+                                      color: Shade2purple.withOpacity(0.7),
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 12.sp),
+                                )
+                              ],
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            "assets/images/menu_icon.svg",
+                            color: Shade2purple,
+                            height: 18.h,
+                            width: 18.h,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 10.h,
-              ),
-              Container(
-                height: size.width * 0.12,
-                width: size.width * 0.12,
-                padding: EdgeInsets.all(10.h),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
+                SizedBox(
+                  width: 10.h,
+                ),
+                Container(
+                  height: size.width * 0.12,
+                  width: size.width * 0.12,
+                  padding: EdgeInsets.all(10.h),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Shade2purple,
+                    ),
+                  ),
+                  child: SvgPicture.asset(
+                    "assets/images/bell_line_icon.svg",
                     color: Shade2purple,
                   ),
                 ),
-                child: SvgPicture.asset(
-                  "assets/images/bell_line_icon.svg",
-                  color: Shade2purple,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
-            height: 20.h,
+            height: 7.h,
           ),
           Container(
             child: Stack(
@@ -221,7 +223,7 @@ class _ExplorePageState extends State<ExplorePage>
             ),
           ),
           SizedBox(
-            height: 20.h,
+            height: 8.h,
           ),
           Expanded(
             child: TabBarView(

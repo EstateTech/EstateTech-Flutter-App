@@ -10,10 +10,10 @@ Widget buildImage(String urlImage, int index, BuildContext context) {
     width: MediaQuery.of(context).size.width,
     height: MediaQuery.of(context).size.height,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(25.r),
+      borderRadius: BorderRadius.circular(10.r),
       image: DecorationImage(
         image: NetworkImage(urlImage),
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
     ),
   );

@@ -26,11 +26,12 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 480.h,
+      height: 330.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
       margin: EdgeInsets.only(top: 10.h),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Colors.transparent, borderRadius: BorderRadius.circular(25.r)),
+          color: Colors.transparent, borderRadius: BorderRadius.circular(10.r)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,7 +40,8 @@ class _PostState extends State<Post> {
               CarouselSlider.builder(
                 carouselController: CarouselController(),
                 options: CarouselOptions(
-                    aspectRatio: MediaQuery.of(context).size.width / 380,
+                    height: 180.h,
+                    // aspectRatio: MediaQuery.of(context).size.width / 380,
                     padEnds: false,
                     viewportFraction: 1,
                     clipBehavior: Clip.none,
@@ -48,7 +50,7 @@ class _PostState extends State<Post> {
                 itemBuilder: (context, index, realIndex) {
                   final urlImage = widget.postModel.propertyPhotos![index];
                   return ClipRRect(
-                      borderRadius: BorderRadius.circular(25.r),
+                      borderRadius: BorderRadius.circular(10.r),
                       child: buildImage(urlImage!, index, context));
                 },
               ),
@@ -69,21 +71,24 @@ class _PostState extends State<Post> {
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     // While the future is resolving, you can show a loading indicator
-                    return CircularProgressIndicator();
+                    return Container();
                   } else if (snapshot.hasError || snapshot.data == null) {
                     // If there was an error in the future or the data is null, show an error message
                     return Text('Error: ${snapshot.error}');
                   } else {
                     // Once the future completes successfully and the data is not null, display it
+
                     final owner = snapshot.data!;
+
+                    print("1${owner}");
                     return Positioned(
                         top: 10.h,
-                        left: 10.h,
+                        left: 10.w,
                         child: Text(
-                          owner,
+                          '$owner',
                           style: style.copyWith(
                               color: blueColor,
-                              fontSize: 20.sp,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold),
                         ));
                   }
@@ -95,7 +100,7 @@ class _PostState extends State<Post> {
             height: 10.h,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 15.h),
+            padding: EdgeInsets.only(left: 2.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

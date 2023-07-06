@@ -37,52 +37,58 @@ class _BestOffersState extends State<BestOffers> {
         .snapshots();
     return Column(
       children: [
-        Row(
-          children: [
-            ViewIconContainer(
-                isSelected: currentViewIndex == 0 ? true : false,
-                child: SvgPicture.asset("assets/images/grid_icon.svg",
-                    color: currentViewIndex == 0
-                        ? Shade2purple
-                        : unselectedTabcolor),
-                onTap: () {
-                  setState(() {
-                    currentViewIndex = 0;
-                  });
-                }),
-            SizedBox(
-              width: 10.w,
-            ),
-            ViewIconContainer(
-                isSelected: currentViewIndex == 1 ? true : false,
-                child: SvgPicture.asset(
-                    "assets/images/horizontal_lines_icon.svg",
-                    color: currentViewIndex == 1
-                        ? Shade2purple
-                        : unselectedTabcolor),
-                onTap: () {
-                  setState(() {
-                    currentViewIndex = 1;
-                  });
-                }),
-            Expanded(child: SizedBox()),
-            Container(
-                padding: EdgeInsets.all(7.h),
-                height: 50.h,
-                width: 60.h,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: unselectedTabcolor,
-                        blurRadius: 4,
-                        offset: Offset(0, 5), // Shadow position
-                      ),
-                    ],
-                    border: Border.all(color: Shade2purple),
-                    borderRadius: BorderRadius.circular(10.r)),
-                child: SvgPicture.asset("assets/images/dollar_icon.svg"))
-          ],
+        SizedBox(
+          height: 10.h,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Row(
+            children: [
+              ViewIconContainer(
+                  isSelected: currentViewIndex == 0 ? true : false,
+                  child: SvgPicture.asset("assets/images/grid_icon.svg",
+                      color: currentViewIndex == 0
+                          ? Shade2purple
+                          : unselectedTabcolor),
+                  onTap: () {
+                    setState(() {
+                      currentViewIndex = 0;
+                    });
+                  }),
+              SizedBox(
+                width: 10.w,
+              ),
+              ViewIconContainer(
+                  isSelected: currentViewIndex == 1 ? true : false,
+                  child: SvgPicture.asset(
+                      "assets/images/horizontal_lines_icon.svg",
+                      color: currentViewIndex == 1
+                          ? Shade2purple
+                          : unselectedTabcolor),
+                  onTap: () {
+                    setState(() {
+                      currentViewIndex = 1;
+                    });
+                  }),
+              Expanded(child: SizedBox()),
+              Container(
+                  padding: EdgeInsets.all(7.h),
+                  height: 50.h,
+                  width: 60.h,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: unselectedTabcolor,
+                          blurRadius: 4,
+                          offset: Offset(0, 5), // Shadow position
+                        ),
+                      ],
+                      border: Border.all(color: Shade2purple),
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: SvgPicture.asset("assets/images/dollar_icon.svg"))
+            ],
+          ),
         ),
         Expanded(
           child: filterProvider.isFilterApplied
@@ -122,6 +128,11 @@ class _BestOffersState extends State<BestOffers> {
                       .collection('posts')
                       .snapshots(),
                   builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     if (snapshot.hasData) {
                       List<DocumentSnapshot<Map<String, dynamic>>> documents =
                           snapshot.data!.docs;
