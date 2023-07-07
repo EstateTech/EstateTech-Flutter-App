@@ -35,106 +35,125 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
     6,
     (index) => TextEditingController(),
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controllers[1].text = widget.postModel.propertyAddressLine2!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   print(widget.postModel.toJson());
+      //}),
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(gradient: appBackgroundGradient),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CustomCreatePostHeader(),
-            // SizedBox(
-            //   height: 20.h,
-            // ),
-            Column(
-              children: [
-                Text(
-                  "Confirm is the address of your property",
-                  style: style.copyWith(
-                      fontSize: 25.sp,
-                      color: textwalktrough,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  "Your address is only shared with users after they’ve made a reservation",
-                  style: style.copyWith(
-                      fontSize: 15.sp,
-                      color: textwalktrough,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-
-            AddressInTextFields(),
-
-            Padding(
-              padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
-              child: customPostCreateBottomWidget(
-                OnPressedNextButton: () {
-                  if (_key.currentState!.validate()) {
-                    widget.postModel.propertyAddressLine1 = controllers[0].text;
-                    widget.postModel.propertyAddressLine2 = controllers[1].text;
-                    widget.postModel.city = controllers[3].text;
-                    widget.postModel.state = controllers[4].text;
-                    widget.postModel.postalCode = controllers[5].text;
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PropertyMappedScreen(
-                                  isConfirmPinScreen: true,
-                                  postModel: widget.postModel,
-                                )));
-                  }
-                },
-                OnPressedbackButton: () {
-                  Navigator.pop(context);
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 20.h,
               ),
-            ),
-          ],
+              CustomCreatePostHeader(),
+              SizedBox(
+                height: 10.h,
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Confirm is the address of your property",
+                    style: style.copyWith(
+                        fontSize: 25.sp,
+                        color: textwalktrough,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    "Your address is only shared with users after they’ve made a reservation",
+                    style: style.copyWith(
+                        fontSize: 15.sp,
+                        color: textwalktrough,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              AddressInTextFields(),
+              Padding(
+                padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
+                child: customPostCreateBottomWidget(
+                  OnPressedNextButton: () {
+                    if (_key.currentState!.validate()) {
+                      widget.postModel.propertyAddressLine1 =
+                          controllers[0].text;
+                      widget.postModel.propertyAddressLine2 =
+                          controllers[1].text;
+                      widget.postModel.city = controllers[3].text;
+                      widget.postModel.state = controllers[4].text;
+                      widget.postModel.postalCode = controllers[5].text;
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PropertyMappedScreen(
+                                    isConfirmPinScreen: true,
+                                    postModel: widget.postModel,
+                                  )));
+                    }
+                  },
+                  OnPressedbackButton: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget AddressInTextFields() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: 50.h,
-            margin: EdgeInsets.all(5.h),
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 24.h, right: 24.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15.r),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "United Arab Emirates(+971)",
-                  style: style.copyWith(color: Colors.black, fontSize: 14.sp),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down_outlined,
-                  size: 25.h,
-                )
-              ],
-            ),
+    return Column(
+      children: [
+        Container(
+          height: 50.h,
+          margin: EdgeInsets.all(5.h),
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.only(left: 24.h, right: 24.h),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.r),
           ),
-          Form(
-            key: _key,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "United Arab Emirates(+971)",
+                style: style.copyWith(color: Colors.black, fontSize: 14.sp),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down_outlined,
+                size: 25.h,
+              )
+            ],
+          ),
+        ),
+        Form(
+          key: _key,
+          child: SingleChildScrollView(
             child: Column(
               children: List.generate(
                 hintTexts.length,
@@ -142,9 +161,9 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
                     hintText: hintTexts[index], controller: controllers[index]),
               ),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 

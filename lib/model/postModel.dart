@@ -13,6 +13,7 @@ class PostModel {
   String? city;
   String? state;
   String? postalCode;
+  String? country;
   int? guest;
   int? bedrooms;
   int? bathrooms;
@@ -56,6 +57,7 @@ class PostModel {
       this.userid,
       this.likes,
       this.propertyFeature,
+      this.country,
       this.datePosted});
 
   PostModel.fromJson(Map<String, dynamic> json) {
@@ -67,6 +69,7 @@ class PostModel {
     propertyAddressLine2 = json['propertyAddressLine2'];
     city = json['city'];
     state = json['state'];
+    country = json['country'];
     postalCode = json['postalCode'];
     guest = json['guest'];
     bedrooms = json['bedrooms'];
@@ -101,6 +104,7 @@ class PostModel {
     data['guest'] = this.guest;
     data['bedrooms'] = this.bedrooms;
     data['bathrooms'] = this.bathrooms;
+    data['country'] = this.country;
     data['propertyArea'] = this.propertyArea;
     data['propertyBuildArea'] = this.propertyBuildArea;
     data['propertyPlotArea'] = this.propertyPlotArea;

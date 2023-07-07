@@ -6,8 +6,10 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/featuresScre
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTextAdressScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
@@ -32,6 +34,8 @@ class PropertyMappedScreen extends StatefulWidget {
 }
 
 class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
+  //String address = '';
+  TextEditingController addressController = TextEditingController();
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -49,52 +53,128 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getCurrentLocation();
-  }
-
-  @override
   void dispose() {
     // TODO: implement dispose
 
     super.dispose();
   }
 
-  void getCurrentLocation() async {
-    Location location = new Location();
+  @override
+  void initState() {
+    super.initState();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+    _getCurrentPosition();
+  }
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
       }
     }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
     }
+    return true;
+  }
 
-    _locationData = await location.getLocation();
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) async {
+      print("1--${position.latitude}");
 
-    _latLng = LatLng(_locationData.latitude!, _locationData.longitude!);
+      setState(() {
+        _latLng = LatLng(position.latitude, position.longitude);
+        _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
+        // postMdl.getCurrentWeather(position.latitude, position.longitude);
+        // postMdl.setUserPostion(position);
+      });
+      _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
 
-    _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
+      await Future.delayed(const Duration(seconds: 1));
+      final GoogleMapController controller = await _controller.future;
+      setState(() {
+        controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+      });
 
-    await Future.delayed(const Duration(seconds: 1));
-    final GoogleMapController controller = await _controller.future;
-    setState(() {
-      controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+      await getAddress();
+    }).catchError((e) {
+      debugPrint(e);
     });
+  }
+
+  // void getCurrentLocation() async {
+  //   Location location = new Location();
+
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+  //   LocationData _locationData;
+
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+
+  //   _locationData = await location.getLocation();
+
+  //   _latLng = LatLng(_locationData.latitude!, _locationData.longitude!);
+
+  //   _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
+
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   final GoogleMapController controller = await _controller.future;
+  //   setState(() {
+  //     controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+  //   });
+  // }
+
+  Future getAddress() async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(_latLng!.latitude, _latLng!.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        addressController.text =
+            "${place.locality}, ${place.subLocality}, ${place.country}";
+      });
+
+      print("===${addressController.text}");
+    } catch (e) {
+      print("!!!!$e");
+    }
   }
 
   @override
@@ -145,6 +225,7 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                           border: Border.all(color: textwalktrough),
                           borderRadius: BorderRadius.circular(10.r)),
                       child: TextField(
+                        controller: addressController,
                         decoration: InputDecoration(
                             hintText: "Enter your address",
                             hintStyle: style.copyWith(
@@ -194,24 +275,38 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  setState(() {
-                    widget.postModel.latLong =
-                        GeoPoint(_latLng.latitude, _latLng.latitude);
-                  });
+                  if (addressController.text.length != 0) {
+                    setState(() {
+                      widget.postModel.latLong =
+                          GeoPoint(_latLng.latitude, _latLng.longitude);
 
-                  widget.isConfirmPinScreen
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FeatureScreen(
-                                    postModel: widget.postModel,
-                                  )))
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PropertyTextAddressScreen(
-                                    postModel: widget.postModel,
-                                  )));
+                      widget.postModel.city =
+                          addressController.text.split(',').first;
+
+                      widget.postModel.propertyAddressLine2 =
+                          addressController.text;
+
+                      widget.postModel.country =
+                          addressController.text.split(',').last;
+                    });
+
+                    widget.isConfirmPinScreen
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FeatureScreen(
+                                      postModel: widget.postModel,
+                                    )))
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PropertyTextAddressScreen(
+                                      postModel: widget.postModel,
+                                    )));
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Please wait unitl system fetch addreess');
+                  }
                 },
                 OnPressedbackButton: () {
                   Navigator.pop(context);
