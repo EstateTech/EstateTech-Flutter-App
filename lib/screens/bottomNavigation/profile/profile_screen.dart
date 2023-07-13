@@ -2,6 +2,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,6 +48,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: double.infinity,
                     child: Text(
                       "Upload Property",
+                      style: style.copyWith(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ))),
+            SizedBox(
+              height: 20.h,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushNamed(context, welcomeScreenRoute);
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 60.h,
+                    width: double.infinity,
+                    child: Text(
+                      "Logout",
                       style: style.copyWith(
                           fontSize: 16.sp, fontWeight: FontWeight.w600),
                     )))

@@ -40,7 +40,7 @@ class _PostState extends State<Post> {
               CarouselSlider.builder(
                 carouselController: CarouselController(),
                 options: CarouselOptions(
-                    height: 180.h,
+                    height: 170.h,
                     // aspectRatio: MediaQuery.of(context).size.width / 380,
                     padEnds: false,
                     viewportFraction: 1,
@@ -97,11 +97,12 @@ class _PostState extends State<Post> {
             ],
           ),
           SizedBox(
-            height: 10.h,
+            height: 5.h,
           ),
           Padding(
             padding: EdgeInsets.only(left: 2.w),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

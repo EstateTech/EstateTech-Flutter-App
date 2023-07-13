@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>903415962027-l9blr5im0po50mfd0dbgm67g3dt1f0qi.apps.googleusercontent.com</string>
+	<string>997330411506-74tth09sfdmuatab3etvltkircluruco.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.903415962027-l9blr5im0po50mfd0dbgm67g3dt1f0qi</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>903415962027-am1a687escjvcrvv5kusghl0l94edmgd.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.997330411506-74tth09sfdmuatab3etvltkircluruco</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCilX9jTJ4v_4uSFPlIid9gYshUx8xQOL0</string>
+	<string>AIzaSyAqSWMqKesHvTe-yK5nrlg8myPC9BRIkUk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>903415962027</string>
+	<string>997330411506</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.kumarsatesh.cryptoEstateTech</string>
 	<key>PROJECT_ID</key>
-	<string>cryptoestatetech-aaadd</string>
+	<string>crypto-estate-tech---app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cryptoestatetech-aaadd.appspot.com</string>
+	<string>crypto-estate-tech---app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:903415962027:ios:c41d8dab8e8d1a44191aee</string>
+	<string>1:997330411506:ios:c738dd37e4c1e1a1de556b</string>
 </dict>
 </plist>

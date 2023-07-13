@@ -89,73 +89,78 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                 decoration: BoxDecoration(
                   gradient: appBackgroundGradient,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        CustomCreatePostHeader(),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          "Additional Info",
-                          style: style.copyWith(
-                              fontSize: 30.sp,
-                              color: textwalktrough,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "You may also want to give additional info or details for the users who might be interested in your property:",
-                          style: style.copyWith(
-                              fontSize: 15.sp, color: textwalktrough),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          height: 200.h,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15.r)),
-                          child: TextField(
-                            maxLines: null,
-                            controller: additionaltextEditingController,
-                            decoration: InputDecoration(
-                              hintText: 'Additional info',
-                              border: InputBorder.none,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          CustomCreatePostHeader(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            "Additional Info",
+                            style: style.copyWith(
+                                fontSize: 30.sp,
+                                color: textwalktrough,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "You may also want to give additional info or details for the users who might be interested in your property:",
+                            style: style.copyWith(
+                                fontSize: 15.sp, color: textwalktrough),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            height: 200.h,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15.r)),
+                            child: TextField(
+                              maxLines: null,
+                              controller: additionaltextEditingController,
+                              decoration: InputDecoration(
+                                hintText: 'Additional info',
+                                border: InputBorder.none,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          right: 12.h, left: 12.h, bottom: 30.h),
-                      child: customPostCreateBottomWidget(
-                        OnPressedNextButton: () {
-                          setState(() {
-                            widget.postModel.additionalInfo =
-                                additionaltextEditingController.text;
-                          });
-                          uploadImages().then((value) {
-                            Navigator.pushNamed(
-                                context, postCompletedCongratulationsScreen);
-                          });
-                          print(widget.postModel.toJson());
-                        },
-                        OnPressedbackButton: () {
-                          Navigator.pop(context);
-                        },
+                        ],
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right: 12.h, left: 12.h, bottom: 30.h),
+                        child: customPostCreateBottomWidget(
+                          OnPressedNextButton: () {
+                            setState(() {
+                              widget.postModel.additionalInfo =
+                                  additionaltextEditingController.text;
+                            });
+                            uploadImages().then((value) {
+                              Navigator.pushNamed(
+                                  context, postCompletedCongratulationsScreen);
+                            });
+                            print(widget.postModel.toJson());
+                          },
+                          OnPressedbackButton: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
       }),

@@ -42,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future navigate() async {
+    // FirebaseAuth.instance.signOut();
     var user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {

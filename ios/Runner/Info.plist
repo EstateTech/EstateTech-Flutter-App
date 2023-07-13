@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.903415962027-l9blr5im0po50mfd0dbgm67g3dt1f0qi</string>
+				<string>com.googleusercontent.apps.997330411506-74tth09sfdmuatab3etvltkircluruco</string>
 			</array>
 		</dict>
 	</array>
@@ -43,6 +43,12 @@
 	<string>Post videos to profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload images for screen background</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Crypto uses access location access inorder to show data according to your location </string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Crypto uses access your location access inorder to show data according to your location</string>
+	
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

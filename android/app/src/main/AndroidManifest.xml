@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.crypto_estate_tech">
+    package="com.kumarsatesh.crypto_estate_tech">
    <uses-permission android:name="android.permission.INTERNET"/>
    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> 
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
    <application
         android:label="crypto_estate_tech"
         android:name="${applicationName}"
@@ -37,6 +39,6 @@
             android:value="2" />
 
              <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAr1bjx1zgSrj41lS2-M_R-wu1TkhiVT0Q"/>
+               android:value="AIzaSyDR3BfVmZlZUSCFJSUwKoe_LgENILQHSi0"/>
     </application>
 </manifest>

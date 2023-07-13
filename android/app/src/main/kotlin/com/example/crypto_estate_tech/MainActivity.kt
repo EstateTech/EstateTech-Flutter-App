@@ -1,4 +1,4 @@
-package com.example.crypto_estate_tech
+package com.kumarsatesh.crypto_estate_tech
 
 import io.flutter.embedding.android.FlutterActivity
 
