@@ -52,7 +52,6 @@ dependencies:
   uuid: ^3.0.7
   google_maps_flutter: ^2.2.5
   location_geocoder: ^1.0.5
-
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.1
   intl: ^0.18.1
