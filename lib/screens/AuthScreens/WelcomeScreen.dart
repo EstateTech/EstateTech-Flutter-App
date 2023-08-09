@@ -86,18 +86,31 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+
        _isloading =
         Provider.of<AuthProvider>(context, listen: true).isLoading;
         
     return Scaffold(
       backgroundColor: mainAppColor,
       body: _isloading
-          ? Center(
-              child: CupertinoActivityIndicator(
-                color: Colors.white,
-              ),
-            )
+          ?Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
+                    "Sending the Code!",
+                    style: style.copyWith(fontSize: 20.sp, color: Colors.white),
+                  )
+                ],
+              )
           : Padding(
               padding: EdgeInsets.only(left: 20.h, right: 20.w),
               child: SingleChildScrollView(
@@ -227,13 +240,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     if (phoneController.text.isEmpty) {
       showSnackBar(
           context, "Kindly fill the Phone Number Field with Country Code");
-    } else if (!phoneController.text.startsWith("+")) {
-      showSnackBar(context, "Write the Number with Country Code");
-    } else {
-    
-
-  
-      String phoneNumber = phoneController.text.trim();
+    }  else {
+      String phoneNumber = selectedCountrycode+phoneController.text.trim();
        ap.signInWithPhone(context, phoneNumber, selectedCountrycode);
     
     }
