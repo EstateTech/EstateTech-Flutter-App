@@ -12,10 +12,11 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 
 class Post extends StatefulWidget {
   final PostModel postModel;
+  final userId ;
 
   const Post({
     Key? key,
-    required this.postModel,
+    required this.postModel, this.userId,
   }) : super(key: key);
 
   @override
@@ -23,8 +24,28 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+  String memberType = 'Loading';
+
+  
+
+
+  void fetchMemberType() async {
+    print("the user id is ${widget.userId}");
+    String type = await getMemberType(widget.userId);
+    setState(() {
+      memberType = type;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchMemberType();
+  }
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       height: 330.h,
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -65,35 +86,19 @@ class _PostState extends State<Post> {
                       size: 30.h,
                     ),
                   )),
-              FutureBuilder<String>(
-                future: getMemberType(widget.postModel.userid!),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // While the future is resolving, you can show a loading indicator
-                    return Container();
-                  } else if (snapshot.hasError || snapshot.data == null) {
-                    // If there was an error in the future or the data is null, show an error message
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    // Once the future completes successfully and the data is not null, display it
 
-                    final owner = snapshot.data!;
+                  Positioned(
+                  top: 10.h,
+                  left: 5.h,
+                  child:  memberType == "Loading" ?  CircularProgressIndicator(
+                    color: mainAppColor,
+                  ) :Text(memberType,style: style.copyWith(
+                    color: mainAppColor,
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.bold
+                  ),)),
 
-                    print("1${owner}");
-                    return Positioned(
-                        top: 10.h,
-                        left: 10.w,
-                        child: Text(
-                          '$owner',
-                          style: style.copyWith(
-                              color: blueColor,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold),
-                        ));
-                  }
-                },
-              )
+              
             ],
           ),
           SizedBox(

@@ -15,7 +15,7 @@ class OwnTextfield extends StatelessWidget {
       this.readonly = false,
       this.textInputType = TextInputType.text,
       this.containMask = false,
-      required this.controller});
+      required this.controller, });
 
   final String label;
   final String hint;
@@ -25,6 +25,7 @@ class OwnTextfield extends StatelessWidget {
   final bool? readonly;
   final TextInputType? textInputType;
   final TextEditingController controller;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,9 @@ class OwnTextfield extends StatelessWidget {
         // ],
       ),
       child: TextFormField(
-        autofocus: true,
+        
+         scrollPadding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom),
         readOnly: readonly!,
         controller: controller,
         keyboardType: textInputType,
@@ -51,7 +54,7 @@ class OwnTextfield extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding:
               EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-          isDense: true,
+         
           filled: true,
           fillColor: Colors.white,
           focusedBorder: OutlineInputBorder(

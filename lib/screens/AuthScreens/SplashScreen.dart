@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/WelcomeScreen.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../homeScreen/home_screen.dart';
 
@@ -42,7 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future navigate() async {
-    // FirebaseAuth.instance.signOut();
+     FirebaseAuth.instance.signOut();
+    // check is for google
     var user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -59,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) => UserInfoDeveloper(
-                        email: value.data()!['email'],
+                        email: value.data()!['email'].toString(),
                       )));
         }
       });

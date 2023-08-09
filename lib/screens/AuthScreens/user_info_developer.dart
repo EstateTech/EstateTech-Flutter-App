@@ -11,7 +11,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../common/ColorConstants.dart';
 import '../../common/custom_button_widget.dart';
-import '../../common/fixedvalues.dart';
+
 import '../../common/widgetConstants.dart';
 import '../../components/own_textfield.dart';
 
@@ -198,247 +198,261 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
         email.text = widget.email;
         if (email.text.length != 0) {
           readonly = true;
+        }else {
+          readonly = false;
         }
       });
     });
+  
+  
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+
+
+ 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Form(
-        key: _key,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 50.h,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    child: Icon(Icons.arrow_back_rounded),
+      resizeToAvoidBottomInset : true,
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leading:   GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  child: Icon(Icons.arrow_back_rounded,
+                  color: Colors.black,
+                  
                   ),
                 ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                Text(
-                  'Add your info 1/2',
+              ),
+      ),
+      body: SingleChildScrollView(
+         padding: EdgeInsets.symmetric(horizontal: 16.w),
+
+        child: Form(
+          key: _key,
+          child: Column(
+          
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 20.h,
+              ),
+              Text(
+                'Add your info 1/2',
+                style: style.copyWith(
+                    color: Color(0xFF3A3153),
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w700),
+              ),
+              Container(
+                width: double.infinity,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Agent info',
                   style: style.copyWith(
                       color: Color(0xFF3A3153),
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600),
                 ),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Agent info',
-                    style: style.copyWith(
-                        color: Color(0xFF3A3153),
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              OwnTextfield(
+                controller: firstName,
+                label: 'First Name',
+                hint: 'Scott',
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return 'First name required';
+                  }
+                },
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              OwnTextfield(
+                controller: lastName,
+                label: 'Last Name',
+                hint: 'Brown',
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return 'Last name required';
+                  }
+                },
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'Make sure it matches on your governement issued ID',
+                style: style.copyWith(
+                  color: Colors.black.withOpacity(0.8),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                OwnTextfield(
-                  controller: firstName,
-                  label: 'First Name',
-                  hint: 'Scott',
-                  validator: (v) {
-                    if (v!.isEmpty) {
-                      return 'First name required';
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                OwnTextfield(
-                  controller: lastName,
-                  label: 'Last Name',
-                  hint: 'Brown',
-                  validator: (v) {
-                    if (v!.isEmpty) {
-                      return 'Last name required';
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  'Make sure it matches on your governement issued ID',
-                  style: style.copyWith(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: OwnTextfield(
-                        controller: idCardNumber,
-                        textInputType: TextInputType.text,
-                        label: 'ID Card',
-                        hint: 'FI21515',
-                        validator: (v) {
-                          if (v!.isEmpty) {
-                            return 'ID Card Required';
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 14.w,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        final XFile? pickedFile = await imagePicker.pickImage(
-                            source: ImageSource.gallery);
-
-                        setState(() {
-                          _image = File(pickedFile!.path);
-                        });
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: OwnTextfield(
+                      controller: idCardNumber,
+                      textInputType: TextInputType.text,
+                      label: 'ID Card',
+                      hint: 'FI21515',
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return 'ID Card Required';
+                        }
                       },
-                      child: Container(
-                        width: 60.w,
-                        height: 55.h,
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13.r),
-                            border: Border.all(color: Colors.black)),
-                        child: _image == null
-                            ? SvgPicture.asset(
-                                'assets/images/add_gallery.svg',
-                                alignment: Alignment.center,
-                              )
-                            : Image.file(_image!, fit: BoxFit.cover),
-                      ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                OwnTextfield(
-                  controller: dateOfBirth,
-                  label: 'Date of birth',
-                  hint: '24/04/1993',
-                  textInputType: TextInputType.number,
-                  validator: (v) {
-                    if (v!.isEmpty) {
-                      return 'Date of birth Required';
-                    }
-                  },
-                  containMask: true,
-                  mask: MaskTextInputFormatter(
-                      mask: "##/##/####", type: MaskAutoCompletionType.eager),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  'To sign up, you need to be at least 18. Other users won’t see you date of birth.',
-                  style: style.copyWith(
-                    fontSize: 14,
-                    height: 1.2.h,
-                    color: Colors.black.withOpacity(0.8),
                   ),
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                OwnTextfield(
-                  controller: email,
-                  readonly: readonly,
-                  label: 'Email',
-                  hint: 'scott.brown@gmail.com',
-                  validator: (v) {
-                    if (v!.isEmpty) {
-                      return 'Email Required';
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                CustomButton(
-                  onPressed: () {
-                    if (_key.currentState!.validate()) {
-                      if (_image != null) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DeveloperAgencyInfo2(
-                                      selectedMember: selectedMember,
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      firstName: firstName.text,
-                                      lastName: lastName.text,
-                                      email: email.text,
-                                      dateOfBirth: dateOfBirth.text,
-                                      cnicImage: _image,
-                                      idCarddNumber: idCardNumber.text,
-                                    )));
-                        // Navigator.pushNamed(
-                        //     context, userinfodeveloperscreenroute2);
-                      } else {
-                        Fluttertoast.showToast(
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            msg: 'Please upload the id card image !',
-                            gravity: ToastGravity.TOP);
-                      }
-                    }
-                  },
-                  textStyle: style.copyWith(
-                    color: Colors.white,
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: 14.w,
                   ),
-                  borderColor: Colors.black,
-                  text: 'Continue',
-                  fillColor: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [mainAppColor, Colors.black]),
-                ),
-                SizedBox(
-                  height: 11.h,
-                ),
-                CustomButton(
-                  textStyle: style.copyWith(
-                    color: Colors.grey,
-                    fontSize: 19.sp,
-                    fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () async {
+                      final XFile? pickedFile = await imagePicker.pickImage(
+                          source: ImageSource.gallery);
+          
+                      setState(() {
+                        _image = File(pickedFile!.path);
+                      });
+                    },
+                    child: Container(
+                      width: 60.w,
+                      height: 55.h,
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(13.r),
+                          border: Border.all(color: Colors.black)),
+                      child: _image == null
+                          ? SvgPicture.asset(
+                              'assets/images/add_gallery.svg',
+                              alignment: Alignment.center,
+                            )
+                          : Image.file(_image!, fit: BoxFit.cover),
+                    ),
                   ),
-                  borderColor: Colors.black,
-                  text: 'Skip for later',
-                  fillColor: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.white, Colors.white]),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              OwnTextfield(
+                controller: dateOfBirth,
+                label: 'Date of birth',
+                hint: '24/04/1993',
+                textInputType: TextInputType.number,
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return 'Date of birth Required';
+                  }
+                },
+                containMask: true,
+                mask: MaskTextInputFormatter(
+                    mask: "##/##/####", type: MaskAutoCompletionType.eager),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'To sign up, you need to be at least 18. Other users won’t see you date of birth.',
+                style: style.copyWith(
+                  fontSize: 14,
+                  height: 1.2.h,
+                  color: Colors.black.withOpacity(0.8),
                 ),
-                SizedBox(
-                  height: 11.h,
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              OwnTextfield(
+                controller: email,
+                readonly: readonly,
+                label: 'Email',
+                hint: 'scott.brown@gmail.com',
+                validator: (v) {
+                  if (v!.isEmpty) {
+                    return 'Email Required';
+                  }
+                },
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              CustomButton(
+                onPressed: () {
+                  
+                  if (_key.currentState!.validate()) {
+                    if (_image != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeveloperAgencyInfo2(
+                                    selectedMember: selectedMember,
+                                    userId: FirebaseAuth
+                                        .instance.currentUser!.uid,
+                                    firstName: firstName.text,
+                                    lastName: lastName.text,
+                                    email: email.text,
+                                    dateOfBirth: dateOfBirth.text,
+                                    cnicImage: _image,
+                                    idCarddNumber: idCardNumber.text,
+                                  )));
+                      // Navigator.pushNamed(
+                      //     context, userinfodeveloperscreenroute2);
+                    } else {
+                      Fluttertoast.showToast(
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          msg: 'Please upload the id card image !',
+                          gravity: ToastGravity.TOP);
+                    }
+                  }
+                },
+                textStyle: style.copyWith(
+                  color: Colors.white,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.w500,
                 ),
-              ],
-            ),
+                borderColor: Colors.black,
+                text: 'Continue',
+                fillColor: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [mainAppColor, Colors.black]),
+              ),
+              SizedBox(
+                height: 11.h,
+              ),
+              CustomButton(
+                textStyle: style.copyWith(
+                  color: Colors.grey,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                borderColor: Colors.black,
+                text: 'Skip for later',
+                fillColor: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.white, Colors.white]),
+              ),
+            SizedBox(height: 11.h,),
+                           
+                           
+             ],
           ),
         ),
       ),

@@ -1,10 +1,12 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -56,7 +58,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                  final ap = Provider.of<AuthProvider>(context, listen: false);
+                  ap.LogOut();
                   Navigator.pushNamed(context, welcomeScreenRoute);
                 },
                 child: Container(

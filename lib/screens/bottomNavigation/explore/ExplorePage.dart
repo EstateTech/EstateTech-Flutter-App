@@ -55,60 +55,65 @@ class _ExplorePageState extends State<ExplorePage>
             child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10.w, right: 20.h),
-                    height: size.height * 0.08,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Shade2purple),
-                        borderRadius: BorderRadius.circular(30.r)),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("moving to search page");
-                              Navigator.pushNamed(context, searchScreen);
-                            },
-                            child: SvgPicture.asset(
-                              "assets/images/search_icon.svg",
-                              height: 25.h,
-                              width: 25.h,
-                              color: unselectedBoNaBColor,
+                  child: GestureDetector(
+                    onTap: () {
+                        Navigator.pushNamed(context, searchScreen);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10.w, right: 20.h),
+                      height: size.height * 0.08,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Shade2purple),
+                          borderRadius: BorderRadius.circular(30.r)),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                print("moving to search page");
+                                Navigator.pushNamed(context, searchScreen);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/images/search_icon.svg",
+                                height: 25.h,
+                                width: 25.h,
+                                color: unselectedBoNaBColor,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "I'm looking for",
-                                  style: style.copyWith(
-                                      color: Shade2purple,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15.sp),
-                                ),
-                                Text(
-                                  "Appartment,Studio,Office",
-                                  style: style.copyWith(
-                                      color: Shade2purple.withOpacity(0.7),
-                                      fontWeight: FontWeight.w200,
-                                      fontSize: 12.sp),
-                                )
-                              ],
+                            SizedBox(
+                              width: 10.w,
                             ),
-                          ),
-                          SvgPicture.asset(
-                            "assets/images/menu_icon.svg",
-                            color: Shade2purple,
-                            height: 18.h,
-                            width: 18.h,
-                          ),
-                        ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "I'm looking for",
+                                    style: style.copyWith(
+                                        color: Shade2purple,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15.sp),
+                                  ),
+                                  Text(
+                                    "Appartment,Studio,Office",
+                                    style: style.copyWith(
+                                        color: Shade2purple.withOpacity(0.7),
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 12.sp),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              "assets/images/menu_icon.svg",
+                              color: Shade2purple,
+                              height: 18.h,
+                              width: 18.h,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -235,6 +240,7 @@ class _ExplorePageState extends State<ExplorePage>
                 Center(child: Text('Wishlist Tab${currentIndex}')),
                 // Widget for Inbox tab
                 Center(child: Text('Inbox Tab${currentIndex}')),
+                
                 Center(child: Text('off plan ${currentIndex}')),
               ],
             ),

@@ -118,7 +118,8 @@ class _BestOffersState extends State<BestOffers> {
                         // Build your UI with the post data from the document
                         PostModel post =
                             PostModel.fromJson(documents[index].data()!);
-                        return Post(postModel: post);
+                     
+                        return Post(postModel: post,userId: post.userid);
                       },
                     );
                   },
@@ -143,7 +144,7 @@ class _BestOffersState extends State<BestOffers> {
                         itemBuilder: (context, index) {
                           PostModel post =
                               PostModel.fromJson(documents[index].data()!);
-                          return Post(postModel: post);
+                          return Post(postModel: post,userId: post.userid,);
                           // PostModel post = posts[index];
                         },
                       );

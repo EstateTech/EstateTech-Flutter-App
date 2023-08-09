@@ -43,21 +43,36 @@ String Convertdate(Timestamp? timestamp) {
   return formattedDate;
 }
 
-Future<String> getMemberType(String postID) async {
-  String owner = "";
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+Future<String> getMemberType(String userId) async {
+  // Initialize Firestore
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  if (postID == currentUserId) {
-    owner = 'Owner';
-  } else {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUserId)
-        .get()
-        .then((var value) async {
-      owner = value.data()!['memberType'];
-    });
+  // Document reference to the user document
+  DocumentReference userRef = firestore.collection('users').doc(userId);
+  print("the user id is  in the get member method is ${userId}");
+
+  try {
+    // Get the user document from Firestore
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    // Check if the user document exists
+    if (userSnapshot.exists) {
+      // Get the member type field from the user document
+      String memberType = userSnapshot.get('memberType');
+      return memberType;
+    } else {
+      return 'Unknown'; // Default value if user document doesn't exist
+    }
+  } catch (e) {
+    print('Error getting member type: $e');
+    return 'Error';
   }
-
-  return owner;
 }
+
+
+
+
+
+
+
+

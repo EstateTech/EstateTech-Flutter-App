@@ -1,9 +1,8 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
 import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
-import 'package:crypto_estate_tech/screens/AuthScreens/SplashScreen.dart';
-import 'package:crypto_estate_tech/screens/AuthScreens/WelcomeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +19,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider<FirebaseStorageProvider>(
           create: (context) => FirebaseStorageProvider(),
+        ),
+         ChangeNotifierProvider<AuthProvider>(
+          create: (context) => AuthProvider(),
         ),
 
         ChangeNotifierProvider(

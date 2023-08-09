@@ -1,23 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/components/custom_button.dart';
 import 'package:crypto_estate_tech/components/custom_white_box.dart';
 import 'package:crypto_estate_tech/common/fixedvalues.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
-import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer_agency_info2.dart';
+
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../common/custom_button_widget.dart';
+import 'package:provider/provider.dart';
+
 import '../../common/own_firebase_auth.dart';
 import '../../components/divider_padding.dart';
 import '../../components/socialLoginbutton.dart';
 import '../../model/signupSaveDataFirebase.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -29,9 +33,63 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _isloading = false;
   final googleSignIn = GoogleSignIn();
+  String selectedCountryName = 'United Arab Emirates';
+  String selectedCountrycode = '+971';
+  String lastpickedSelection = "+971";
+  TextEditingController phoneController = TextEditingController();
+
+  void _openCountryCodePickerDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: Text('Select a Country'),
+          content: CountryListPick(
+            useSafeArea: true,
+            pickerBuilder: (context, countryCode) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    countryCode?.flagUri ?? "",
+                    package: 'country_list_pick',
+                    width: 40.h,
+                    height: 40.h,
+                  ),
+                  Text(countryCode?.name ?? ""),
+                  Text(countryCode?.dialCode ?? ""),
+                  Icon(Icons.keyboard_arrow_down_outlined)
+                ],
+              );
+            },
+            initialSelection: lastpickedSelection,
+            onChanged: (CountryCode? code) {
+              setState(() {
+                selectedCountryName = code?.name ?? "";
+                selectedCountrycode = code?.dialCode ?? "";
+                lastpickedSelection = code?.dialCode ?? "";
+              });
+              Navigator.pop(context);
+            },
+          ),
+        );
+      },
+    );
+  }
+  
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    
+       _isloading =
+        Provider.of<AuthProvider>(context, listen: true).isLoading;
+        
     return Scaffold(
       backgroundColor: mainAppColor,
       body: _isloading
@@ -61,21 +119,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       height: 20.h,
                     ),
 
-                    CustomWhiteBox(
-                      boxShadowContainer: false,
-                      widget: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "United Arab Emirates(+971)",
-                            style: style.copyWith(color: Colors.black),
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            size: 25.h,
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: _openCountryCodePickerDialog,
+                      child: CustomWhiteBox(
+                        boxShadowContainer: false,
+                        widget: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "$selectedCountryName ($selectedCountrycode)",
+                              style: style.copyWith(color: Colors.black),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              size: 25.h,
+                            )
+                          ],
+                        ),
                       ),
                     ),
 
@@ -87,7 +148,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         boxShadowContainer: false,
                         widget: Center(
                           child: TextField(
-                            keyboardType: TextInputType.number,
+                            controller: phoneController,
+                            keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                                 hintText: "Phone Number",
                                 hintStyle: style.copyWith(color: Colors.black),
@@ -107,7 +169,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       height: 10.h,
                     ),
 
-                    CustomButton1(boxShadowContainer: true, title: 'Continue'),
+                    GestureDetector(
+                        onTap: sendPhoneNumber,
+                        child: CustomButton1(
+                            boxShadowContainer: true, title: 'Continue')),
                     SizedBox(
                       height: 25.h,
                     ),
@@ -154,6 +219,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
     );
+  }
+
+  void sendPhoneNumber() {
+        final ap = Provider.of<AuthProvider>(context, listen: false);
+      
+    if (phoneController.text.isEmpty) {
+      showSnackBar(
+          context, "Kindly fill the Phone Number Field with Country Code");
+    } else if (!phoneController.text.startsWith("+")) {
+      showSnackBar(context, "Write the Number with Country Code");
+    } else {
+    
+
+  
+      String phoneNumber = phoneController.text.trim();
+       ap.signInWithPhone(context, phoneNumber, selectedCountrycode);
+    
+    }
   }
 
   Future googleProvide(String memberType) async {
@@ -232,14 +315,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               }
             }
           });
-
-          // userProvider
-          //     .saveUserDataToProvider(
-          //         userData.uid);
-
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
-        } else {}
+        }
       } else {
         setState(() {
           _isloading = false;
