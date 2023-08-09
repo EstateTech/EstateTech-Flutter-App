@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>997330411506-74tth09sfdmuatab3etvltkircluruco.apps.googleusercontent.com</string>
+	<string>997330411506-e79onvqpj66j9dibrlisuh37tetu3kmu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.997330411506-74tth09sfdmuatab3etvltkircluruco</string>
+	<string>com.googleusercontent.apps.997330411506-e79onvqpj66j9dibrlisuh37tetu3kmu</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>997330411506-bqmdb7jvk2rn48o7cr4c4p1p6ehui6b2.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAqSWMqKesHvTe-yK5nrlg8myPC9BRIkUk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.kumarsatesh.cryptoEstateTech</string>
+	<string>com.sateshkumar.cryptoEstateTech</string>
 	<key>PROJECT_ID</key>
 	<string>crypto-estate-tech---app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:997330411506:ios:c738dd37e4c1e1a1de556b</string>
+	<string>1:997330411506:ios:58243dcc46dc510ede556b</string>
 </dict>
 </plist>
