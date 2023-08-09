@@ -39,7 +39,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _isloading = Provider.of<AuthProvider>(context, listen: true).isLoading;
+    _isloading = Provider.of<AuthProvider>(context, listen: true).isOtpScreenLoading;
   
     return Scaffold(
       backgroundColor: mainAppColor,
@@ -47,7 +47,13 @@ class _OtpScreenState extends State<OtpScreen> {
         backgroundColor: mainAppColor,
         elevation: 0.0,
         leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
+          onTap: () {
+            Provider.of<AuthProvider>(context, listen: false).setLoadingFalse();
+            Navigator.of(context).pop();
+         
+
+
+          } ,
           child: const Icon(Icons.arrow_back),
         ),
       ),
@@ -55,6 +61,7 @@ class _OtpScreenState extends State<OtpScreen> {
         child: _isloading == true
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Center(
                     child: CircularProgressIndicator(
@@ -65,7 +72,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     height: 20.h,
                   ),
                   Text(
-                    "Please Wait ! \n Its little bit Time Taking Process",
+                    "Verfiying the otp",
                     style: style.copyWith(fontSize: 20.sp, color: Colors.white),
                   )
                 ],
@@ -212,7 +219,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   loggedInStatus: 'Phone'),
             );
 
-            
+
 
             Navigator.push(
                 context,

@@ -12,6 +12,8 @@ class AuthProvider extends ChangeNotifier {
   bool get isSignedIn => _isSignedIn;
     bool _isLoading = false;
   bool get isLoading => _isLoading;
+     bool _isOtpScreenLoading = false;
+  bool get isOtpScreenLoading => _isOtpScreenLoading;
     String? _uid;
   String get uid => _uid!;
 
@@ -47,8 +49,7 @@ class AuthProvider extends ChangeNotifier {
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
             await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-              _isLoading = false;
-              notifyListeners();
+             
           },
           verificationFailed: (error) {
              _isLoading = false;
@@ -56,10 +57,8 @@ class AuthProvider extends ChangeNotifier {
             throw Exception(error.message);
           },
           codeSent: (verificationId, forceResendingToken) {
-            Navigator.pop(context);
-           
-           
-            Navigator.push(
+              
+              Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => OtpScreen(
@@ -92,7 +91,7 @@ class AuthProvider extends ChangeNotifier {
     required String userOtp,
     required Function onSuccess,
   }) async {
-    _isLoading = true;
+    _isOtpScreenLoading = true;
     notifyListeners();
 
     try {
@@ -106,21 +105,28 @@ class AuthProvider extends ChangeNotifier {
         _uid = user.uid;
         onSuccess();
       }
-     
-      notifyListeners();
+     // _isOtpScreenLoading = false;
+     // notifyListeners();
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
-      _isLoading = false;
+      _isOtpScreenLoading = false;
       notifyListeners();
     }
   }
 
   Future LogOut() async {
       _isLoading = false;
+      _isOtpScreenLoading = false;
     notifyListeners();
     await FirebaseAuth.instance.signOut();
   
 
+  }
+
+  void setLoadingFalse () {
+    _isLoading = false;
+     _isOtpScreenLoading = false;
+    notifyListeners();
   }
 
 
