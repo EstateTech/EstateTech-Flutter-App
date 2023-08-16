@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
-import 'package:crypto_estate_tech/common/own_firebase_auth.dart';
+import 'package:crypto_estate_tech/helperclass/own_firebase_auth.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/components/custom_button.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';

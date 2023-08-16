@@ -50,3 +50,9 @@ const String postCompletedCongratulationsScreen =
     "/postCompletedCongratulationsScreen";
 
 const String searchScreen = "/searchScreen";
+
+ const String bestofferPf =  "BestOffer";
+  const String trendingPf ="Trending";
+ const String latestPf= "Latest";
+ const String offPlan =  "OffPlan";
+

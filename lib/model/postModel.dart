@@ -31,6 +31,7 @@ class PostModel {
   List<String>? likes;
   List<String>? propertyFeature;
   Timestamp? datePosted;
+  String? postFeature;
   PostModel(
       {this.propertyType,
       this.propertyPortion,
@@ -58,12 +59,15 @@ class PostModel {
       this.likes,
       this.propertyFeature,
       this.country,
-      this.datePosted});
+      this.datePosted,
+      this.postFeature
+      
+      });
 
   PostModel.fromJson(Map<String, dynamic> json) {
     propertyType = json['propertyType'];
     propertyPortion = json['propertyPortion'];
-    latLong = _convertToGeoPoint(json['LatLong']);
+    latLong = _convertToGeoPoint(json['latLong']);
     propertyOwnerNumber = json['propertyOwnerNumber'];
     propertyAddressLine1 = json['propertyAddressLine1'];
     propertyAddressLine2 = json['propertyAddressLine2'];
@@ -88,13 +92,14 @@ class PostModel {
     likes = json['likes'];
     propertyFeature = json['propertyFeature'];
     datePosted = json['datePosted'];
+    postFeature= json['postFeature'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['propertyType'] = this.propertyType;
     data['propertyPortion'] = this.propertyPortion;
-    data['LatLong'] = _convertFromGeoPoint(this.latLong);
+    data['latLong'] = _convertFromGeoPoint(this.latLong);
     data['propertyOwnerNumber'] = this.propertyOwnerNumber;
     data['propertyAddressLine1'] = this.propertyAddressLine1;
     data['propertyAddressLine2'] = this.propertyAddressLine2;
@@ -119,6 +124,7 @@ class PostModel {
     data['likes'] = this.likes;
     data['propertyFeature'] = this.propertyFeature;
     data['datePosted'] = this.datePosted;
+    data['postFeature'] = this.postFeature;
 
     return data;
   }

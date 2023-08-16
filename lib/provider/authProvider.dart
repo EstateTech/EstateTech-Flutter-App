@@ -1,4 +1,4 @@
-import 'package:crypto_estate_tech/common/own_firebase_auth.dart';
+import 'package:crypto_estate_tech/helperclass/own_firebase_auth.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/otpScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

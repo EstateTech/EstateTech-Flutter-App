@@ -19,10 +19,10 @@ Widget buildImage(String urlImage, int index, BuildContext context) {
   );
 }
 
-Widget buildIndicator(index, activeindexbuild, List<String> list) {
+Widget buildIndicator(index,  int length) {
   return AnimatedSmoothIndicator(
-    activeIndex: activeindexbuild,
-    count: list.length,
+    activeIndex: index,
+    count: length,
     effect: const ScrollingDotsEffect(
         dotWidth: 10, dotHeight: 10, activeDotColor: Colors.white),
   );

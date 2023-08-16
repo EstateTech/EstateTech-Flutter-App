@@ -9,6 +9,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/offeredSpace
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/postCompleteCongratulationsScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyDescription.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/postDetailScreen.dart';
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
 import 'package:crypto_estate_tech/screens/homeScreen/search_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthrough.dart';
@@ -104,6 +105,8 @@ class Router {
 
         // case featuresScreen:
         //   return FeatureScreen();
+
+      
 
         case homeScreenRoute:
           return HomeScreen();
