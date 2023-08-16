@@ -7,6 +7,7 @@ class FilterProvider with ChangeNotifier {
   String? period;
   int? price;
   bool isFilterApplied = false;
+  String? postFeature;
 
   void updateFilterAppliedField(bool value) {
     isFilterApplied = value;
@@ -36,5 +37,11 @@ class FilterProvider with ChangeNotifier {
   void updatePrice(int? value) {
     price = value;
     notifyListeners();
+  }
+
+  void updatePostType(String? value){
+    postFeature = value;
+    notifyListeners();
+
   }
 }

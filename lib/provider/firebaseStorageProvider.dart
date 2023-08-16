@@ -103,7 +103,8 @@ class FirebaseStorageProvider extends ChangeNotifier {
         "userid": post.userid,
         "likes": post.likes,
         "propertyFeature": post.propertyFeature,
-        "datePosted": post.datePosted
+        "datePosted": post.datePosted,
+        "postFeature" : post.postFeature
       });
       print('Post created successfully!');
 

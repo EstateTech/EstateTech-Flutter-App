@@ -2,6 +2,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/ExplorePage.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/profile_screen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/wishlist/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,9 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final tabs = [
       ExplorePage(),
-      Center(
-        child: Text("Search"),
-      ),
+     WishlistPage(),
       Center(
         child: Text("Camera"),
       ),

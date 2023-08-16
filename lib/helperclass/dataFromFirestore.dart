@@ -70,6 +70,34 @@ Future<String> getMemberType(String userId) async {
 }
 
 
+Stream<QuerySnapshot<Map<String, dynamic>>> getPostsStream(String postFeature) {
+  return FirebaseFirestore.instance
+      .collection('posts')
+      .where('postFeature', isEqualTo: postFeature)
+      .snapshots();
+}
+
+
+ Stream<QuerySnapshot> getQueryStream(String propertyType,int bedrooms,int bathrooms){
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .where('propertyType', isEqualTo: propertyType)
+        .where('bedrooms', isEqualTo: bedrooms)
+        .where('bathrooms', isEqualTo: bathrooms)
+        .snapshots();
+  }
+
+  // get similar post 
+ Stream<QuerySnapshot> getSimilarPostsStream(String propertyType) {
+  return FirebaseFirestore.instance
+      .collection('posts')
+      .where('propertyType', isEqualTo: propertyType)
+      .snapshots();
+      
+}
+
+
+
 
 
 

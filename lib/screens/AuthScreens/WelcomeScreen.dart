@@ -17,7 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/own_firebase_auth.dart';
+import '../../helperclass/own_firebase_auth.dart';
 import '../../components/divider_padding.dart';
 import '../../components/socialLoginbutton.dart';
 import '../../model/signupSaveDataFirebase.dart';
