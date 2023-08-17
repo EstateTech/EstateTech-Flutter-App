@@ -1,8 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 Widget buildImage(String urlImage, int index, BuildContext context) {
@@ -19,7 +16,7 @@ Widget buildImage(String urlImage, int index, BuildContext context) {
   );
 }
 
-Widget buildIndicator(index,  int length) {
+Widget buildIndicator(index, int length) {
   return AnimatedSmoothIndicator(
     activeIndex: index,
     count: length,

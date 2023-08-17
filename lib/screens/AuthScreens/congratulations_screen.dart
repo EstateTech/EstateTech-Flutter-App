@@ -1,14 +1,37 @@
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthrough.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../common/ColorConstants.dart';
 import '../../common/custom_button_widget.dart';
 
-class CongratulationScreen extends StatelessWidget {
+class CongratulationScreen extends StatefulWidget {
   const CongratulationScreen({super.key});
+
+  @override
+  State<CongratulationScreen> createState() => _CongratulationScreenState();
+}
+
+class _CongratulationScreenState extends State<CongratulationScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    )..addListener(() {
+        setState(() {}); // Trigger rebuild on each animation tick
+      });
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +66,12 @@ class CongratulationScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500),
                 ),
               ),
-              Image.asset(
-                'assets/images/success.png',
-                fit: BoxFit.cover,
+              Transform.rotate(
+                angle: _controller.value * 0.05,
+                child: Image.asset(
+                  'assets/images/success.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               Center(
                 child: Text(
@@ -88,7 +114,7 @@ class CongratulationScreen extends StatelessWidget {
                 ),
                 borderColor: Colors.black,
                 text: 'Let\'s go!',
-                fillColor: LinearGradient(
+                fillColor: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [mainAppColor, Colors.black]),

@@ -4,13 +4,10 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/addPhotosScr
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/offeredSpaceScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/list_constants.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTypeGridWidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../common/widgetConstants.dart';
@@ -39,7 +36,7 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -47,7 +44,7 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              CustomCreatePostHeader(),
+              const CustomCreatePostHeader(),
               SizedBox(
                 height: 20.h,
               ),
@@ -61,7 +58,7 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
               Expanded(
                 child: GridView.builder(
                   padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1.4,
                   ),
@@ -98,7 +95,7 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
                 padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 10.h),
                 child: customPostCreateBottomWidget(
                   OnPressedNextButton: () {
-                    if (propertyType.length != 0) {
+                    if (propertyType.isNotEmpty) {
                       widget.isMorePropertyScreen
                           ? Navigator.push(
                               context,

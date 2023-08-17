@@ -97,7 +97,7 @@ class _PostCompleteCongratulationScreenState
               ),
               borderColor: Colors.black,
               text: ' To homePage',
-              fillColor: LinearGradient(
+              fillColor: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [mainAppColor, Colors.black]),
@@ -109,6 +109,5 @@ class _PostCompleteCongratulationScreenState
         ),
       ),
     );
-    ;
   }
 }

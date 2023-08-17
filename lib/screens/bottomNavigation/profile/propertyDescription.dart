@@ -32,12 +32,12 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CustomCreatePostHeader(),
+              const CustomCreatePostHeader(),
               // SizedBox(
               //   height: 20.h,
               // ),
@@ -64,7 +64,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                   Container(
                     alignment: Alignment.topLeft,
                     height: 110.h,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20.r)),
@@ -74,14 +74,14 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                           child: TextField(
                             maxLines: null,
                             controller: descriptionController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Type your motto here .....',
                               border: InputBorder.none,
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: () {
                             // Handle pencil icon button press
                           },
@@ -138,9 +138,6 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
       children: descriptionFeature.entries.map((entry) {
         final title = entry.key;
         final widget = entry.value;
-        final iconColor = Colors.accents[
-            descriptionFeature.keys.toList().indexOf(title) %
-                Colors.accents.length];
 
         return GestureDetector(
           onTap: () {

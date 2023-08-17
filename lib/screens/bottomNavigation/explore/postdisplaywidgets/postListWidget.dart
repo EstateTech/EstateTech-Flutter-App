@@ -5,8 +5,6 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,6 +45,7 @@ class _PostState extends State<Post> {
     super.initState();
     fetchMemberType();
   }
+
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
 
@@ -80,20 +79,32 @@ class _PostState extends State<Post> {
                 itemCount: widget.postModel.propertyPhotos!.length,
                 itemBuilder: (context, index, realIndex) {
                   final urlImage = widget.postModel.propertyPhotos![index];
-              
+
                   return ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: buildImage(urlImage!, index, context));
                 },
               ),
               Positioned(
-                bottom: 10.h,
-              
-                left: MediaQuery.sizeOf(context).width * 0.35,
-                child: buildIndicator(currentIndex, widget.postModel.propertyPhotos!.length)),
-
-           
-             
+                  child: Container(
+                height: 40.h,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white
+                          .withOpacity(0.5), // Adjust opacity and color
+                      spreadRadius: 10, // Adjust the spread radius
+                      blurRadius: 10, // Adjust the blur radius
+                    ),
+                  ],
+                ),
+              )),
+              Positioned(
+                  bottom: 10.h,
+                  left: MediaQuery.sizeOf(context).width * 0.35,
+                  child: buildIndicator(
+                      currentIndex, widget.postModel.propertyPhotos!.length)),
               Positioned(
                   top: 1.h,
                   right: 5.h,
@@ -109,12 +120,11 @@ class _PostState extends State<Post> {
                   top: 10.h,
                   left: 5.h,
                   child: memberType == "Loading"
-                      ? Text("Loading.."
-                  )
+                      ? const Text("Loading..")
                       : Text(
                           memberType,
                           style: style.copyWith(
-                              color: Color(0xff0D2769),
+                              color: const Color(0xff0D2769),
                               fontSize: 17.sp,
                               fontWeight: FontWeight.bold),
                         )),
@@ -172,7 +182,7 @@ class _PostState extends State<Post> {
                             fontWeight: FontWeight.w600,
                           ),
                           children: [
-                            TextSpan(text: "300,000 AED"),
+                            const TextSpan(text: "300,000 AED"),
                             TextSpan(
                               text: " / year",
                               style: style.copyWith(
@@ -186,7 +196,7 @@ class _PostState extends State<Post> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 15.h,
                       width: 15.h,
                       child: SvgPicture.asset(
@@ -198,8 +208,8 @@ class _PostState extends State<Post> {
                     RichText(
                       text: TextSpan(
                         style: style.copyWith(
-                            fontSize: 15.sp, color: Color(0xff4E4A59)),
-                        children: <TextSpan>[
+                            fontSize: 15.sp, color: const Color(0xff4E4A59)),
+                        children: const <TextSpan>[
                           TextSpan(text: '4.21'),
                           TextSpan(
                             text: '(135)',
@@ -218,14 +228,15 @@ class _PostState extends State<Post> {
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
-                        children: [
+                        children: const [
                           TextSpan(text: "24 BTC"),
-                         
                         ],
                       ),
                     ),
-                    SizedBox(width: 5.w,),
-                    Container(
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    SizedBox(
                       height: 20.h,
                       width: 20.h,
                       child: SvgPicture.asset(
@@ -234,16 +245,15 @@ class _PostState extends State<Post> {
                         height: 100, // Set your desired height
                       ),
                     ),
-
-                     Text(
-                             " / year",
-                            style: style.copyWith(
-                                fontSize: 20.sp,
-                                color: Shade2purple,
-                                fontWeight: FontWeight
-                                    .normal // Specify your desired color for "/ year"
-                                ),
+                    Text(
+                      " / year",
+                      style: style.copyWith(
+                          fontSize: 20.sp,
+                          color: Shade2purple,
+                          fontWeight: FontWeight
+                              .normal // Specify your desired color for "/ year"
                           ),
+                    ),
                   ],
                 ),
               ],

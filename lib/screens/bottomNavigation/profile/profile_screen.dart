@@ -3,7 +3,6 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +23,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Container(
         height: size.height,
         width: size.width,
         margin: EdgeInsets.symmetric(horizontal: 20.w),
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
             SizedBox(

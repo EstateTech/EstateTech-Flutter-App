@@ -21,7 +21,7 @@ class PropertyTextAddressScreen extends StatefulWidget {
 }
 
 class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final List<String> hintTexts = [
     "Address line 1",
     "Address line 2 (if applicable)",
@@ -56,7 +56,7 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,7 +64,7 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              CustomCreatePostHeader(),
+              const CustomCreatePostHeader(),
               SizedBox(
                 height: 10.h,
               ),
@@ -184,6 +184,7 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
             if (v!.isEmpty) {
               return 'field shouldn\'t be empty';
             }
+            return null;
           },
           decoration: InputDecoration(
             hintText: hintText,

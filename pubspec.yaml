@@ -60,6 +60,7 @@ dependencies:
   country_list_pick: ^1.0.1+6
   shared_preferences: ^2.2.0
   pinput: ^3.0.0
+  flutter_animate: ^4.2.0+1
   
 
 

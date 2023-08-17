@@ -3,7 +3,6 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,11 +64,11 @@ class _FeatureScreenState extends State<FeatureScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CustomCreatePostHeader(),
+            const CustomCreatePostHeader(),
             // SizedBox(
             //   height: 20.h,
             // ),
@@ -153,13 +152,13 @@ class _FeatureScreenState extends State<FeatureScreen> {
     return Container(
       height: 55.h,
       margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: textwalktrough))),
       alignment: Alignment.topCenter,
       child: Row(
         children: [
           Expanded(
-            child: Container(
+            child: SizedBox(
               width: 170.w,
               child: Text(
                 title,
@@ -180,7 +179,7 @@ class _FeatureScreenState extends State<FeatureScreen> {
                     shape: BoxShape.circle),
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                   onPressed: onDecreament,
                 ),
               ),
@@ -201,7 +200,7 @@ class _FeatureScreenState extends State<FeatureScreen> {
                     shape: BoxShape.circle),
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: onIcreament,
                 ),
               ),
