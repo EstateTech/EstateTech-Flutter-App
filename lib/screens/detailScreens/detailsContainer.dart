@@ -28,7 +28,7 @@ class DetailsContainer extends StatelessWidget {
           return Container(
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white                                                                                     ,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25.r),
                     topRight: Radius.circular(25.r))),
