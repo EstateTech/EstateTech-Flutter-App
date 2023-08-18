@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.997330411506-74tth09sfdmuatab3etvltkircluruco</string>
+				<string>com.googleusercontent.apps.997330411506-e79onvqpj66j9dibrlisuh37tetu3kmu</string>
 			</array>
 		</dict>
 	</array>
@@ -39,24 +39,27 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Upload image from camera for screen background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>NSLocationAlwaysAndWhenInUseUsageDescription</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YourPurposeKey</key>
+		<string>The example App requires temporary access to the device's precise location.</string>
+	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Crypto uses access your location access inorder to show data according to your location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Post videos to profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload images for screen background</string>
-
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Crypto uses access location access inorder to show data according to your location </string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Crypto uses access your location access inorder to show data according to your location</string>
-	
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -71,19 +74,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-
-	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
-	<dict>
-  	<key>YourPurposeKey</key>
-  	<string>The example App requires temporary access to the device&apos;s precise location.</string>
-	</dict>
-	<!-- <key>UIBackgroundModes</key> -->
-	<!-- <array> 
-	<string>location</string>
-	</array> -->
-	<!-- <false/> -->
+	<string>NSLocationWhenInUseUsageDescription</string>
 </dict>
 </plist>
