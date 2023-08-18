@@ -7,8 +7,7 @@ Map<String, Widget> selectPropertyTypeMap = {
   'Appartment': SvgPicture.asset("assets/images/appartment_icon.svg"),
   'Villa': SvgPicture.asset("assets/images/villa_icon.svg"),
   'Flat': SvgPicture.asset("assets/images/flat_icon.svg"),
-  'Palace': SvgPicture.asset("assets/images/palace_icon.svg"),
-  'Single room': SvgPicture.asset("assets/images/single_room_icon.svg"),
+  'Town House': SvgPicture.asset("assets/images/palace_icon.svg"),
 
   // Add more key-value pairs as needed
 };

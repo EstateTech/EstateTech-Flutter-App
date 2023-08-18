@@ -16,7 +16,6 @@ class GridViewWidget extends StatefulWidget {
     required this.postFeature,
   });
 
-
   final String postFeature;
 
   @override
@@ -24,22 +23,21 @@ class GridViewWidget extends StatefulWidget {
 }
 
 class _GridViewWidgetState extends State<GridViewWidget> {
-   late Stream<QuerySnapshot<Map<String, dynamic>>> postsStream;
+  late Stream<QuerySnapshot<Map<String, dynamic>>> postsStream;
   late Stream<QuerySnapshot> queryStream;
 
-   @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      postsStream = getPostsStream(widget.postFeature);
-
+    postsStream = getPostsStream(widget.postFeature);
   }
 
-  
   @override
   Widget build(BuildContext context) {
     FilterProvider filterProvider = Provider.of<FilterProvider>(context);
-        queryStream = getQueryStream(filterProvider.propertyType ?? "", filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
+    queryStream = getQueryStream(filterProvider.propertyType ?? "",
+        filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
 
     return Expanded(
       child: filterProvider.isFilterApplied
@@ -55,7 +53,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -99,27 +97,26 @@ class _GridViewWidgetState extends State<GridViewWidget> {
               },
             )
           : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream:
-                   postsStream,
+              stream: postsStream,
               builder: (context, snapshot) {
                 // if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                 //   return Center(child: CircularProgressIndicator());
-               // }
-                
-                  if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                // }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasData) {
                   List<DocumentSnapshot<Map<String, dynamic>>> documents =
                       snapshot.data!.docs;
                   int postCount = documents.length;
 
                   return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 20.0,
-                          crossAxisSpacing: 2.0,
-                          childAspectRatio: 0.7),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20.0,
+                              crossAxisSpacing: 2.0,
+                              childAspectRatio: 0.7),
                       itemCount: postCount,
                       itemBuilder: (context, index) {
                         PostModel post =
@@ -149,7 +146,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                 } else {
                   return Center(
                       child: Text(
-                    'Error Occured',
+                    '',
                     style: style.copyWith(fontSize: 18.sp, color: mainAppColor),
                   ));
                 }

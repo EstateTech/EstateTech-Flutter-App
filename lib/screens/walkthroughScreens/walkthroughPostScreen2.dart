@@ -1,5 +1,4 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
-import 'package:crypto_estate_tech/common/custom_button_widget.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
@@ -29,14 +28,14 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
         height: size.height,
         width: size.width,
         padding: EdgeInsets.only(top: 50.h, left: 20.h),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: appBackgroundGradient,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            CustomCreatePostHeader(),
+            const CustomCreatePostHeader(),
             Text(
               "It’s easy to get started on CET",
               style: style.copyWith(
@@ -51,8 +50,8 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: widget.isStep2
-                            ? AssetImage("assets/images/living_room2.png")
-                            : AssetImage("assets/images/living_room.png"),
+                            ? const AssetImage("assets/images/living_room2.png")
+                            : const AssetImage("assets/images/living_room.png"),
                         fit: BoxFit.contain)),
               ),
             ),
@@ -75,7 +74,7 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Container(
+                SizedBox(
                   height: 150.h,
                   width: 250.h,
                   child: Text(
@@ -101,7 +100,8 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
                           : Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PropertyTypeScreen()));
+                                  builder: (context) =>
+                                      const PropertyTypeScreen()));
                     },
                     OnPressedbackButton: () {
                       Navigator.pop(context);

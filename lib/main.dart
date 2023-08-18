@@ -20,7 +20,7 @@ void main() async {
         ChangeNotifierProvider<FirebaseStorageProvider>(
           create: (context) => FirebaseStorageProvider(),
         ),
-         ChangeNotifierProvider<AuthProvider>(
+        ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(),
         ),
 
@@ -33,7 +33,7 @@ void main() async {
         ),
         // Add more providers if needed
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         designSize: const Size(360, 800),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (context, child) => MaterialApp(
+        builder: (context, child) => const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Crypto Estate Tech',
 

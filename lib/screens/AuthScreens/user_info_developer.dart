@@ -30,7 +30,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
   File? _image;
   String profilePicUrl = '';
   ImagePicker imagePicker = ImagePicker();
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController idCardNumber = TextEditingController();
@@ -66,7 +66,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                     height: 5.h,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: Color(0xFFD9D9D9),
+                        color: const Color(0xFFD9D9D9),
                         borderRadius: BorderRadius.circular(6.r)),
                   ),
                 ),
@@ -136,7 +136,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                   ),
                   borderColor: Colors.black,
                   text: 'Member',
-                  fillColor: LinearGradient(
+                  fillColor: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [mainAppColor, Colors.black]),
@@ -158,7 +158,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                   ),
                   borderColor: Colors.black,
                   text: 'Developer',
-                  fillColor: LinearGradient(
+                  fillColor: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [mainAppColor, Colors.black]),
@@ -180,7 +180,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                   ),
                   borderColor: Colors.black,
                   text: 'Agency',
-                  fillColor: LinearGradient(
+                  fillColor: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [mainAppColor, Colors.black]),
@@ -196,49 +196,42 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
 
       setState(() {
         email.text = widget.email;
-        if (email.text.length != 0) {
+        if (email.text.isNotEmpty) {
           readonly = true;
-        }else {
+        } else {
           readonly = false;
         }
       });
     });
-  
-  
   }
 
   @override
   Widget build(BuildContext context) {
+    // final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-
-
- 
     return Scaffold(
-      resizeToAvoidBottomInset : true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        leading:   GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  child: Icon(Icons.arrow_back_rounded,
-                  color: Colors.black,
-                  
-                  ),
-                ),
-              ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Container(
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-         padding: EdgeInsets.symmetric(horizontal: 16.w),
-
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Form(
           key: _key,
           child: Column(
-          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -247,7 +240,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               Text(
                 'Add your info 1/2',
                 style: style.copyWith(
-                    color: Color(0xFF3A3153),
+                    color: const Color(0xFF3A3153),
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w700),
               ),
@@ -257,7 +250,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                 child: Text(
                   'Agent info',
                   style: style.copyWith(
-                      color: Color(0xFF3A3153),
+                      color: const Color(0xFF3A3153),
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600),
                 ),
@@ -268,11 +261,12 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               OwnTextfield(
                 controller: firstName,
                 label: 'First Name',
-                hint: 'Scott',
+                hint: 'First Name',
                 validator: (v) {
                   if (v!.isEmpty) {
                     return 'First name required';
                   }
+                  return null;
                 },
               ),
               SizedBox(
@@ -281,11 +275,12 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               OwnTextfield(
                 controller: lastName,
                 label: 'Last Name',
-                hint: 'Brown',
+                hint: 'Last Name',
                 validator: (v) {
                   if (v!.isEmpty) {
                     return 'Last name required';
                   }
+                  return null;
                 },
               ),
               SizedBox(
@@ -314,6 +309,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                         if (v!.isEmpty) {
                           return 'ID Card Required';
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -324,7 +320,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                     onTap: () async {
                       final XFile? pickedFile = await imagePicker.pickImage(
                           source: ImageSource.gallery);
-          
+
                       setState(() {
                         _image = File(pickedFile!.path);
                       });
@@ -352,12 +348,35 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               OwnTextfield(
                 controller: dateOfBirth,
                 label: 'Date of birth',
-                hint: '24/04/1993',
+                hint: 'day/Month/year',
                 textInputType: TextInputType.number,
                 validator: (v) {
                   if (v!.isEmpty) {
                     return 'Date of birth Required';
                   }
+
+                  List<String> parts = v.split('/');
+                  if (parts.length != 3) {
+                    return 'Invalid date format';
+                  }
+
+                  int day = int.tryParse(parts[0]) ?? 0;
+                  int month = int.tryParse(parts[1]) ?? 0;
+                  int year = int.tryParse(parts[2]) ?? 0;
+
+                  if (day < 1 || day > 31) {
+                    return 'Invalid day';
+                  }
+
+                  if (month < 1 || month > 12) {
+                    return 'Invalid month';
+                  }
+
+                  int currentYear = DateTime.now().year;
+                  if (year < 1900 || year > currentYear) {
+                    return 'Invalid year';
+                  }
+                  return null;
                 },
                 containMask: true,
                 mask: MaskTextInputFormatter(
@@ -386,6 +405,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                   if (v!.isEmpty) {
                     return 'Email Required';
                   }
+                  return null;
                 },
               ),
               SizedBox(
@@ -393,7 +413,6 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               ),
               CustomButton(
                 onPressed: () {
-                  
                   if (_key.currentState!.validate()) {
                     if (_image != null) {
                       Navigator.push(
@@ -401,8 +420,8 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                           MaterialPageRoute(
                               builder: (context) => DeveloperAgencyInfo2(
                                     selectedMember: selectedMember,
-                                    userId: FirebaseAuth
-                                        .instance.currentUser!.uid,
+                                    userId:
+                                        FirebaseAuth.instance.currentUser!.uid,
                                     firstName: firstName.text,
                                     lastName: lastName.text,
                                     email: email.text,
@@ -428,7 +447,7 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                 ),
                 borderColor: Colors.black,
                 text: 'Continue',
-                fillColor: LinearGradient(
+                fillColor: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [mainAppColor, Colors.black]),
@@ -444,15 +463,15 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                 ),
                 borderColor: Colors.black,
                 text: 'Skip for later',
-                fillColor: LinearGradient(
+                fillColor: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [Colors.white, Colors.white]),
               ),
-            SizedBox(height: 11.h,),
-                           
-                           
-             ],
+              SizedBox(
+                height: 11.h,
+              ),
+            ],
           ),
         ),
       ),

@@ -6,43 +6,40 @@ import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/postdisplaywidgets/postListWidget.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/postDetailScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../common/widgetConstants.dart';
 
 class ListViewWidget extends StatefulWidget {
   const ListViewWidget({
     super.key,
-   required this.postFeature,
+    required this.postFeature,
   });
 
-
-  final String postFeature ;
+  final String postFeature;
 
   @override
   State<ListViewWidget> createState() => _ListViewWidgetState();
 }
 
 class _ListViewWidgetState extends State<ListViewWidget> {
-
   late Stream<QuerySnapshot<Map<String, dynamic>>> postsStream;
   late Stream<QuerySnapshot> queryStream;
-  
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      postsStream = getPostsStream(widget.postFeature);
-   
+    postsStream = getPostsStream(widget.postFeature);
   }
- 
-                  
-  
+
   @override
   Widget build(BuildContext context) {
-      FilterProvider filterProvider = Provider.of<FilterProvider>(context);
-        queryStream = getQueryStream(filterProvider.propertyType ?? "", filterProvider.bedrooms?? 0, filterProvider.bathrooms ?? 0);
-   
+    FilterProvider filterProvider = Provider.of<FilterProvider>(context);
+    queryStream = getQueryStream(filterProvider.propertyType ?? "",
+        filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
+
     return Expanded(
       child: filterProvider.isFilterApplied
           ? StreamBuilder<QuerySnapshot>(
@@ -53,11 +50,11 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Text('No posts found.');
+                  return const Text('No posts found.');
                 }
 
                 // Process the data from snapshot
@@ -91,8 +88,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
               },
             )
           : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream:postsStream,
-                
+              stream: postsStream,
               builder: (context, snapshot) {
                 // if (!snapshot.hasData) {
                 //   return Center(
@@ -128,11 +124,16 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                       );
                     },
                   );
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text(
+                    "No Network Connection\n Error Occured",
+                    style: style.copyWith(fontSize: 20.sp, color: mainAppColor),
+                    textAlign: TextAlign.center,
+                  ));
                 } else {
                   print(snapshot.error);
-                  return Container(
-                    child: Text("There is no Property For Display"),
-                  );
+                  return Center(child: Container());
                 }
               }),
     );

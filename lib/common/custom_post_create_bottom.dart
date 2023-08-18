@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class customPostCreateBottomWidget extends StatelessWidget {
   final VoidCallback OnPressedbackButton;
   final VoidCallback OnPressedNextButton;
+
   const customPostCreateBottomWidget({
     super.key,
     required this.OnPressedbackButton,
@@ -20,7 +21,7 @@ class customPostCreateBottomWidget extends StatelessWidget {
         Expanded(
           child: CustomButton(
             text: "Back",
-            fillColor: LinearGradient(
+            fillColor: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [greyButtonColor, greyButtonColor]),
@@ -39,7 +40,7 @@ class customPostCreateBottomWidget extends StatelessWidget {
         Expanded(
           child: CustomButton(
             text: "Next",
-            fillColor: LinearGradient(
+            fillColor: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [mainAppColor, Colors.black]),

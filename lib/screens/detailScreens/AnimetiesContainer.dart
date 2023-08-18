@@ -3,7 +3,6 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class AnimetiesContainer extends StatelessWidget {
   final PostModel postModel;
@@ -17,24 +16,24 @@ class AnimetiesContainer extends StatelessWidget {
     double containerHeight = (itemCount / 2).ceil() * itemHeight +
         40.h; // Adjust based on your needs
 
-
     return Container(
       width: MediaQuery.sizeOf(context).width,
       padding: EdgeInsets.only(left: 20.h, right: 20.h),
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Animeties",
-            style: style.copyWith(color: Color(0xff3A3153), fontSize: 20.sp),
+            style:
+                style.copyWith(color: const Color(0xff3A3153), fontSize: 20.sp),
           ),
           SizedBox(height: 5.h),
-          Container(
+          SizedBox(
             height: containerHeight - 25.h,
             child: GridView.builder(
               padding: EdgeInsets.zero,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Two items in each row
                 crossAxisSpacing: 7.0, // Spacing between columns
                 mainAxisSpacing: 10.0, // Spacing between rows
@@ -50,7 +49,8 @@ class AnimetiesContainer extends StatelessWidget {
       ),
     );
   }
-   Widget getWidgetByKey(String key) {
+
+  Widget getWidgetByKey(String key) {
     if (selectPropertyFeaturesMap.containsKey(key)) {
       return selectPropertyFeaturesMap[key]!;
     } else {
@@ -61,23 +61,20 @@ class AnimetiesContainer extends StatelessWidget {
 
   _buildItemWidget(String item) {
     return Container(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         children: [
           SizedBox(
             width: 7.w,
           ),
-          Container(
-            height: 20.h,
-            width: 20.w,
-            child: getWidgetByKey(item)
-          ),
+          SizedBox(height: 20.h, width: 20.w, child: getWidgetByKey(item)),
           SizedBox(
             width: 7.w,
           ),
           Text(
             item,
-            style: style.copyWith(fontSize: 15.sp, color: Color(0xff4E4A59)),
+            style:
+                style.copyWith(fontSize: 15.sp, color: const Color(0xff4E4A59)),
           ),
         ],
       ),

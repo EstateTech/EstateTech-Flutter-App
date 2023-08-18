@@ -56,10 +56,12 @@ dependencies:
   smooth_page_indicator: ^1.0.1
   intl: ^0.18.1
   geocoding: ^2.0.4
-  geolocator: ^8.2.1
-  country_list_pick: ^1.0.1+5
-  shared_preferences: ^2.1.0
-  pinput: ^2.2.21
+  geolocator: ^9.0.2
+  country_list_pick: ^1.0.1+6
+  shared_preferences: ^2.2.0
+  pinput: ^3.0.0
+  flutter_animate: ^4.2.0+1
+
 
 dev_dependencies:
   flutter_test:

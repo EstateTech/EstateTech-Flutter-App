@@ -1,6 +1,5 @@
 import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/addPhotosScreen.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/offeredSpaceScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +29,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,7 +37,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              CustomCreatePostHeader(),
+              const CustomCreatePostHeader(),
               SizedBox(
                 height: 20.h,
               ),
@@ -62,7 +61,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
 
                 child: GridView.builder(
                   padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1.4,
                   ),
@@ -121,7 +120,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
                       widget.postmodel.utilities = utilities;
                     });
 
-                    if (utilities.length != 0) {
+                    if (utilities.isNotEmpty) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(

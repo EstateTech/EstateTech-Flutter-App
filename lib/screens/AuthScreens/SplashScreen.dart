@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
-import 'package:crypto_estate_tech/provider/authProvider.dart';
-import 'package:crypto_estate_tech/screens/AuthScreens/WelcomeScreen.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../homeScreen/home_screen.dart';
 
@@ -44,19 +41,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future navigate() async {
-  
     // check is for google
     var user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       FirebaseFirestore.instance
           .collection('users')
-          .doc(user!.uid)
+          .doc(user.uid)
           .get()
           .then((value) {
         if (value.data()!['profileCompleted']) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         } else {
           Navigator.push(
               context,

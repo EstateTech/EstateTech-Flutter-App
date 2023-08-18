@@ -23,7 +23,7 @@ class PropertyMappedScreen extends StatefulWidget {
 
   final PostModel postModel;
 
-  PropertyMappedScreen({
+  const PropertyMappedScreen({
     Key? key,
     required this.postModel,
     this.isConfirmPinScreen = false,
@@ -38,16 +38,17 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   TextEditingController addressController = TextEditingController();
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  bool isLoading = false;
 
-  LatLng _latLng = LatLng(37.43296265331129, -122.08832357078792);
-  CameraPosition _kGooglePlex = CameraPosition(
+  LatLng _latLng = const LatLng(37.43296265331129, -122.08832357078792);
+  CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
   _setMarker() {
     return Marker(
-        markerId: MarkerId("marker_1"),
+        markerId: const MarkerId("marker_1"),
         icon: BitmapDescriptor.defaultMarker,
         position: _latLng);
   }
@@ -97,6 +98,10 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   }
 
   Future<void> _getCurrentPosition() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
@@ -162,13 +167,14 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   Future getAddress() async {
     try {
       List<Placemark> placemarks =
-          await placemarkFromCoordinates(_latLng!.latitude, _latLng!.longitude);
+          await placemarkFromCoordinates(_latLng.latitude, _latLng.longitude);
 
       Placemark place = placemarks[0];
 
       setState(() {
         addressController.text =
             "${place.locality}, ${place.subLocality}, ${place.country}";
+        isLoading = false;
       });
 
       print("===${addressController.text}");
@@ -184,11 +190,12 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomCreatePostHeader(),
+            const CustomCreatePostHeader(),
             // SizedBox(
             //   height: 20.h,
             // ),
@@ -201,7 +208,7 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                   color: textwalktrough,
                   fontWeight: FontWeight.w500),
             ),
-            Container(
+            SizedBox(
               height: 400.h,
               width: double.infinity,
               child: Stack(
@@ -232,7 +239,7 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                                 color: textwalktrough, fontSize: 15.sp),
                             contentPadding: EdgeInsets.only(top: 4.h),
                             border: InputBorder.none,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.location_on,
                               color: Colors.black,
                             )),
@@ -265,7 +272,7 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                             ),
                           ),
                         )
-                      : SizedBox.shrink()
+                      : const SizedBox.shrink()
                 ],
               ),
 
@@ -273,45 +280,50 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
             ),
             Padding(
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
-              child: customPostCreateBottomWidget(
-                OnPressedNextButton: () {
-                  if (addressController.text.length != 0) {
-                    setState(() {
-                      widget.postModel.latLong =
-                          GeoPoint(_latLng.latitude, _latLng.longitude);
+              child: isLoading
+                  ? const CircularProgressIndicator(
+                      color: mainAppColor,
+                    )
+                  : customPostCreateBottomWidget(
+                      OnPressedNextButton: () {
+                        if (addressController.text.isNotEmpty) {
+                          setState(() {
+                            widget.postModel.latLong =
+                                GeoPoint(_latLng.latitude, _latLng.longitude);
 
-                      widget.postModel.city =
-                          addressController.text.split(',').first;
+                            widget.postModel.city =
+                                addressController.text.split(',').first;
 
-                      widget.postModel.propertyAddressLine2 =
-                          addressController.text;
+                            widget.postModel.propertyAddressLine2 =
+                                addressController.text;
 
-                      widget.postModel.country =
-                          addressController.text.split(',').last;
-                    });
+                            widget.postModel.country =
+                                addressController.text.split(',').last;
+                          });
 
-                    widget.isConfirmPinScreen
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FeatureScreen(
-                                      postModel: widget.postModel,
-                                    )))
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PropertyTextAddressScreen(
-                                      postModel: widget.postModel,
-                                    )));
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: 'Please wait unitl system fetch addreess');
-                  }
-                },
-                OnPressedbackButton: () {
-                  Navigator.pop(context);
-                },
-              ),
+                          widget.isConfirmPinScreen
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FeatureScreen(
+                                            postModel: widget.postModel,
+                                          )))
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PropertyTextAddressScreen(
+                                            postModel: widget.postModel,
+                                          )));
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Please wait unitl system fetch addreess');
+                        }
+                      },
+                      OnPressedbackButton: () {
+                        Navigator.pop(context);
+                      },
+                    ),
             ),
           ],
         ),
