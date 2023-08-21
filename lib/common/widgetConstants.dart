@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 TextStyle style = GoogleFonts.aBeeZee(color: Colors.white, fontSize: 12.sp);
 TextStyle style2 = GoogleFonts.montserrat(color: Colors.white, fontSize: 12.sp);
+TextStyle numberStyle = GoogleFonts.rubik(color: Colors.white, fontSize: 12.sp);
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
@@ -19,10 +20,10 @@ Widget loadingWidget(double progress) {
           CircularProgressIndicator(
             value: progress / 100,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'Uploading: ${progress.toStringAsFixed(1)}%',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),

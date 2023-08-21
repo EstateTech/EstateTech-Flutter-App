@@ -4,6 +4,7 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/postdisplaywidgets/postGridWidget.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/postDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -55,10 +56,22 @@ class RecomendationContainer extends StatelessWidget {
                       // Access post data from the DocumentSnapshot
                       PostModel post =
                           PostModel.fromJson(documents[index].data()!);
-                      return GridPost(
-                        postModel: post,
-                        userId: post.userid!,
-                        isRecomendationPage: true,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => postDetailScreen(
+                                postModel: post,
+                              ),
+                            ),
+                          );
+                        },
+                        child: GridPost(
+                          postModel: post,
+                          userId: post.userid!,
+                          isRecomendationPage: true,
+                        ),
                       );
                     },
                   ),
