@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../common/ColorConstants.dart';
+import '../../../common/ColorConstants.dart';
 
 class CustomDialog extends StatefulWidget {
   const CustomDialog({super.key});

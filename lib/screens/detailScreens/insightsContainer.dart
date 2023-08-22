@@ -20,7 +20,6 @@ class _InsightsContainerState extends State<InsightsContainer> {
       height: 600.h,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 20.h, right: 20.h),
-    
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,7 +38,7 @@ class _InsightsContainerState extends State<InsightsContainer> {
             style: style.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.w400,
-              color: Color(0xff4e4a59),
+              color: const Color(0xff4e4a59),
             ),
             textAlign: TextAlign.left,
           ),
@@ -48,7 +47,7 @@ class _InsightsContainerState extends State<InsightsContainer> {
           ),
           Container(
             height: 150.h,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
                     image: AssetImage("assets/images/chart.png"))),
@@ -88,7 +87,7 @@ class _InsightsContainerState extends State<InsightsContainer> {
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
-                      offset: Offset(0, 3), // Offset in x and y direction
+                      offset: const Offset(0, 3), // Offset in x and y direction
                     ),
                   ]),
               child: Text(
@@ -97,9 +96,6 @@ class _InsightsContainerState extends State<InsightsContainer> {
               ),
             ),
           ),
-          SizedBox(
-            height: 50.h,
-          )
         ],
       ),
     );
@@ -127,7 +123,7 @@ class _InsightsContainerState extends State<InsightsContainer> {
             Text(
               "This property cost 13% less \nthan the average size of \nvillas in the same area.",
               style: style.copyWith(
-                fontSize: 18,
+                fontSize: 16.sp,
                 color: Colors.white,
               ),
               textAlign: TextAlign.left,

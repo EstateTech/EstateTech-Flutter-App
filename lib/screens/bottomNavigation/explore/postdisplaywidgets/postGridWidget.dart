@@ -44,7 +44,6 @@ class _GridPostState extends State<GridPost> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
-      height: 150.h,
       decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,33 +102,38 @@ class _GridPostState extends State<GridPost> {
           ),
           widget.isRecomendationPage
               ? Container()
-              : SizedBox(
-                  height: 50.h,
-                  // color: Colors.blue,
-                  child: Text(
-                    widget.postModel.additionalInfo!,
+              : Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    Text(
+                      widget.postModel.additionalInfo!,
+                      style: style2.copyWith(
+                          color: const Color(0xff717171), fontSize: 18.sp),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.center,
+            child: RichText(
+                text: TextSpan(
+                    style: style.copyWith(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold),
+                    children: <TextSpan>[
+                  const TextSpan(text: "300,0000 AED"),
+                  TextSpan(
+                    text: ' / year',
                     style: style2.copyWith(
-                        color: const Color(0xff717171), fontSize: 18.sp),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-          RichText(
-              text: TextSpan(
-                  style: style.copyWith(
                       color: Colors.black,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold),
-                  children: <TextSpan>[
-                const TextSpan(text: "300,0000 AED"),
-                TextSpan(
-                  text: ' / year',
-                  style: style2.copyWith(
-                    color: Colors.black,
-                    fontSize: 18.sp,
+                      fontSize: 18.sp,
+                    ),
                   ),
-                ),
-              ]))
+                ])),
+          )
         ],
       ),
     );

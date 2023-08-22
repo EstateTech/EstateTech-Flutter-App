@@ -1,6 +1,6 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/screens/detailScreens/dialogProfile.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/dialogProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

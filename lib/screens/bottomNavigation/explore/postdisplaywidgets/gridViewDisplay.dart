@@ -72,10 +72,10 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                 return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 20.0,
-                            crossAxisSpacing: 2.0,
-                            childAspectRatio: 0.7),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 25.0,
+                      crossAxisSpacing: 2.0,
+                    ),
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
                       PostModel post =

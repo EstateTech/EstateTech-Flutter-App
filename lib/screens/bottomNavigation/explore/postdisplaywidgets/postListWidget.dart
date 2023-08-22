@@ -57,7 +57,8 @@ class _PostState extends State<Post> {
       margin: EdgeInsets.only(top: 10.h),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          color: Colors.transparent, borderRadius: BorderRadius.circular(10.r)),
+          color: const Color.fromARGB(0, 68, 34, 34),
+          borderRadius: BorderRadius.circular(10.r)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -236,14 +237,10 @@ class _PostState extends State<Post> {
                     SizedBox(
                       width: 5.w,
                     ),
-                    SizedBox(
-                      height: 20.h,
-                      width: 20.h,
-                      child: SvgPicture.asset(
-                        'assets/images/bitcoin_icon.svg', // Replace with your SVG asset path
-                        width: 100, // Set your desired width
-                        height: 100, // Set your desired height
-                      ),
+                    Image.asset(
+                      'assets/images/bitcoin_icon.png',
+                      width: 25.w,
+                      height: 25.h,
                     ),
                     Text(
                       " / year",

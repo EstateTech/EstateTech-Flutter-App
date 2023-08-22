@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/dialogMortgage.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,16 +21,16 @@ class _MapContainerState extends State<MapContainer> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  LatLng _latLng = LatLng(37.43296265331129, -122.08832357078792);
-  LatLng demylatLng = LatLng(37.43296265331129, -122.08832357078792);
-  CameraPosition _kGooglePlex = CameraPosition(
+  LatLng _latLng = const LatLng(37.43296265331129, -122.08832357078792);
+  LatLng demylatLng = const LatLng(37.43296265331129, -122.08832357078792);
+  CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
   _setMarker() {
     return Marker(
-        markerId: MarkerId("marker_1"),
+        markerId: const MarkerId("marker_1"),
         icon: BitmapDescriptor.defaultMarker,
         position: _latLng);
   }
@@ -137,7 +138,7 @@ class _MapContainerState extends State<MapContainer> {
             children: [
               Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: PriceContainers(
                       text: "AED 300,000",
                     ),
@@ -145,7 +146,7 @@ class _MapContainerState extends State<MapContainer> {
                   SizedBox(
                     width: 10.h,
                   ),
-                  Expanded(
+                  const Expanded(
                     child: PriceContainers(text: "24 BTC"),
                   )
                 ],
@@ -155,13 +156,13 @@ class _MapContainerState extends State<MapContainer> {
               ),
               Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: PriceContainers(text: "80,000 GUSD"),
                   ),
                   SizedBox(
                     width: 10.h,
                   ),
-                  Expanded(
+                  const Expanded(
                     child: PriceContainers(text: "450,000 CET"),
                   )
                 ],
@@ -173,7 +174,12 @@ class _MapContainerState extends State<MapContainer> {
           ),
           GestureDetector(
             onTap: () {
-              print("gesture dector clicked");
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const MortgageDialog(); // Your custom dialog content
+                },
+              );
             },
             child: Container(
               width: double.infinity,
@@ -187,11 +193,11 @@ class _MapContainerState extends State<MapContainer> {
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
-                      offset: Offset(0, 3), // Offset in x and y direction
+                      offset: const Offset(0, 3), // Offset in x and y direction
                     ),
                   ]),
               child: Text(
-                "Mortage Calculator",
+                "Mortgage Calculator",
                 style: style.copyWith(color: Colors.white, fontSize: 18.sp),
               ),
             ),
