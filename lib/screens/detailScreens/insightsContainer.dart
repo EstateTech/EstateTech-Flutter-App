@@ -1,6 +1,7 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/insightsScreen.dart';
+import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -79,7 +80,9 @@ class _InsightsContainerState extends State<InsightsContainer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const InsightsScreen(),
+                  builder: (context) => const HomeScreen(
+                    isInsightsScreen: true,
+                  ),
                 ),
               );
             },
