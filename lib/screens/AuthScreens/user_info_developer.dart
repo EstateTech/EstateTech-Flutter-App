@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../common/ColorConstants.dart';
 import '../../common/custom_button_widget.dart';
@@ -36,6 +35,8 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
   TextEditingController idCardNumber = TextEditingController();
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController email = TextEditingController();
+  DateTime dateTime = DateTime(1999, 12, 24);
+  String dateTimeText = "year/Month/day";
 
   @override
   void initState() {
@@ -345,42 +346,84 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               SizedBox(
                 height: 20.h,
               ),
-              OwnTextfield(
-                controller: dateOfBirth,
-                label: 'Date of birth',
-                hint: 'day/Month/year',
-                textInputType: TextInputType.number,
-                validator: (v) {
-                  if (v!.isEmpty) {
-                    return 'Date of birth Required';
-                  }
+              InkWell(
+                onTap: () async {
+                  print("Hellow");
+                  DateTime? newDate = await showDatePicker(
+                    context: context,
+                    initialDate: dateTime,
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                    builder: (BuildContext context, Widget? child) {
+                      return Theme(
+                        data: ThemeData.light().copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: mainAppColor, // <-- SEE HERE
+                            onPrimary: Colors.white, // <-- SEE HERE
+                            onSurface: textwalktrough, // <-- SEE HERE
+                          ),
+                        ),
+                        child:
+                            child!, // Use the default child provided by showDatePicker
+                      );
+                    },
+                  );
 
-                  List<String> parts = v.split('/');
-                  if (parts.length != 3) {
-                    return 'Invalid date format';
-                  }
-
-                  int day = int.tryParse(parts[0]) ?? 0;
-                  int month = int.tryParse(parts[1]) ?? 0;
-                  int year = int.tryParse(parts[2]) ?? 0;
-
-                  if (day < 1 || day > 31) {
-                    return 'Invalid day';
-                  }
-
-                  if (month < 1 || month > 12) {
-                    return 'Invalid month';
-                  }
-
-                  int currentYear = DateTime.now().year;
-                  if (year < 1900 || year > currentYear) {
-                    return 'Invalid year';
-                  }
-                  return null;
+                  if (newDate == null) return;
+                  setState(() {
+                    dateTime = newDate;
+                  });
                 },
-                containMask: true,
-                mask: MaskTextInputFormatter(
-                    mask: "##/##/####", type: MaskAutoCompletionType.eager),
+                child: IgnorePointer(
+                  child: TextFormField(
+                    scrollPadding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    controller: dateOfBirth,
+                    cursorColor: const Color(0xFF444444),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 20.h, horizontal: 20.w),
+
+                      filled: true,
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                          borderSide: const BorderSide(
+                            width: 1,
+                            color: Color(0xFF444444),
+                          )),
+
+                      //enabledBorder: InputBorder.none,
+
+                      errorStyle: style.copyWith(
+                          color: Colors.red,
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            width: 2,
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(16.r)),
+                      labelText: 'Date of birth',
+                      floatingLabelAlignment: FloatingLabelAlignment.start,
+                      hintText:
+                          '${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                      hintStyle: style.copyWith(
+                          letterSpacing: 1.1.w,
+                          color: const Color(0xFF444444),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700),
+
+                      labelStyle: style.copyWith(
+                          color: const Color(0xFF444444),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500),
+
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 10.h,

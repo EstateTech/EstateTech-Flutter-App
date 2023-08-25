@@ -6,16 +6,17 @@ import '../common/ColorConstants.dart';
 import '../common/widgetConstants.dart';
 
 class OwnTextfield extends StatelessWidget {
-  const OwnTextfield(
-      {super.key,
-      required this.label,
-      required this.hint,
-      required this.validator,
-      this.mask,
-      this.readonly = false,
-      this.textInputType = TextInputType.text,
-      this.containMask = false,
-      required this.controller, });
+  const OwnTextfield({
+    super.key,
+    required this.label,
+    required this.hint,
+    required this.validator,
+    this.mask,
+    this.readonly = false,
+    this.textInputType = TextInputType.text,
+    this.containMask = false,
+    required this.controller,
+  });
 
   final String label;
   final String hint;
@@ -25,7 +26,6 @@ class OwnTextfield extends StatelessWidget {
   final bool? readonly;
   final TextInputType? textInputType;
   final TextEditingController controller;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -42,24 +42,23 @@ class OwnTextfield extends StatelessWidget {
         // ],
       ),
       child: TextFormField(
-        
-         scrollPadding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom),
+        scrollPadding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         readOnly: readonly!,
         controller: controller,
         keyboardType: textInputType,
         validator: validator,
-        cursorColor: Color(0xFF444444),
+        cursorColor: const Color(0xFF444444),
         inputFormatters: containMask! ? [mask!] : [],
         decoration: InputDecoration(
           contentPadding:
               EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-         
+
           filled: true,
           fillColor: Colors.white,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.r),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 width: 1,
                 color: Color(0xFF444444),
               )),
@@ -69,22 +68,22 @@ class OwnTextfield extends StatelessWidget {
           errorStyle: style.copyWith(
               color: Colors.red, fontSize: 13.sp, fontWeight: FontWeight.w500),
           border: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 width: 2,
                 color: Colors.black,
               ),
               borderRadius: BorderRadius.circular(16.r)),
-          labelText: '$label',
+          labelText: label,
           floatingLabelAlignment: FloatingLabelAlignment.start,
-          hintText: '$hint',
+          hintText: hint,
           hintStyle: style.copyWith(
               letterSpacing: 1.1.w,
-              color: Color(0xFF444444),
+              color: const Color(0xFF444444),
               fontSize: 15.sp,
               fontWeight: FontWeight.w700),
 
           labelStyle: style.copyWith(
-              color: Color(0xFF444444),
+              color: const Color(0xFF444444),
               fontSize: 16.sp,
               fontWeight: FontWeight.w500),
 

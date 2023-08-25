@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
 class GridPost extends StatefulWidget {
   final PostModel postModel;
@@ -44,22 +46,49 @@ class _GridPostState extends State<GridPost> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
-      height: 150.h,
       decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
-              Container(
-                height: 150.h,
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
+              SizedBox(
+                  height: 150.h,
+                  // decoration: BoxDecoration(
+                  //     color: Colors.grey.shade200,
+                  //     borderRadius: BorderRadius.circular(25.r),
+                  //     image: DecorationImage(
+                  //         image:
+                  //             NetworkImage(widget.postModel.propertyPhotos![0]!),
+                  //         fit: BoxFit.fitHeight)),
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(25.r),
-                    image: DecorationImage(
-                        image:
-                            NetworkImage(widget.postModel.propertyPhotos![0]!),
-                        fit: BoxFit.fitHeight)),
+                    child: CachedNetworkImage(
+                      key: UniqueKey(),
+                      imageUrl: widget.postModel.propertyPhotos![0]!,
+                      fit: BoxFit.fitHeight,
+                      placeholder: (context, url) => Container(
+                        child: Lottie.asset(
+                          'assets/images/loading_animation.json', // Replace with your animation file path
+                          width: 200,
+                          height: 200,
+                          // Other properties you can customize
+                        ),
+                      ),
+                    ),
+                  )),
+              Container(
+                height: 30.h,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white
+                          .withOpacity(0.5), // Adjust opacity and color
+                      spreadRadius: 10, // Adjust the spread radius
+                      blurRadius: 10, // Adjust the blur radius
+                    ),
+                  ],
+                ),
               ),
               Positioned(
                   top: 10.h,
@@ -74,8 +103,7 @@ class _GridPostState extends State<GridPost> {
                               fontWeight: FontWeight.bold),
                         )),
               Positioned(
-                  top: 1.h,
-                  right: 5.h,
+                  right: 4.h,
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(
@@ -103,33 +131,38 @@ class _GridPostState extends State<GridPost> {
           ),
           widget.isRecomendationPage
               ? Container()
-              : SizedBox(
-                  height: 50.h,
-                  // color: Colors.blue,
-                  child: Text(
-                    widget.postModel.additionalInfo!,
+              : Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    Text(
+                      widget.postModel.additionalInfo!,
+                      style: style2.copyWith(
+                          color: const Color(0xff717171), fontSize: 18.sp),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.center,
+            child: RichText(
+                text: TextSpan(
+                    style: style.copyWith(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold),
+                    children: <TextSpan>[
+                  const TextSpan(text: "300,0000 AED"),
+                  TextSpan(
+                    text: ' / year',
                     style: style2.copyWith(
-                        color: const Color(0xff717171), fontSize: 18.sp),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-          RichText(
-              text: TextSpan(
-                  style: style.copyWith(
                       color: Colors.black,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold),
-                  children: <TextSpan>[
-                const TextSpan(text: "300,0000 AED"),
-                TextSpan(
-                  text: ' / year',
-                  style: style2.copyWith(
-                    color: Colors.black,
-                    fontSize: 18.sp,
+                      fontSize: 18.sp,
+                    ),
                   ),
-                ),
-              ]))
+                ])),
+          )
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
@@ -6,6 +7,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/detailsContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
 class postDetailScreen extends StatefulWidget {
   final PostModel postModel;
@@ -48,13 +50,20 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         itemBuilder: (context, index, realIndex) {
                           final urlImage =
                               widget.postModel.propertyPhotos![index];
-                          return Container(
+                          return SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.4,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(urlImage!),
-                                fit: BoxFit.fill,
+                            child: CachedNetworkImage(
+                              key: UniqueKey(),
+                              imageUrl: urlImage!,
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) => Container(
+                                child: Lottie.asset(
+                                  'assets/images/loading_animation.json', // Replace with your animation file path
+                                  width: 200,
+                                  height: 200,
+                                  // Other properties you can customize
+                                ),
                               ),
                             ),
                           );
