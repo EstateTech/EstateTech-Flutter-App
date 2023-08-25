@@ -1,5 +1,6 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/insightsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -74,7 +75,14 @@ class _InsightsContainerState extends State<InsightsContainer> {
             height: 15.h,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InsightsScreen(),
+                ),
+              );
+            },
             child: Container(
               width: double.infinity,
               height: 55.h,
