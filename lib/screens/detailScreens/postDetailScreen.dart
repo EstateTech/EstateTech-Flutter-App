@@ -30,7 +30,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
             Hero(
                 tag: "image_tag",
                 child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height,
+                  height: MediaQuery.of(context).size.height,
                   child: Stack(
                     children: [
                       CarouselSlider.builder(
@@ -73,7 +73,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         alignment: Alignment.topCenter,
                         child: Padding(
                             padding: EdgeInsets.only(
-                                top: MediaQuery.sizeOf(context).height * 0.35),
+                                top: MediaQuery.of(context).size.height * 0.35),
                             child: buildIndicator(currentIndex,
                                 widget.postModel.propertyPhotos!.length)),
                       ),
@@ -143,7 +143,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            top: MediaQuery.sizeOf(context).height * 0.3,
+                            top: MediaQuery.of(context).size.height * 0.3,
                             right: 10.h),
                         child: Align(
                           alignment: Alignment.topRight,

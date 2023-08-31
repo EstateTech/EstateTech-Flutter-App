@@ -103,7 +103,7 @@ class _PostState extends State<Post> {
               )),
               Positioned(
                   bottom: 10.h,
-                  left: MediaQuery.sizeOf(context).width * 0.35,
+                  left: MediaQuery.of(context).size.width * 0.35,
                   child: buildIndicator(
                       currentIndex, widget.postModel.propertyPhotos!.length)),
               Positioned(
@@ -120,15 +120,20 @@ class _PostState extends State<Post> {
               Positioned(
                   top: 10.h,
                   left: 5.h,
-                  child: memberType == "Loading"
-                      ? const Text("Loading..")
-                      : Text(
-                          memberType,
-                          style: style.copyWith(
-                              color: const Color(0xff0D2769),
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.bold),
-                        )),
+                  child: Container(
+                      padding: EdgeInsets.all(4.w),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r)),
+                      child: memberType == "Loading"
+                          ? const Text("Loading..")
+                          : Text(
+                              memberType,
+                              style: style.copyWith(
+                                  color: const Color(0xff0D2769),
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold),
+                            ))),
             ],
           ),
           SizedBox(
@@ -140,12 +145,19 @@ class _PostState extends State<Post> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 3.h,
+                ),
                 Text(
                   getFirstThreeWords(widget.postModel.propertyDescription!),
                   style: style.copyWith(
                     color: Shade2purple,
-                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.sp,
                   ),
+                ),
+                SizedBox(
+                  height: 2.h,
                 ),
                 Text(
                   widget.postModel.additionalInfo!,
@@ -156,6 +168,9 @@ class _PostState extends State<Post> {
                     fontSize: 16.sp,
                   ),
                 ),
+                SizedBox(
+                  height: 3.h,
+                ),
                 Text(
                   joinWithComma(widget.postModel.utilities!),
                   maxLines: 1,
@@ -165,12 +180,18 @@ class _PostState extends State<Post> {
                     fontSize: 16.sp,
                   ),
                 ),
+                SizedBox(
+                  height: 3.h,
+                ),
                 Text(
                   Convertdate(widget.postModel.datePosted),
                   style: style2.copyWith(
                     color: greyShadeColor,
                     fontSize: 16.sp,
                   ),
+                ),
+                SizedBox(
+                  height: 3.h,
                 ),
                 Row(
                   children: [
@@ -179,7 +200,7 @@ class _PostState extends State<Post> {
                         text: TextSpan(
                           style: style.copyWith(
                             color: greyShadeColor,
-                            fontSize: 20.sp,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
                           ),
                           children: [
@@ -187,7 +208,7 @@ class _PostState extends State<Post> {
                             TextSpan(
                               text: " / year",
                               style: style.copyWith(
-                                  fontSize: 20.sp,
+                                  fontSize: 16.sp,
                                   color: Shade2purple,
                                   fontWeight: FontWeight
                                       .normal // Specify your desired color for "/ year"
@@ -245,7 +266,7 @@ class _PostState extends State<Post> {
                     Text(
                       " / year",
                       style: style.copyWith(
-                          fontSize: 20.sp,
+                          fontSize: 16.sp,
                           color: Shade2purple,
                           fontWeight: FontWeight
                               .normal // Specify your desired color for "/ year"

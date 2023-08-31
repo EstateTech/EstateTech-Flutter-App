@@ -97,7 +97,7 @@ class _MapContainerState extends State<MapContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.sizeOf(context).width,
+      width: MediaQuery.of(context).size.width,
       height: 450.h,
       padding: EdgeInsets.only(left: 20.h, right: 20.h),
       child: Column(

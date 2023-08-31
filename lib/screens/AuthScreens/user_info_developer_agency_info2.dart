@@ -310,10 +310,10 @@ class _DeveloperAgencyInfo2State extends State<DeveloperAgencyInfo2> {
                                                   loading = true;
                                                 });
 
-                                                await uploadIdCard(
-                                                    context,
-                                                    widget.userId,
-                                                    widget.cnicImage!);
+                                                // await uploadIdCard(
+                                                //     context,
+                                                //     widget.userId,
+                                                //     widget.cnicImage!);
 
                                                 await uploadPic(
                                                     context,

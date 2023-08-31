@@ -293,56 +293,56 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
                   color: Colors.black.withOpacity(0.8),
                 ),
               ),
-              SizedBox(
-                height: 30.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    child: OwnTextfield(
-                      controller: idCardNumber,
-                      textInputType: TextInputType.text,
-                      label: 'ID Card',
-                      hint: 'FI21515',
-                      validator: (v) {
-                        if (v!.isEmpty) {
-                          return 'ID Card Required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 14.w,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      final XFile? pickedFile = await imagePicker.pickImage(
-                          source: ImageSource.gallery);
+              // SizedBox(
+              //   height: 30.h,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Flexible(
+              //       child: OwnTextfield(
+              //         controller: idCardNumber,
+              //         textInputType: TextInputType.text,
+              //         label: 'ID Card',
+              //         hint: 'FI21515',
+              //         validator: (v) {
+              //           if (v!.isEmpty) {
+              //             return 'ID Card Required';
+              //           }
+              //           return null;
+              //         },
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 14.w,
+              //     ),
+              //     GestureDetector(
+              //       onTap: () async {
+              //         final XFile? pickedFile = await imagePicker.pickImage(
+              //             source: ImageSource.gallery);
 
-                      setState(() {
-                        _image = File(pickedFile!.path);
-                      });
-                    },
-                    child: Container(
-                      width: 60.w,
-                      height: 55.h,
-                      padding: EdgeInsets.all(10.w),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13.r),
-                          border: Border.all(color: Colors.black)),
-                      child: _image == null
-                          ? SvgPicture.asset(
-                              'assets/images/add_gallery.svg',
-                              alignment: Alignment.center,
-                            )
-                          : Image.file(_image!, fit: BoxFit.cover),
-                    ),
-                  ),
-                ],
-              ),
+              //         setState(() {
+              //           _image = File(pickedFile!.path);
+              //         });
+              //       },
+              //       child: Container(
+              //         width: 60.w,
+              //         height: 55.h,
+              //         padding: EdgeInsets.all(10.w),
+              //         decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(13.r),
+              //             border: Border.all(color: Colors.black)),
+              //         child: _image == null
+              //             ? SvgPicture.asset(
+              //                 'assets/images/add_gallery.svg',
+              //                 alignment: Alignment.center,
+              //               )
+              //             : Image.file(_image!, fit: BoxFit.cover),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 20.h,
               ),
@@ -457,30 +457,30 @@ class _UserInfoDeveloperState extends State<UserInfoDeveloper> {
               CustomButton(
                 onPressed: () {
                   if (_key.currentState!.validate()) {
-                    if (_image != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeveloperAgencyInfo2(
-                                    selectedMember: selectedMember,
-                                    userId:
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    firstName: firstName.text,
-                                    lastName: lastName.text,
-                                    email: email.text,
-                                    dateOfBirth: dateOfBirth.text,
-                                    cnicImage: _image,
-                                    idCarddNumber: idCardNumber.text,
-                                  )));
-                      // Navigator.pushNamed(
-                      //     context, userinfodeveloperscreenroute2);
-                    } else {
-                      Fluttertoast.showToast(
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          msg: 'Please upload the id card image !',
-                          gravity: ToastGravity.TOP);
-                    }
+                    //  if (_image != null) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeveloperAgencyInfo2(
+                                  selectedMember: selectedMember,
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  firstName: firstName.text,
+                                  lastName: lastName.text,
+                                  email: email.text,
+                                  dateOfBirth: dateOfBirth.text,
+                                  cnicImage: _image,
+                                  idCarddNumber: idCardNumber.text,
+                                )));
+                    // Navigator.pushNamed(
+                    //     context, userinfodeveloperscreenroute2);
+                    // } else {
+                    //   Fluttertoast.showToast(
+                    //       backgroundColor: Colors.red,
+                    //       textColor: Colors.white,
+                    //       msg: 'Please upload the id card image !',
+                    //       gravity: ToastGravity.TOP);
+                    // }
                   }
                 },
                 textStyle: style.copyWith(

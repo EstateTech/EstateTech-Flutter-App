@@ -62,7 +62,7 @@ class _GridPostState extends State<GridPost> {
                   //             NetworkImage(widget.postModel.propertyPhotos![0]!),
                   //         fit: BoxFit.fitHeight)),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25.r),
+                    borderRadius: BorderRadius.circular(14.r),
                     child: CachedNetworkImage(
                       key: UniqueKey(),
                       imageUrl: widget.postModel.propertyPhotos![0]!,
@@ -93,15 +93,21 @@ class _GridPostState extends State<GridPost> {
               Positioned(
                   top: 10.h,
                   left: 5.h,
-                  child: memberType == "Loading"
-                      ? const Text("Loading..")
-                      : Text(
-                          memberType,
-                          style: style.copyWith(
-                              color: const Color(0xff0D2769),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold),
-                        )),
+                  child: Container(
+                    padding: EdgeInsets.all(4.w),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r)),
+                    child: memberType == "Loading"
+                        ? const Text("Loading..")
+                        : Text(
+                            memberType,
+                            style: style.copyWith(
+                                color: const Color(0xff0D2769),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
+                  )),
               Positioned(
                   right: 4.h,
                   child: IconButton(
@@ -123,11 +129,14 @@ class _GridPostState extends State<GridPost> {
             child: Text(
               getFirstThreeWords(widget.postModel.propertyDescription!),
               style: style.copyWith(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
                   color: Colors.black),
-              maxLines: 1,
+              maxLines: 2,
             ),
+          ),
+          SizedBox(
+            height: 3.h,
           ),
           widget.isRecomendationPage
               ? Container()
@@ -137,12 +146,15 @@ class _GridPostState extends State<GridPost> {
                     Text(
                       widget.postModel.additionalInfo!,
                       style: style2.copyWith(
-                          color: const Color(0xff717171), fontSize: 18.sp),
+                          color: const Color(0xff717171), fontSize: 14.sp),
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      maxLines: 1,
                     ),
                   ],
                 ),
+          SizedBox(
+            height: 4.h,
+          ),
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.center,
@@ -150,16 +162,16 @@ class _GridPostState extends State<GridPost> {
                 text: TextSpan(
                     style: style.copyWith(
                         color: Colors.black,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600),
                     children: <TextSpan>[
                   const TextSpan(text: "300,0000 AED"),
                   TextSpan(
                     text: ' / year',
                     style: style2.copyWith(
-                      color: Colors.black,
-                      fontSize: 18.sp,
-                    ),
+                        color: Colors.black,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                 ])),
           )

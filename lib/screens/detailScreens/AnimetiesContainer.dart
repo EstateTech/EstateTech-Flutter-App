@@ -17,7 +17,7 @@ class AnimetiesContainer extends StatelessWidget {
         40.h; // Adjust based on your needs
 
     return Container(
-      width: MediaQuery.sizeOf(context).width,
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 20.h, right: 20.h),
       decoration: const BoxDecoration(),
       child: Column(

@@ -29,64 +29,63 @@ class _SearchScreenState extends State<SearchScreen>
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 10.h, right: 10.h, top: 20.0),
-            child: TabBar(
-              indicatorColor: Shade2purple,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 10.h, right: 10.h),
+              child: TabBar(
+                indicatorColor: Shade2purple,
 
-              onTap: (index) {
-                setState(() {
-                  //  currentIndex = index;
-                });
-              },
-              labelStyle: style.copyWith(fontSize: 20.sp),
-              padding: EdgeInsets.zero,
-              labelColor:
-                  Shade2purple, // Set the text color of the selected tab
-              unselectedLabelColor:
-                  greyShade2, // Set the text color of unselected tabs
-              controller: _tabController,
-              indicatorWeight: 3.0,
-              labelPadding: EdgeInsets.zero,
+                onTap: (index) {
+                  setState(() {
+                    //  currentIndex = index;
+                  });
+                },
+                labelStyle: style.copyWith(fontSize: 20.sp),
+                padding: EdgeInsets.zero,
+                labelColor:
+                    Shade2purple, // Set the text color of the selected tab
+                unselectedLabelColor:
+                    greyShade2, // Set the text color of unselected tabs
+                controller: _tabController,
+                indicatorWeight: 3.0,
+                labelPadding: EdgeInsets.zero,
 
-              tabs: [
-                Tab(
-                  text: 'Rent',
-                  iconMargin: EdgeInsets.zero,
-                ),
-                Tab(
-                  text: 'Buy',
-                  iconMargin: EdgeInsets.zero,
-                ),
-                Tab(
-                  text: 'Sell',
-                  iconMargin: EdgeInsets.zero,
-                ),
-              ],
+                tabs: [
+                  Tab(
+                    text: 'Rent',
+                    iconMargin: EdgeInsets.zero,
+                  ),
+                  Tab(
+                    text: 'Buy',
+                    iconMargin: EdgeInsets.zero,
+                  ),
+                  Tab(
+                    text: 'Sell',
+                    iconMargin: EdgeInsets.zero,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                Rent(),
-                // Widget for Wishlist tab
-                Center(child: Text('Buy')),
-                // Widget for Inbox tab
-                Center(child: Text('Sell')),
-              ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  Rent(),
+                  // Widget for Wishlist tab
+                  Center(child: Text('Buy')),
+                  // Widget for Inbox tab
+                  Center(child: Text('Sell')),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
+        margin: EdgeInsets.only(bottom: 10.h),
         height: 50.h,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -102,34 +101,35 @@ class _SearchScreenState extends State<SearchScreen>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            GestureDetector(
-              onTap: () {
-                filterProvider.updateFilterAppliedField(false);
-                Navigator.pop(context);
-              },
-              child: Container(
-                child: Row(
-                  children: [
-                    Container(
-                      height: 30.h,
-                      width: 30.h,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey.shade600)),
-                      child: Icon(Icons.close),
-                    ),
-                    SizedBox(
-                      width: 12.h,
-                    ),
-                    Text(
-                      "Close",
-                      style:
-                          style2.copyWith(fontSize: 18.sp, color: Shade2purple),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            Container(),
+            // GestureDetector(
+            //   onTap: () {
+            //     filterProvider.updateFilterAppliedField(false);
+            //     Navigator.pop(context);
+            //   },
+            //   child: Container(
+            //     child: Row(
+            //       children: [
+            //         Container(
+            //           height: 30.h,
+            //           width: 30.h,
+            //           decoration: BoxDecoration(
+            //               shape: BoxShape.circle,
+            //               border: Border.all(color: Colors.grey.shade600)),
+            //           child: Icon(Icons.close),
+            //         ),
+            //         SizedBox(
+            //           width: 12.h,
+            //         ),
+            //         Text(
+            //           "Close",
+            //           style:
+            //               style2.copyWith(fontSize: 18.sp, color: Shade2purple),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             GestureDetector(
               onTap: () {
                 // search clicked

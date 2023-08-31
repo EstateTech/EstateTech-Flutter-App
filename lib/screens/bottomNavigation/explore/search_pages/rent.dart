@@ -53,8 +53,8 @@ class _RentState extends State<Rent> {
                         "Customized search",
                         style: style.copyWith(
                             color: Shade2purple,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700),
                       ),
                       // childrenPadding: EdgeInsets.zero,
                       trailing: SizedBox.shrink(),
@@ -87,8 +87,8 @@ class _RentState extends State<Rent> {
             "Locations",
             style: style.copyWith(
                 color: Shade2purple,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold),
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600),
           ),
           // childrenPadding: EdgeInsets.zero,
           trailing: SizedBox.shrink(),
@@ -227,7 +227,7 @@ Widget timelineOptionWidget(VoidCallback onTap, String text) {
             EdgeInsets.only(left: 25.h, right: 25.h, top: 10.h, bottom: 10.h),
         child: Text(
           text,
-          style: style.copyWith(fontSize: 20.sp, color: Shade2purple),
+          style: style.copyWith(fontSize: 18.sp, color: Shade2purple),
         ),
       ),
     ),

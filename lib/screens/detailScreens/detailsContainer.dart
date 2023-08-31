@@ -28,7 +28,7 @@ class DetailsContainer extends StatelessWidget {
           return Container(
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-                color: Colors.white                                                                                     ,
+                color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25.r),
                     topRight: Radius.circular(25.r))),
@@ -92,7 +92,7 @@ class DetailsContainer extends StatelessWidget {
                             height: 5.h,
                           ),
                           Container(
-                            width: MediaQuery.sizeOf(context).width * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.8,
                             child: Text(
                               postModel.propertyAddressLine2!,
                               style: style2.copyWith(
@@ -205,7 +205,7 @@ class DetailsContainer extends StatelessWidget {
                             height: 15.h,
                           ),
                           Container(
-                            width: MediaQuery.sizeOf(context).width,
+                            width: MediaQuery.of(context).size.width,
                             child: Text(
                               postModel.additionalInfo!,
                               style: style.copyWith(
@@ -250,7 +250,7 @@ class DetailsContainer extends StatelessWidget {
                                   Container(
                                     height: 50.h,
                                     width:
-                                        MediaQuery.sizeOf(context).width * 0.7,
+                                        MediaQuery.of(context).size.width * 0.7,
                                     child: Text(
                                       "This location is one of the few places in area with two pools.",
                                       style: style.copyWith(
@@ -298,7 +298,7 @@ class DetailsContainer extends StatelessWidget {
                                   Container(
                                     height: 50.h,
                                     width:
-                                        MediaQuery.sizeOf(context).width * 0.7,
+                                        MediaQuery.of(context).size.width * 0.7,
                                     child: Text(
                                       "This location is one of the few places in area with two pools.",
                                       style: style.copyWith(
@@ -316,27 +316,44 @@ class DetailsContainer extends StatelessWidget {
                         ]),
                   ),
                   DividerContainer(context),
-                  SizedBox(height: 10.h,),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   AnimetiesContainer(postModel: postModel),
-                    SizedBox(height: 10.h,),
-                    DividerContainer(context),
-                  SizedBox(height: 10.h,),
-                  MapContainer(postModel:postModel),
-                   SizedBox(height: 10.h,),
-                     DividerContainer(context),
-                     SizedBox(height: 10.h,),
-                     InsightsContainer(postModel:postModel),
-                       SizedBox(height: 10.h,),
-                     DividerContainer(context),
-                     SizedBox(height: 10.h,),
-                     profileContainer(),
-                        SizedBox(height: 10.h,),
-                     DividerContainer(context),
-                     SizedBox(height: 10.h,),
-                     RecomendationContainer(postModel: postModel,)
-
-                  
-
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  DividerContainer(context),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  MapContainer(postModel: postModel),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  DividerContainer(context),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  InsightsContainer(postModel: postModel),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  DividerContainer(context),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  profileContainer(),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  DividerContainer(context),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  RecomendationContainer(
+                    postModel: postModel,
+                  )
                 ],
               ),
             ),
