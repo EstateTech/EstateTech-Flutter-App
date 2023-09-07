@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PostModel {
   String? propertyType;
@@ -32,6 +30,7 @@ class PostModel {
   List<String>? propertyFeature;
   Timestamp? datePosted;
   String? postFeature;
+
   PostModel(
       {this.propertyType,
       this.propertyPortion,
@@ -60,9 +59,7 @@ class PostModel {
       this.propertyFeature,
       this.country,
       this.datePosted,
-      this.postFeature
-      
-      });
+      this.postFeature});
 
   PostModel.fromJson(Map<String, dynamic> json) {
     propertyType = json['propertyType'];
@@ -89,42 +86,47 @@ class PostModel {
     propertyListingType = json['propertyListingType'];
     additionalInfo = json['additionalInfo'];
     userid = json['userid'];
-    likes = json['likes'];
+
     propertyFeature = json['propertyFeature'];
     datePosted = json['datePosted'];
-    postFeature= json['postFeature'];
+    postFeature = json['postFeature'];
+    if (json['likes'] != null) {
+      likes = (json['likes'] as List<dynamic>).cast<String>();
+    } else {
+      likes = json['likes']; // Assign an empty list if 'likes' is null
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['propertyType'] = this.propertyType;
-    data['propertyPortion'] = this.propertyPortion;
-    data['latLong'] = _convertFromGeoPoint(this.latLong);
-    data['propertyOwnerNumber'] = this.propertyOwnerNumber;
-    data['propertyAddressLine1'] = this.propertyAddressLine1;
-    data['propertyAddressLine2'] = this.propertyAddressLine2;
-    data['city'] = this.city;
-    data['state'] = this.state;
-    data['postalCode'] = this.postalCode;
-    data['guest'] = this.guest;
-    data['bedrooms'] = this.bedrooms;
-    data['bathrooms'] = this.bathrooms;
-    data['country'] = this.country;
-    data['propertyArea'] = this.propertyArea;
-    data['propertyBuildArea'] = this.propertyBuildArea;
-    data['propertyPlotArea'] = this.propertyPlotArea;
-    data['utilities'] = this.utilities;
-    data['propertyPhotos'] = this.propertyPhotos;
-    data['propertyDescription'] = this.propertyDescription;
-    data['preferedCurrency'] = this.preferedCurrency;
-    data['amount'] = this.amount;
-    data['propertyListingType'] = this.propertyListingType;
-    data['additionalInfo'] = this.additionalInfo;
-    data['userid'] = this.userid;
-    data['likes'] = this.likes;
-    data['propertyFeature'] = this.propertyFeature;
-    data['datePosted'] = this.datePosted;
-    data['postFeature'] = this.postFeature;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['propertyType'] = propertyType;
+    data['propertyPortion'] = propertyPortion;
+    data['latLong'] = _convertFromGeoPoint(latLong);
+    data['propertyOwnerNumber'] = propertyOwnerNumber;
+    data['propertyAddressLine1'] = propertyAddressLine1;
+    data['propertyAddressLine2'] = propertyAddressLine2;
+    data['city'] = city;
+    data['state'] = state;
+    data['postalCode'] = postalCode;
+    data['guest'] = guest;
+    data['bedrooms'] = bedrooms;
+    data['bathrooms'] = bathrooms;
+    data['country'] = country;
+    data['propertyArea'] = propertyArea;
+    data['propertyBuildArea'] = propertyBuildArea;
+    data['propertyPlotArea'] = propertyPlotArea;
+    data['utilities'] = utilities;
+    data['propertyPhotos'] = propertyPhotos;
+    data['propertyDescription'] = propertyDescription;
+    data['preferedCurrency'] = preferedCurrency;
+    data['amount'] = amount;
+    data['propertyListingType'] = propertyListingType;
+    data['additionalInfo'] = additionalInfo;
+    data['userid'] = userid;
+    data['likes'] = likes;
+    data['propertyFeature'] = propertyFeature;
+    data['datePosted'] = datePosted;
+    data['postFeature'] = postFeature;
 
     return data;
   }
@@ -148,5 +150,9 @@ class PostModel {
       };
     }
     return null;
+  }
+
+  bool isLikedByCurrentUser(String currentUserId) {
+    return likes!.contains(currentUserId);
   }
 }

@@ -39,9 +39,19 @@ class FilterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePostType(String? value){
+  void updatePostType(String? value) {
     postFeature = value;
     notifyListeners();
+  }
 
+  List<String> likedPostIds = [];
+
+  void toggleLike(String postId) {
+    if (likedPostIds.contains(postId)) {
+      likedPostIds.remove(postId);
+    } else {
+      likedPostIds.add(postId);
+    }
+    notifyListeners();
   }
 }
