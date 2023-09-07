@@ -2,6 +2,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
+import 'package:crypto_estate_tech/provider/likesProvider.dart';
 import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,10 @@ void main() async {
 
         ChangeNotifierProvider(
           create: (context) => FilterProvider(),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => PostLikesProvider(),
         ),
         // Add more providers if needed
       ],

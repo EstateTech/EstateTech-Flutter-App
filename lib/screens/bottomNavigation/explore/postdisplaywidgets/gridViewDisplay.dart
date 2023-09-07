@@ -80,6 +80,10 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                     itemBuilder: (context, index) {
                       PostModel post =
                           PostModel.fromJson(documents[index].data()!);
+                      List<String> likes = [];
+                      if (post.likes != null) {
+                        likes = post.likes!;
+                      }
                       return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -91,8 +95,12 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                               ),
                             );
                           },
-                          child:
-                              GridPost(postModel: post, userId: post.userid!));
+                          child: GridPost(
+                            postModel: post,
+                            userId: post.userid!,
+                            id: documents[index].id,
+                            likes: likes,
+                          ));
                     });
               },
             )
@@ -121,6 +129,10 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                       itemBuilder: (context, index) {
                         PostModel post =
                             PostModel.fromJson(documents[index].data()!);
+                        List<String> likes = [];
+                        if (post.likes != null) {
+                          likes = post.likes!;
+                        }
                         return GestureDetector(
                           onTap: () {
                             //navigate to details page
@@ -133,8 +145,12 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                               ),
                             );
                           },
-                          child:
-                              GridPost(postModel: post, userId: post.userid!),
+                          child: GridPost(
+                            postModel: post,
+                            userId: post.userid!,
+                            id: documents[index].id,
+                            likes: likes,
+                          ),
                         );
                       });
                 } else if (snapshot.hasError) {

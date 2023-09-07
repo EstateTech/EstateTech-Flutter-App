@@ -68,6 +68,12 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                     // Build your UI with the post data from the document
                     PostModel post =
                         PostModel.fromJson(documents[index].data()!);
+
+                    List<String> likes = [];
+                    if (post.likes != null) {
+                      likes = post.likes!;
+                    }
+
                     return Hero(
                       tag: "image_tag",
                       child: GestureDetector(
@@ -81,7 +87,12 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                               ),
                             );
                           },
-                          child: Post(postModel: post, userId: post.userid)),
+                          child: Post(
+                            postModel: post,
+                            userId: post.userid,
+                            id: documents[index].id,
+                            likes: likes,
+                          )),
                     );
                   },
                 );
@@ -105,6 +116,11 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                     itemBuilder: (context, index) {
                       PostModel post =
                           PostModel.fromJson(documents[index].data()!);
+                      List<String> likes = [];
+                      if (post.likes != null) {
+                        likes = post.likes!;
+                      }
+
                       return GestureDetector(
                         onTap: () {
                           //navigate to other screen
@@ -120,6 +136,8 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                         child: Post(
                           postModel: post,
                           userId: post.userid,
+                          id: documents[index].id,
+                          likes: likes,
                         ),
                       );
                     },

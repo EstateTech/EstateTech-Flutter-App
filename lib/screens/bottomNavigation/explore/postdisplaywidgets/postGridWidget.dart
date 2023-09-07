@@ -2,19 +2,27 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../provider/likesProvider.dart';
 
 class GridPost extends StatefulWidget {
   final PostModel postModel;
   final String userId;
   final bool isRecomendationPage;
+  final List<String> likes;
+  final String id;
   const GridPost({
     super.key,
     required this.postModel,
     required this.userId,
     this.isRecomendationPage = false,
+    required this.likes,
+    required this.id,
   });
 
   @override
@@ -43,6 +51,12 @@ class _GridPostState extends State<GridPost> {
 
   @override
   Widget build(BuildContext context) {
+    final filterProvider =
+        Provider.of<PostLikesProvider>(context, listen: true);
+
+    String currentUserId =
+        FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
+    filterProvider.initializeLikedPostIds(currentUserId);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
@@ -54,13 +68,6 @@ class _GridPostState extends State<GridPost> {
             children: [
               SizedBox(
                   height: 150.h,
-                  // decoration: BoxDecoration(
-                  //     color: Colors.grey.shade200,
-                  //     borderRadius: BorderRadius.circular(25.r),
-                  //     image: DecorationImage(
-                  //         image:
-                  //             NetworkImage(widget.postModel.propertyPhotos![0]!),
-                  //         fit: BoxFit.fitHeight)),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: CachedNetworkImage(
@@ -110,14 +117,21 @@ class _GridPostState extends State<GridPost> {
                   )),
               Positioned(
                   right: 4.h,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                      size: 30.h,
-                    ),
-                  )),
+                  child: IconButton(onPressed: () {
+                    filterProvider.toggleLike(widget.id, currentUserId);
+                  }, icon: Consumer<PostLikesProvider>(
+                    builder: (context, provider, _) {
+                      return Icon(
+                        provider.likedPostIds.contains(widget.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: provider.likedPostIds.contains(widget.id)
+                            ? Colors.red
+                            : Colors.white,
+                        size: 30.0,
+                      );
+                    },
+                  ))),
             ],
           ),
           SizedBox(
@@ -127,7 +141,8 @@ class _GridPostState extends State<GridPost> {
             fit: BoxFit.scaleDown,
             alignment: Alignment.center,
             child: Text(
-              getFirstThreeWords(widget.postModel.propertyDescription!),
+              //getFirstThreeWords(widget.postModel.propertyDescription!),
+              "Hello world",
               style: style.copyWith(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

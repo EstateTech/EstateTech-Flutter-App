@@ -3,20 +3,27 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/provider/likesProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class Post extends StatefulWidget {
   final PostModel postModel;
   final userId;
+  final String id;
+  final List<String> likes;
 
   const Post({
     Key? key,
     required this.postModel,
     this.userId,
+    required this.id,
+    required this.likes,
   }) : super(key: key);
 
   @override
@@ -51,6 +58,14 @@ class _PostState extends State<Post> {
 
   @override
   Widget build(BuildContext context) {
+    final filterProvider =
+        Provider.of<PostLikesProvider>(context, listen: true);
+
+    // Fetch the liked post IDs for the current user
+    String currentUserId =
+        FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
+    filterProvider.initializeLikedPostIds(currentUserId);
+
     return Container(
       height: 330.h,
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -109,14 +124,21 @@ class _PostState extends State<Post> {
               Positioned(
                   top: 1.h,
                   right: 5.h,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                      size: 30.h,
-                    ),
-                  )),
+                  child: IconButton(onPressed: () {
+                    filterProvider.toggleLike(widget.id, currentUserId);
+                  }, icon: Consumer<PostLikesProvider>(
+                    builder: (context, provider, _) {
+                      return Icon(
+                        provider.likedPostIds.contains(widget.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: provider.likedPostIds.contains(widget.id)
+                            ? Colors.red
+                            : Colors.white,
+                        size: 30.0,
+                      );
+                    },
+                  ))),
               Positioned(
                   top: 10.h,
                   left: 5.h,

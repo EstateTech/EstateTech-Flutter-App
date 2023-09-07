@@ -56,6 +56,10 @@ class RecomendationContainer extends StatelessWidget {
                       // Access post data from the DocumentSnapshot
                       PostModel post =
                           PostModel.fromJson(documents[index].data()!);
+                      List<String> likes = [];
+                      if (post.likes != null) {
+                        likes = post.likes!;
+                      }
                       return GestureDetector(
                         onTap: () {
                           Navigator.pushReplacement(
@@ -70,6 +74,8 @@ class RecomendationContainer extends StatelessWidget {
                         child: GridPost(
                           postModel: post,
                           userId: post.userid!,
+                          id: documents[index].id,
+                          likes: likes,
                           isRecomendationPage: true,
                         ),
                       );
