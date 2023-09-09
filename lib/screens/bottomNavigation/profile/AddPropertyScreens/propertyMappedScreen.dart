@@ -2,8 +2,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/featuresScreen.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTextAdressScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/featuresScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyTextAdressScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,8 +15,8 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 
-import '../../../common/widgetConstants.dart';
-import '../../../model/postModel.dart';
+import '../../../../common/widgetConstants.dart';
+import '../../../../model/postModel.dart';
 
 class PropertyMappedScreen extends StatefulWidget {
   final bool isConfirmPinScreen;

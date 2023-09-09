@@ -1,15 +1,15 @@
 import 'package:crypto_estate_tech/common/list_constants.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/addPhotosScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/addPhotosScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../common/ColorConstants.dart';
-import '../../../common/custom_create_post_header.dart';
-import '../../../common/custom_post_create_bottom.dart';
-import '../../../common/widgetConstants.dart';
-import '../../../components/grid_item_widet.dart';
-import '../../../model/postModel.dart';
+import '../../../../common/ColorConstants.dart';
+import '../../../../common/custom_create_post_header.dart';
+import '../../../../common/custom_post_create_bottom.dart';
+import '../../../../common/widgetConstants.dart';
+import '../../../../components/grid_item_widet.dart';
+import '../../../../model/postModel.dart';
 
 class AmenitiesScreen extends StatefulWidget {
   const AmenitiesScreen({super.key, required this.postmodel});

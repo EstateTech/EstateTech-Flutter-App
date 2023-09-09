@@ -2,13 +2,13 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyMappedScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyMappedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../model/postModel.dart';
+import '../../../../model/postModel.dart';
 
 class OfferedSpaceScreen extends StatefulWidget {
   const OfferedSpaceScreen({super.key, required this.postModel});
@@ -48,11 +48,11 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CustomCreatePostHeader(),
+            const CustomCreatePostHeader(),
             // SizedBox(
             //   height: 20.h,
             // ),
@@ -91,7 +91,7 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  if (selectedTile.length != 0) {
+                  if (selectedTile.isNotEmpty) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -152,7 +152,7 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
           SizedBox(
             width: 20.w,
           ),
-          Container(
+          SizedBox(
             height: 40.h,
             width: 40.h,
             child: icons[index],

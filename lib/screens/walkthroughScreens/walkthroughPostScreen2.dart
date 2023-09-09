@@ -3,11 +3,11 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyTypeScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyTypeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../bottomNavigation/profile/amenitiesScreen.dart';
+import '../bottomNavigation/profile/AddPropertyScreens/amenitiesScreen.dart';
 
 class WalkThroughScreenPost2 extends StatefulWidget {
   final bool isStep2;
