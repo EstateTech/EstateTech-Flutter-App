@@ -151,19 +151,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       snapshot.data!.data() as Map<String, dynamic>,
                     );
                     final email = userData.email ?? "noah.freeman@gmail.com";
-                    return InformationField("Email", email,
-                        isPencilShown: true);
+                    String verified = userData.isVerified!
+                        ? "Not Verified"
+                        : "Verified identity";
+                    return Column(
+                      children: [
+                        InformationField("Email", email, isPencilShown: true),
+                        InformationField("Address", "24 , 17th Avenue,Dubai",
+                            isPencilShown: true),
+                        InformationField(
+                            "Phone", userData.phoneNumber ?? "Not Available",
+                            isPencilShown: true),
+                        InformationField(
+                          "Member\nsince",
+                          "24/04/2023",
+                        ),
+                        InformationField("Status", verified,
+                            isMemberSince: true),
+                      ],
+                    );
                   }),
-              InformationField("Address", "24 , 17th Avenue,Dubai",
-                  isPencilShown: true),
-              InformationField("Phone", "24 , 17th Avenue,Dubai",
-                  isPencilShown: true),
-              InformationField(
-                "Member\nsince",
-                "24/04/2023",
-              ),
-              InformationField("Status", "Verified identity",
-                  isMemberSince: true),
               SocialStatus()
             ],
           ),
