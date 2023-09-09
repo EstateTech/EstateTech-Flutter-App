@@ -1,17 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-
-// class DataFromFirestore {
-//   Stream<List<PostModel>> getPostsallStream() {
-//     return FirebaseFirestore.instance.collection('posts').snapshots().map(
-//         (snapshot) => snapshot.docs
-//             .map((doc) => PostModel.fromJson(doc.data()))
-//             .toList());
-//   }
-// }
 
 String getFirstThreeWords(String sentence) {
   // Split the sentence into individual words
@@ -49,7 +37,7 @@ Future<String> getMemberType(String userId) async {
 
   // Document reference to the user document
   DocumentReference userRef = firestore.collection('users').doc(userId);
-  print("the user id is  in the get member method is ${userId}");
+  print("the user id is  in the get member method is $userId");
 
   try {
     // Get the user document from Firestore
@@ -69,7 +57,6 @@ Future<String> getMemberType(String userId) async {
   }
 }
 
-
 Stream<QuerySnapshot<Map<String, dynamic>>> getPostsStream(String postFeature) {
   return FirebaseFirestore.instance
       .collection('posts')
@@ -77,30 +64,27 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getPostsStream(String postFeature) {
       .snapshots();
 }
 
+Stream<QuerySnapshot> getQueryStream(
+    String propertyType, int bedrooms, int bathrooms) {
+  return FirebaseFirestore.instance
+      .collection('posts')
+      .where('propertyType', isEqualTo: propertyType)
+      .where('bedrooms', isEqualTo: bedrooms)
+      .where('bathrooms', isEqualTo: bathrooms)
+      .snapshots();
+}
 
- Stream<QuerySnapshot> getQueryStream(String propertyType,int bedrooms,int bathrooms){
-    return FirebaseFirestore.instance
-        .collection('posts')
-        .where('propertyType', isEqualTo: propertyType)
-        .where('bedrooms', isEqualTo: bedrooms)
-        .where('bathrooms', isEqualTo: bathrooms)
-        .snapshots();
-  }
-
-  // get similar post 
- Stream<QuerySnapshot> getSimilarPostsStream(String propertyType) {
+// get similar post
+Stream<QuerySnapshot> getSimilarPostsStream(String propertyType) {
   return FirebaseFirestore.instance
       .collection('posts')
       .where('propertyType', isEqualTo: propertyType)
       .snapshots();
-      
 }
 
+final CollectionReference _usersCollection =
+    FirebaseFirestore.instance.collection('users');
 
-
-
-
-
-
-
-
+Stream<DocumentSnapshot> getUserDataStream(String userId) {
+  return _usersCollection.doc(userId).snapshots();
+}

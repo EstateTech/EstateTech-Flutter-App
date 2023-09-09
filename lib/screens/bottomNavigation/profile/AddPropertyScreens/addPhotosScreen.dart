@@ -7,7 +7,7 @@ import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/propertyDescription.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyDescription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,7 +25,7 @@ class AddPhotoScreen extends StatefulWidget {
 }
 
 class _AddPhotoScreenState extends State<AddPhotoScreen> {
-  List<XFile>? _selectedImages = [];
+  final List<XFile>? _selectedImages = [];
   ImageSource? globalImageSource;
 
   Future<void> _getImage(ImageSource source) async {
@@ -50,11 +50,11 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(gradient: appBackgroundGradient),
+        decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CustomCreatePostHeader(),
+            const CustomCreatePostHeader(),
             // SizedBox(
             //   height: 20.h,
             // ),
@@ -88,7 +88,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                             borderRadius: BorderRadius.circular(20.r)),
                         child: GridView.builder(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 1.4,
                           ),
@@ -109,7 +109,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                 ),
                 CustomButton(
                   text: "Add 360 images",
-                  fillColor: LinearGradient(
+                  fillColor: const LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [mainAppColor, Colors.black]),
