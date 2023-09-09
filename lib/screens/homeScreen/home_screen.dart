@@ -2,7 +2,9 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/ExplorePage.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/profile_screen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/wishlist/wishlist.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/insightsScreen.dart';
+import 'package:crypto_estate_tech/screens/inbox/inbox_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,12 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final tabs = [
       widget.isInsightsScreen ? const InsightsScreen() : const ExplorePage(),
-      const Center(
-        child: Text("WishList"),
-      ),
-      const Center(
-        child: Text("Camera"),
-      ),
+      WishlistPage(),
+      InboxScreen(),
       const ProfileScreen(),
     ];
 

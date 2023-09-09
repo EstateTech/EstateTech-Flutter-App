@@ -51,8 +51,10 @@ class _SplashScreenState extends State<SplashScreen> {
           .get()
           .then((value) {
         if (value.data()!['profileCompleted']) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              (route) => false);
         } else {
           Navigator.push(
               context,

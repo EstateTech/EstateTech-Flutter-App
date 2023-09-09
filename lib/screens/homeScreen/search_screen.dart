@@ -101,7 +101,37 @@ class _SearchScreenState extends State<SearchScreen>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  width: 40.w,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color(
+                          0xFF3A3153,
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: Offset(
+                              0, -2), // Controls the position of the shadow
+                        ),
+                      ]),
+                  child: Icon(
+                    color: Color(
+                      0xFF3A3153,
+                    ),
+                    Icons.arrow_back_rounded,
+                  )),
+            ),
+
             // GestureDetector(
             //   onTap: () {
             //     filterProvider.updateFilterAppliedField(false);
@@ -137,6 +167,7 @@ class _SearchScreenState extends State<SearchScreen>
                 print(filterProvider.bedrooms);
                 print(filterProvider.bathrooms);
                 print(filterProvider.period);
+
                 filterProvider.updateFilterAppliedField(true);
 
                 Navigator.pushNamed(

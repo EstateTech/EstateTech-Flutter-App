@@ -39,8 +39,9 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _isloading = Provider.of<AuthProvider>(context, listen: true).isOtpScreenLoading;
-  
+    _isloading =
+        Provider.of<AuthProvider>(context, listen: true).isOtpScreenLoading;
+
     return Scaffold(
       backgroundColor: mainAppColor,
       appBar: AppBar(
@@ -50,10 +51,7 @@ class _OtpScreenState extends State<OtpScreen> {
           onTap: () {
             Provider.of<AuthProvider>(context, listen: false).setLoadingFalse();
             Navigator.of(context).pop();
-         
-
-
-          } ,
+          },
           child: const Icon(Icons.arrow_back),
         ),
       ),
@@ -219,24 +217,20 @@ class _OtpScreenState extends State<OtpScreen> {
                   loggedInStatus: 'Phone'),
             );
 
-
-
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => UserInfoDeveloper(
                           email: "",
                         )));
-
-              
-
-
-
-
           } else {
             if (value.data()!['profileCompleted'] ?? false) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                  (route) => false);
             } else {
               Navigator.push(
                   context,
