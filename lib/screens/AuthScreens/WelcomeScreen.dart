@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -38,79 +39,44 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String lastpickedSelection = "+971";
   TextEditingController phoneController = TextEditingController();
 
-  void _openCountryCodePickerDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          title: Text('Select a Country'),
-          content: CountryListPick(
-            useSafeArea: true,
-            pickerBuilder: (context, countryCode) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    countryCode?.flagUri ?? "",
-                    package: 'country_list_pick',
-                    width: 40.h,
-                    height: 40.h,
-                  ),
-                  Text(countryCode?.name ?? ""),
-                  Text(countryCode?.dialCode ?? ""),
-                  Icon(Icons.keyboard_arrow_down_outlined)
-                ],
-              );
-            },
-            initialSelection: lastpickedSelection,
-            onChanged: (CountryCode? code) {
-              setState(() {
-                selectedCountryName = code?.name ?? "";
-                selectedCountrycode = code?.dialCode ?? "";
-                lastpickedSelection = code?.dialCode ?? "";
-              });
-              Navigator.pop(context);
-            },
-          ),
-        );
-      },
-    );
-  }
-  
-
-
-
-
-
+  // void _openCountryCodePickerDialog() async {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         contentPadding: EdgeInsets.zero,
+  //         title: Text('Select a Country'),
+  //         content:
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
+    _isloading = Provider.of<AuthProvider>(context, listen: true).isLoading;
 
-       _isloading =
-        Provider.of<AuthProvider>(context, listen: true).isLoading;
-        
     return Scaffold(
       backgroundColor: mainAppColor,
       body: _isloading
-          ?Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    "Sending the Code!",
-                    style: style.copyWith(fontSize: 20.sp, color: Colors.white),
-                  )
-                ],
-              )
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  "Sending the Code!",
+                  style: style.copyWith(fontSize: 20.sp, color: Colors.white),
+                )
+              ],
+            )
           : Padding(
               padding: EdgeInsets.only(left: 20.h, right: 20.w),
               child: SingleChildScrollView(
@@ -131,27 +97,87 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
+                    Container(
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.r)),
+                      child: CountryListPick(
+                        useSafeArea: true,
+                        pickerBuilder: (context, countryCode) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Image.asset(
+                                //   countryCode?.flagUri ?? "",
+                                //   package: 'country_list_pick',
+                                //   width: 40.h,
+                                //   height: 40.h,
+                                // ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      countryCode?.name ?? "",
+                                      style: GoogleFonts.dmSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.sp,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      width: 3.w,
+                                    ),
+                                    Text(
+                                      "(${countryCode?.dialCode})" ?? "",
+                                      style: GoogleFonts.dmSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.sp,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
 
-                    GestureDetector(
-                      onTap: _openCountryCodePickerDialog,
-                      child: CustomWhiteBox(
-                        boxShadowContainer: false,
-                        widget: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "$selectedCountryName ($selectedCountrycode)",
-                              style: style.copyWith(color: Colors.black),
+                                Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: Colors.black,
+                                )
+                              ],
                             ),
-                            Icon(
-                              Icons.keyboard_arrow_down_outlined,
-                              size: 25.h,
-                            )
-                          ],
-                        ),
+                          );
+                        },
+                        initialSelection: lastpickedSelection,
+                        onChanged: (CountryCode? code) {
+                          setState(() {
+                            selectedCountryName = code?.name ?? "";
+                            selectedCountrycode = code?.dialCode ?? "";
+                            lastpickedSelection = code?.dialCode ?? "";
+                          });
+                          //  Navigator.pop(context);
+                        },
                       ),
                     ),
+
+                    // GestureDetector(
+                    //   onTap: _openCountryCodePickerDialog,
+                    //   child: CustomWhiteBox(
+                    //     boxShadowContainer: false,
+                    //     widget: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           "$selectedCountryName ($selectedCountrycode)",
+                    //           style: style.copyWith(color: Colors.black),
+                    //         ),
+                    //         Icon(
+                    //           Icons.keyboard_arrow_down_outlined,
+                    //           size: 25.h,
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
 
                     SizedBox(
                       height: 10.h,
@@ -235,15 +261,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void sendPhoneNumber() {
-        final ap = Provider.of<AuthProvider>(context, listen: false);
-      
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+
     if (phoneController.text.isEmpty) {
       showSnackBar(
           context, "Kindly fill the Phone Number Field with Country Code");
-    }  else {
-      String phoneNumber = selectedCountrycode+phoneController.text.trim();
-       ap.signInWithPhone(context, phoneNumber, selectedCountrycode);
-    
+    } else {
+      String phoneNumber = selectedCountrycode + phoneController.text.trim();
+      ap.signInWithPhone(context, phoneNumber, selectedCountrycode);
     }
   }
 
@@ -311,8 +336,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           )));
             } else {
               if (value.data()!['profileCompleted']) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
               } else {
                 Navigator.push(
                     context,

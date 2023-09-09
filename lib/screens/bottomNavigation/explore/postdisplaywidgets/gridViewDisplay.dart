@@ -35,7 +35,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    FilterProvider filterProvider = Provider.of<FilterProvider>(context);
+    final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     queryStream = getQueryStream(filterProvider.propertyType ?? "",
         filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
 

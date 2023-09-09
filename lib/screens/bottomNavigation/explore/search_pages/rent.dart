@@ -1,10 +1,12 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/filterWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class Rent extends StatefulWidget {
   const Rent({super.key});
@@ -20,6 +22,7 @@ class _RentState extends State<Rent> {
 
   @override
   Widget build(BuildContext context) {
+    final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -67,7 +70,34 @@ class _RentState extends State<Rent> {
                       children: <Widget>[
                         FilterWidget(),
                       ],
-                    )))
+                    ))),
+            SizedBox(
+              height: 10.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                filterProvider.updateFilterAppliedField(false);
+                Navigator.pop(context);
+              },
+              child: Container(
+                  width: double.infinity,
+                  height: 55.h,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 20.w),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.circular(25.r)),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25.r),
+                      child: Text(
+                        "All",
+                        textAlign: TextAlign.left,
+                        style: style.copyWith(
+                            color: Shade2purple,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700),
+                      ))),
+            )
           ],
         ),
       ),
