@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/NotificationsSettingsScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/PersonalInformationScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/loginSecurityScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/profileButton.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -317,7 +319,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Login & Security",
                   imagepath: 'assets/images/security_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginSecurityScreen()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Payments & Payouts",
@@ -327,7 +334,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Notifications",
                   imagepath: 'assets/images/notification_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const NotificationSettingsScreen()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Privacy & Sharing",
