@@ -5,6 +5,7 @@ import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/NotificationsSettingsScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/PersonalInformationScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/loginSecurityScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/payments_payouts.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/profileButton.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -329,7 +330,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Payments & Payouts",
                   imagepath: 'assets/images/payment_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PaymentsAndPayouts()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Notifications",
