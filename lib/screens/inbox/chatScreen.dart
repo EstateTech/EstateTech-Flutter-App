@@ -215,7 +215,7 @@ class _ChatScreenState extends State<ChatScreen> {
             color: Shade2purple,
             onPressed: () {
               if(textEditingController.text.isNotEmpty){
-                sendMessage(widget.user, textEditingController.text.toString());
+                sendMessage(widget.user, textEditingController.text.toString(),context);
                 textEditingController.text = '';
               }
             },

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/inbox/chatcard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,9 +17,35 @@ class InboxScreen extends StatefulWidget {
 }
 
 class _InboxScreenState extends State<InboxScreen> {
-  List<SignupSavepDataFirebase> list = [];
+  List<SignupSavepDataFirebase> alllist = [];
   final List<SignupSavepDataFirebase> _searchlist = [];
   bool _isSearching = false;
+  List<SignupSavepDataFirebase> chatList = [];
+  List<String> receiverList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData();
+  }
+
+
+
+  Future<void> fetchData() async {
+    try {
+      // Replace 'senderId' with the actual sender ID
+      String senderId = FirebaseAuth.instance.currentUser!.uid;
+      receiverList = await getReceiverIdsBySenderId(senderId);
+      setState(() {
+        
+      });
+      print(receiverList);
+    } catch (e) {
+      print('Error fetching user IDs: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -64,7 +91,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                   onChanged: (value) {
                                     //search logic
                                     _searchlist.clear();
-                                    for (var i in list) {
+                                    for (var i in alllist) {
                                       if (i.firstName
                                               .toString()
                                               .toLowerCase()
@@ -104,6 +131,9 @@ class _InboxScreenState extends State<InboxScreen> {
                             setState(() {
                               _isSearching = !_isSearching;
                             });
+                            if(!_isSearching) {
+                              fetchData();
+                            }
                           },
                           child: Icon(
                             _isSearching
@@ -116,10 +146,20 @@ class _InboxScreenState extends State<InboxScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Icon(
-                          Icons.edit,
-                          color: Color(0xFF3A3153),
-                          size: 29.w,
+                        GestureDetector(
+                          onTap: () {
+                            // Usage
+                            // fetchAndPrintDocumentIds();
+                            //  getAncestorDocumentIdsWithSubcollections("chats","messages");
+
+                            getReceiverIdsBySenderId(
+                                FirebaseAuth.instance.currentUser!.uid);
+                          },
+                          child: Icon(
+                            Icons.edit,
+                            color: Color(0xFF3A3153),
+                            size: 29.w,
+                          ),
                         ),
                         SizedBox(
                           width: 10.w,
@@ -148,49 +188,89 @@ class _InboxScreenState extends State<InboxScreen> {
                   height: 20.h,
                 ),
                 Expanded(
-                  child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .where('userId',
-                              isNotEqualTo:
-                                  FirebaseAuth.instance.currentUser!.uid)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                          case ConnectionState.none:
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                    child: _isSearching
+                        ? StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .where('userId',
+                                    isNotEqualTo:
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                case ConnectionState.none:
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
 
-                          case ConnectionState.active:
-                          case ConnectionState.done:
-                            final data = snapshot.data?.docs;
-                            list = data
-                                    ?.map((e) =>
-                                        SignupSavepDataFirebase.fromJson(
-                                            e.data()))
-                                    .toList() ??
-                                [];
-                            if (list.isNotEmpty) {
-                              return ListView.builder(
-                                  itemCount: _isSearching
-                                      ? _searchlist.length
-                                      : list.length,
-                                  itemBuilder: (context, index) {
-                                    return ChatCard(
-                                        user: _isSearching
-                                            ? _searchlist[index]
-                                            : list[index]);
-                                  });
-                            } else {
-                              return const Center(
-                                child: Text("No connections FOUND!"),
-                              );
-                            }
-                        }
-                      }),
-                )
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+                                  final data = snapshot.data?.docs;
+                                  alllist = data
+                                          ?.map((e) =>
+                                              SignupSavepDataFirebase.fromJson(
+                                                  e.data()))
+                                          .toList() ??
+                                      [];
+                                  if (alllist.isNotEmpty) {
+                                    return ListView.builder(
+                                        itemCount: _searchlist.length,
+                                        itemBuilder: (context, index) {
+                                          return ChatCard(
+                                              user: _searchlist[index]);
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: Text("No connections FOUND!"),
+                                    );
+                                  }
+                              }
+                            })
+                        :     receiverList.isNotEmpty ?    StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .where('userId',
+                                    whereIn:
+                                        receiverList) // Filter documents by user IDs
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                case ConnectionState.none:
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+
+                                  final data = snapshot.data?.docs;
+        
+                                  chatList = data
+                                          ?.map((e) =>
+                                              SignupSavepDataFirebase.fromJson(
+                                                  e.data()))
+                                          .toList() ??
+                                      [];
+                                  if (chatList.isNotEmpty) {
+                                    return ListView.builder(
+                                        itemCount: chatList.length,
+                                        itemBuilder: (context, index) {
+                                          return ChatCard(
+                                              user: chatList[index]);
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: Text("No Chats!"),
+                                    );
+                                  }
+                              }
+                            }) : Container(
+                              alignment: Alignment.center,
+                              height: 100.h,
+                              width: 100.h,
+                              child: Text("")) )
               ],
             ),
           ),

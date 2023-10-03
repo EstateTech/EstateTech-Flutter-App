@@ -312,11 +312,15 @@ class _PersonalInformationState extends State<PersonalInformation> {
             width: 200.w,
             child: Row(
               children: [
-                Text(
-                  information,
-                  style: numberStyle.copyWith(
-                    fontSize: 17.sp,
-                    color: Colors.black54,
+                Flexible(
+                 
+                  child: Text(
+                    information,
+                    style: numberStyle.copyWith(
+                      fontSize: 17.sp,
+                      color: Colors.black54,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(

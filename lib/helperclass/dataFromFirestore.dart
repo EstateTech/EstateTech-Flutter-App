@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/model/message.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
+import 'package:crypto_estate_tech/provider/chatProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 String getFirstThreeWords(String sentence) {
   // Split the sentence into individual words
@@ -101,7 +104,9 @@ User? user = FirebaseAuth.instance.currentUser;
 String getConversationID(String id) => user!.uid.hashCode <= id.hashCode ? '${user!.uid}_$id' : '${id}_${user!.uid}'; 
 
  
- Future<void> sendMessage(SignupSavepDataFirebase signUser , String msg) async{
+
+
+ Future<void> sendMessage(SignupSavepDataFirebase signUser , String msg,BuildContext context) async{
   final time = DateTime.now().millisecondsSinceEpoch.toString();
 
   final Message message = Message(toId: signUser.userId!,
@@ -110,4 +115,72 @@ String getConversationID(String id) => user!.uid.hashCode <= id.hashCode ? '${us
    final ref = FirebaseFirestore.instance.collection('chats/${getConversationID(signUser.userId!)}/messages/');
    await ref.doc(time).set(message.toJson());
 
+   final ref2 = FirebaseFirestore.instance.collection("chats");
+   await ref2.doc('${getConversationID(signUser.userId!)}').set({
+      'receiverId': signUser.userId!,
+    'FromId': user!.uid
+    
+   });
+ final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+  chatProvider.fetchData(user!.uid);
+
+
  }
+
+
+
+
+
+
+Future<List<String>> getReceiverIdsBySenderId(String currentUserId) async {
+  try {
+    // Create a reference to the 'chat' collection
+    CollectionReference chatCollection = FirebaseFirestore.instance.collection('chats');
+
+    List<String> userIds = [];
+
+    // Query for documents where 'senderId' matches the currentUserId
+    QuerySnapshot senderQuerySnapshot = await chatCollection
+        .where('FromId', isEqualTo: currentUserId)
+        .get();
+
+    // Iterate through the sender documents and add 'receiverId' to the list
+    for (QueryDocumentSnapshot doc in senderQuerySnapshot.docs) {
+      String receiverId = doc['receiverId'] as String;
+      if (receiverId != currentUserId) {
+        userIds.add(receiverId);
+      }
+    }
+
+    // Query for documents where 'receiverId' matches the currentUserId
+    QuerySnapshot receiverQuerySnapshot = await chatCollection
+        .where('receiverId', isEqualTo: currentUserId)
+        .get();
+
+    // Iterate through the receiver documents and add 'senderId' to the list
+    for (QueryDocumentSnapshot doc in receiverQuerySnapshot.docs) {
+      String senderId = doc['FromId'] as String;
+      if (senderId != currentUserId) {
+        userIds.add(senderId);
+      }
+    }
+
+    // Remove duplicate user IDs if any
+    userIds = userIds.toSet().toList();
+
+    return userIds;
+  } catch (e) {
+    print('Error getting user IDs with matching IDs: $e');
+    return [];
+  }
+}
+
+
+
+
+
+
+
+
+
+
