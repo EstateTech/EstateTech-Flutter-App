@@ -15,6 +15,10 @@ class SignupSavepDataFirebase {
   String? currentSubscription;
   String? memberType;
   bool? profileCompleted;
+  String? about;
+  bool? isOnline;
+  String? pushToken;
+
 
   SignupSavepDataFirebase(
       {this.userId,
@@ -32,7 +36,15 @@ class SignupSavepDataFirebase {
       this.loggedInStatus,
       this.memberType,
       this.profileCompleted,
-      this.currentSubscription});
+      this.currentSubscription,
+      this.about,
+      this.isOnline,
+      this.pushToken
+      
+      
+      
+      
+      });
 
   SignupSavepDataFirebase.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
@@ -51,6 +63,11 @@ class SignupSavepDataFirebase {
     currentSubscription = json['currentSubscription'];
     profileCompleted = json['profileCompleted'];
     memberType = json['memberType'];
+    about = json['about'];
+    pushToken=json['push_token'];
+    isOnline = json['isOnline'];
+     
+
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +89,9 @@ class SignupSavepDataFirebase {
     data['currentSubscription'] = this.currentSubscription;
     data['memberType'] = this.memberType;
     data['profileCompleted'] = this.profileCompleted;
+    data['about']=this.about;
+    data['push_token']=this.pushToken;
+    data['isOnline'] = this.isOnline;
     return data;
   }
 }
