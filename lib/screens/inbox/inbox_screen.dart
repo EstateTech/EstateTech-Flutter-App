@@ -1,142 +1,279 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
+import 'package:crypto_estate_tech/screens/inbox/chatcard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class InboxScreen extends StatelessWidget {
+class InboxScreen extends StatefulWidget {
   InboxScreen({super.key});
 
-  List images = [
-    {
-      'title': 'Tom Reily',
-      'images':
-          'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2960&q=80'
-    },
-    {
-      'title': 'Nancy Bailer',
-      'images':
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2787&q=80'
-    },
-    {
-      'title': 'Edward McFurr',
-      'images':
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80'
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
+
+class _InboxScreenState extends State<InboxScreen> {
+  List<SignupSavepDataFirebase> alllist = [];
+  final List<SignupSavepDataFirebase> _searchlist = [];
+  bool _isSearching = false;
+  List<SignupSavepDataFirebase> chatList = [];
+  List<String> receiverList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData();
+  }
+
+
+
+  Future<void> fetchData() async {
+    try {
+      // Replace 'senderId' with the actual sender ID
+      String senderId = FirebaseAuth.instance.currentUser!.uid;
+      receiverList = await getReceiverIdsBySenderId(senderId);
+      setState(() {
+        
+      });
+      print(receiverList);
+    } catch (e) {
+      print('Error fetching user IDs: $e');
     }
-  ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width * 1, 70),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: WillPopScope(
+          onWillPop: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = !_isSearching;
+              });
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: PreferredSize(
+              preferredSize: Size(MediaQuery.of(context).size.width * 1, 70),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 18.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Inbox',
-                      style: GoogleFonts.dmSans(
+                    Row(
+                      children: [
+                        _isSearching
+                            ? Container(
+                                width: 200.w,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Name , Email ...',
+                                    hintStyle: style.copyWith(
+                                        color: Colors.grey, fontSize: 15.sp),
+                                  ),
+                                  autofocus: true,
+                                  style: style.copyWith(
+                                      color: Colors.black, fontSize: 15.sp),
+                                  onChanged: (value) {
+                                    //search logic
+                                    _searchlist.clear();
+                                    for (var i in alllist) {
+                                      if (i.firstName
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()) ||
+                                          i.lastName
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(value
+                                                  .toString()
+                                                  .toLowerCase()) ||
+                                          i.email
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase())) {
+                                        _searchlist.add(i);
+                                      }
+                                      setState(() {
+                                        _searchlist;
+                                      });
+                                    }
+                                  },
+                                ),
+                              )
+                            : Text(
+                                'Inbox',
+                                style: GoogleFonts.dmSans(
+                                    color: Color(0xFF3A3153),
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isSearching = !_isSearching;
+                            });
+                            if(!_isSearching) {
+                              fetchData();
+                            }
+                          },
+                          child: Icon(
+                            _isSearching
+                                ? CupertinoIcons.clear_circled_solid
+                                : Icons.search,
+                            color: Color(0xFF3A3153),
+                            size: 29.w,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // Usage
+                            // fetchAndPrintDocumentIds();
+                            //  getAncestorDocumentIdsWithSubcollections("chats","messages");
+
+                            getReceiverIdsBySenderId(
+                                FirebaseAuth.instance.currentUser!.uid);
+                          },
+                          child: Icon(
+                            Icons.edit,
+                            color: Color(0xFF3A3153),
+                            size: 29.w,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Icon(
+                          Icons.delete_outline,
                           color: Color(0xFF3A3153),
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Color(0xFF3A3153),
-                      size: 29.w,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Icon(
-                      Icons.edit,
-                      color: Color(0xFF3A3153),
-                      size: 29.w,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Icon(
-                      Icons.delete_outline,
-                      color: Color(0xFF3A3153),
-                      size: 29.w,
+                          size: 29.w,
+                        )
+                      ],
                     )
                   ],
-                )
+                ),
+              ),
+            ),
+            body: Column(
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                Container(
+                  height: 1.h,
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Expanded(
+                    child: _isSearching
+                        ? StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .where('userId',
+                                    isNotEqualTo:
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                case ConnectionState.none:
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+                                  final data = snapshot.data?.docs;
+                                  alllist = data
+                                          ?.map((e) =>
+                                              SignupSavepDataFirebase.fromJson(
+                                                  e.data()))
+                                          .toList() ??
+                                      [];
+                                  if (alllist.isNotEmpty) {
+                                    return ListView.builder(
+                                        itemCount: _searchlist.length,
+                                        itemBuilder: (context, index) {
+                                          return ChatCard(
+                                              user: _searchlist[index]);
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: Text("No connections FOUND!"),
+                                    );
+                                  }
+                              }
+                            })
+                        :     receiverList.isNotEmpty ?    StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .where('userId',
+                                    whereIn:
+                                        receiverList) // Filter documents by user IDs
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                case ConnectionState.none:
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+
+                                  final data = snapshot.data?.docs;
+        
+                                  chatList = data
+                                          ?.map((e) =>
+                                              SignupSavepDataFirebase.fromJson(
+                                                  e.data()))
+                                          .toList() ??
+                                      [];
+                                  if (chatList.isNotEmpty) {
+                                    return ListView.builder(
+                                        itemCount: chatList.length,
+                                        itemBuilder: (context, index) {
+                                          return ChatCard(
+                                              user: chatList[index]);
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: Text("No Chats!"),
+                                    );
+                                  }
+                              }
+                            }) : Container(
+                              alignment: Alignment.center,
+                              height: 100.h,
+                              width: 100.h,
+                              child: Text("")) )
               ],
             ),
           ),
-        ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              height: 1.h,
-              color: Colors.black,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: images.length,
-                  // shrinkWrap: true,
-                  // physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.w),
-                      child: ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 14.w, vertical: 0),
-                        leading: Container(
-                          width: 90.w,
-                          height: 90.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      '${images[index]['images']}'),
-                                  alignment: Alignment.topCenter,
-                                  fit: BoxFit.cover)),
-                        ),
-                        title: Text(
-                          '${images[index]['title']}',
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.dmSans(
-                              color: Color(
-                                0xFF3A3153,
-                              ),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp),
-                        ),
-                        subtitle: Text(
-                          'Hey there ! Yes, I’ll be there.',
-                          style: GoogleFonts.dmSans(
-                              color: Color(
-                                0xFF3A3153,
-                              ),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.sp),
-                        ),
-                        trailing: Icon(
-                          Icons.done_all_rounded,
-                          color: Color(0xFF3078CC),
-                        ),
-                      ),
-                    );
-                  }),
-            )
-          ],
         ),
       ),
     );

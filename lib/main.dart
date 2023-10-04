@@ -1,5 +1,6 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
+import 'package:crypto_estate_tech/provider/chatProvider.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
@@ -37,6 +38,9 @@ void main() async {
           create: (context) => PostLikesProvider(),
         ),
         // Add more providers if needed
+         ChangeNotifierProvider(
+          create: (context) => ChatProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

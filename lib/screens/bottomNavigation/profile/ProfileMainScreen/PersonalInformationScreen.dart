@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
@@ -5,9 +7,11 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 
 class PersonalInformation extends StatefulWidget {
@@ -18,6 +22,43 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _PersonalInformationState extends State<PersonalInformation> {
+  String? photoUrl; // To store the URL of the profile photo
+  bool isLoading = false;
+  final ImagePicker picker = ImagePicker();
+
+  Future<void> _updateProfilePhoto(String imagePath) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      isLoading = true; // Start loading indicator
+    });
+
+    // Upload the image to Firebase Storage
+    final Reference storageRef =
+        FirebaseStorage.instance.ref().child('profile_photos').child(user!.uid);
+    final UploadTask uploadTask = storageRef.putFile(File(imagePath));
+
+    await uploadTask.whenComplete(() async {
+      // Get the download URL of the uploaded image
+      final String imageUrl = await storageRef.getDownloadURL();
+
+      // Update the photoUrl field in Firestore
+      await updateUserPhotoUrl(user.uid, imageUrl);
+
+      // Update the UI with the new photoUrl
+      setState(() {
+        photoUrl = imageUrl;
+        isLoading = false; // Stop loading indicator
+      });
+    });
+  }
+
+  Future<void> updateUserPhotoUrl(String userId, String imageUrl) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'photoUrl': imageUrl});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,26 +123,92 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       final userData = SignupSavepDataFirebase.fromJson(
                         snapshot.data!.data() as Map<String, dynamic>,
                       );
+
+                      photoUrl = userData.photoUrl!;
                       return Column(
                         children: [
-                          Container(
-                            height: 70.h,
-                            width: 70.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.black),
-                            child: CachedNetworkImage(
-                              key: UniqueKey(),
-                              imageUrl: userData.photoUrl!,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Container(
-                                child: Lottie.asset(
-                                  'assets/images/loading_animation.json', // Replace with your animation file path
-                                  width: 70.h,
-                                  height: 70.h,
-                                  // Other properties you can customize
+                          SizedBox(
+                            height: 110.h,
+                            width: 110.w,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    height: 100.h,
+                                    width: 100.h,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.black),
+                                    child: isLoading
+                                        ? const CircularProgressIndicator()
+                                        : CachedNetworkImage(
+                                            key: UniqueKey(),
+                                            imageUrl: photoUrl ?? '',
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              child: Lottie.asset(
+                                                'assets/images/loading_animation.json', // Replace with your animation file path
+                                                width: 70.h,
+                                                height: 70.h,
+                                                // Other properties you can customize
+                                              ),
+                                            ),
+                                          ),
+                                  ),
                                 ),
-                              ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialogBox(
+                                              onCameraSelected: () async {
+                                            Navigator.pop(context);
+
+                                            final XFile? pickedImage =
+                                                await picker.pickImage(
+                                                    source: ImageSource
+                                                        .camera); // You can use ImageSource.camera for the camera option
+                                            if (pickedImage != null) {
+                                              // Update the profile photo
+                                              await _updateProfilePhoto(
+                                                  pickedImage.path);
+                                            }
+                                          }, onGallerySelected: () async {
+                                            Navigator.pop(context);
+                                            final XFile? pickedImage =
+                                                await picker.pickImage(
+                                                    source: ImageSource.camera);
+                                            if (pickedImage != null) {
+                                              // Update the profile photo
+                                              await _updateProfilePhoto(
+                                                  pickedImage.path);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 40.h,
+                                      width: 40.h,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey.shade100,
+                                      ),
+                                      child: const Icon(
+                                        Icons.edit,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -202,11 +309,15 @@ class _PersonalInformationState extends State<PersonalInformation> {
             width: 200.w,
             child: Row(
               children: [
-                Text(
-                  information,
-                  style: numberStyle.copyWith(
-                    fontSize: 17.sp,
-                    color: Colors.black54,
+                Flexible(
+                 
+                  child: Text(
+                    information,
+                    style: numberStyle.copyWith(
+                      fontSize: 17.sp,
+                      color: Colors.black54,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
@@ -285,6 +396,36 @@ class _PersonalInformationState extends State<PersonalInformation> {
           )
         ],
       ),
+    );
+  }
+
+  Widget AlertDialogBox(
+      {required VoidCallback onGallerySelected,
+      required VoidCallback onCameraSelected}) {
+    return AlertDialog(
+      title: const Text('Select an Image'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Select from Gallery'),
+              onTap: onGallerySelected),
+          ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Select from Camera'),
+              onTap: onCameraSelected),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Handle cancel option
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: const Text('Cancel'),
+        ),
+      ],
     );
   }
 }
