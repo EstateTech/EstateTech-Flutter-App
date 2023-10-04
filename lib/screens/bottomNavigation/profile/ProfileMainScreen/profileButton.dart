@@ -24,7 +24,8 @@ class ProfileImageButtons extends StatelessWidget {
         height: 70.h,
         margin: EdgeInsets.only(right: 20.h),
         decoration: BoxDecoration(
-            color: Colors.amber, borderRadius: BorderRadius.circular(20.r)),
+            color: Color(0xFF3A3153),
+            borderRadius: BorderRadius.circular(20.r)),
         child: Stack(
           children: [
             Row(
@@ -34,7 +35,7 @@ class ProfileImageButtons extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(imagePath), fit: BoxFit.contain)),
+                            image: AssetImage(imagePath), fit: BoxFit.fill)),
                   ),
                 ),
                 Expanded(

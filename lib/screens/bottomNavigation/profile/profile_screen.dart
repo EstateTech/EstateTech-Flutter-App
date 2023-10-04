@@ -4,6 +4,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/PersonalInformationScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/profileButton.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/swap_page_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -156,11 +157,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             color: Shade2purple,
                                           ),
                                         ),
-                                        Text(
-                                          "See profile",
-                                          style: style.copyWith(
-                                            fontSize: 15.sp,
-                                            color: greyShadeColor,
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const PersonalInformation()));
+                                          },
+                                          child: Text(
+                                            "See profile",
+                                            style: style.copyWith(
+                                              fontSize: 15.sp,
+                                              color: greyShadeColor,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -253,6 +263,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(
                   height: 30.h,
+                ),
+                ProfileImageButtons(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SwapPageScreen()));
+                  },
+                  imagePath: "assets/images/profileSet3.png",
+                  text: "Get CET Tokens",
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Container(
+                  height: 1.h,
+                  decoration: const BoxDecoration(
+                    color: Color(0xff959595),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
                 ),
                 ProfileImageButtons(
                   onTap: () {},

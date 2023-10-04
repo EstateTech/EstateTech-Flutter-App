@@ -27,15 +27,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 50.h,
-              ),
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
                 child: Icon(
-                  Icons.arrow_back,
+                  Icons.arrow_back_ios,
                   size: 30.h,
                   color: Colors.black54,
                 ),
