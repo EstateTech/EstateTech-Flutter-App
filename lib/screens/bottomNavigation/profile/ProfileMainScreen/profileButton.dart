@@ -23,7 +23,9 @@ class ProfileImageButtons extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 70.h,
         margin: EdgeInsets.only(right: 20.h),
+
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.r)),
+
         child: Stack(
           children: [
             Row(
@@ -33,7 +35,7 @@ class ProfileImageButtons extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(imagePath), fit: BoxFit.contain)),
+                            image: AssetImage(imagePath), fit: BoxFit.fill)),
                   ),
                 ),
                 Expanded(
