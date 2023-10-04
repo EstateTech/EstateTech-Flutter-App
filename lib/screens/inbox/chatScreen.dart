@@ -29,7 +29,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
@@ -194,7 +193,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   Expanded(
                       child: TextField(
+
                     controller: textController,
+
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     onTap: () {},
@@ -240,6 +241,7 @@ class _ChatScreenState extends State<ChatScreen> {
             shape: const CircleBorder(),
             color: Colors.green,
             child: const Icon(Icons.send, color: Colors.white, size: 28),
+
           )
         ],
       ),

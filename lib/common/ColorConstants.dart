@@ -51,8 +51,52 @@ const String postCompletedCongratulationsScreen =
 
 const String searchScreen = "/searchScreen";
 
- const String bestofferPf =  "BestOffer";
-  const String trendingPf ="Trending";
- const String latestPf= "Latest";
- const String offPlan =  "OffPlan";
+const String bestofferPf = "BestOffer";
+const String trendingPf = "Trending";
+const String latestPf = "Latest";
+const String offPlan = "OffPlan";
 
+List bitcoinCurrency = [
+  {
+    'id': '1',
+    'Code': 'BNB',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbnb.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+  },
+  {
+    'id': '2',
+    'Code': 'LTC',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fltc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+  },
+  {
+    'id': '3',
+    'Code': 'BTC',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+  },
+  {
+    'id': '4',
+    'Code': 'ETH',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+  },
+  {
+    'id': '5',
+    'Code': 'BAT',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbat.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+  },
+  {
+    'id': '6',
+    'Code': 'XRP',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fxrp.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+  },
+  {
+    'id': '7',
+    'Code': 'CET',
+    'flag':
+        'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/images%2F651bc6990f7526000ad9dd7f.png?alt=media&token=8b11fe06-72a7-4ec8-a0e3-a3a182706d83&_gl=1*1pja83c*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5NjMxNzQ3OC40MS4xLjE2OTYzMTkxNjYuMzkuMC4w'
+  },
+];
