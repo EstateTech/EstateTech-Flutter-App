@@ -33,7 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: StreamBuilder(
-                  stream: getAllMessages(widget.user),
+                stream: getAllMessages(widget.user),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -41,36 +41,32 @@ class _ChatScreenState extends State<ChatScreen> {
                       return const Center(
                         child: SizedBox(),
                       );
-            
+
                     case ConnectionState.active:
                     case ConnectionState.done:
-                    
-                    final data = snapshot.data?.docs;
-                    _messagelist = data?.map((e) => Message.fromJson(e.data())).toList() ?? [];
-
-                   
-                     
- 
-
+                      final data = snapshot.data?.docs;
+                      _messagelist = data
+                              ?.map((e) => Message.fromJson(e.data()))
+                              .toList() ??
+                          [];
 
                       if (_messagelist.isNotEmpty) {
                         return ListView.builder(
-                            itemCount:
-                               _messagelist.length,
+                            itemCount: _messagelist.length,
                             itemBuilder: (context, index) {
                               return MessageCard(message: _messagelist[index]);
                             });
                       } else {
-                        return  Center(
-                          child: Text("Say Hi !!🤩" , style: style.copyWith(
-                            fontSize: 25.sp,
-                            color: Shade2purple
-                          ),),
+                        return Center(
+                          child: Text(
+                            "Say Hi !!🤩",
+                            style: style.copyWith(
+                                fontSize: 25.sp, color: Shade2purple),
+                          ),
                         );
                       }
                   }
                 },
-              
               ),
             ),
             _chatInput()
@@ -184,7 +180,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       )),
                   Expanded(
                       child: TextField(
-                        controller: textEditingController,
+                    controller: textEditingController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -214,13 +210,14 @@ class _ChatScreenState extends State<ChatScreen> {
             shape: CircleBorder(),
             color: Shade2purple,
             onPressed: () {
-              if(textEditingController.text.isNotEmpty){
-                sendMessage(widget.user, textEditingController.text.toString(),context);
+              if (textEditingController.text.isNotEmpty) {
+                sendMessage(widget.user, textEditingController.text.toString(),
+                    context);
                 textEditingController.text = '';
               }
             },
             child: Icon(
-              Icons.send, 
+              Icons.send,
               color: Colors.white,
               size: 28,
             ),
