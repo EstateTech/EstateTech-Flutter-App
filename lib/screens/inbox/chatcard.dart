@@ -94,3 +94,4 @@ class _ChatCardState extends State<ChatCard> {
     );
   }
 }
+// adding stast lines
