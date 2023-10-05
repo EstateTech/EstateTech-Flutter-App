@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/message.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/inbox/messagecard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatScreen extends StatefulWidget {
   final SignupSavepDataFirebase user;
@@ -25,6 +28,15 @@ class _ChatScreenState extends State<ChatScreen> {
   //showEmoji -- for storing value of showing or hiding emoji
   //isUploading -- for checking if image is uploading or not?
   bool _showEmoji = false, _isUploading = false;
+  Stream<QuerySnapshot>? _messageStream;
+
+
+  void initState() {
+    super.initState();
+   
+    _messageStream = getAllMessages(widget.user);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,89 +44,94 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: SafeArea(
-        child: WillPopScope(
-          //if emojis are shown & back button is pressed then hide emojis
-          //or else simple close current screen on back button click
-          onWillPop: () {
-            if (_showEmoji) {
-              setState(() => _showEmoji = !_showEmoji);
-              return Future.value(false);
-            } else {
-              return Future.value(true);
-            }
-          },
-          child: Scaffold(
-            //app bar
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              flexibleSpace: _appBar(),
-            ),
+      child: WillPopScope(
+        //if emojis are shown & back button is pressed then hide emojis
+        //or else simple close current screen on back button click
+        onWillPop: () {
+          if (_showEmoji) {
+            setState(() => _showEmoji = !_showEmoji);
+            return Future.value(false);
+          } else {
+            return Future.value(true);
+          }
+        },
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              //app bar
 
-            backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+           
 
-            //body
-            body: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                    stream: getAllMessages(widget.user),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        //if data is loading
-                        case ConnectionState.waiting:
-                        case ConnectionState.none:
-                          return const SizedBox();
- //// heello 
-                        //if some or all data is loaded then show it
-                        case ConnectionState.active:
-                        case ConnectionState.done:
-                          final data = snapshot.data?.docs;
-                          _list = data
-                                  ?.map((e) => Message.fromJson(e.data()))
-                                  .toList() ??
-                              [];
+              //body
+              body: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: _appBar(),
 
-                          if (_list.isNotEmpty) {
-                            return ListView.builder(
-                                reverse: true,
-                                itemCount: _list.length,
-                                padding: EdgeInsets.only(top: mq.height * .01),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return MessageCard(message: _list[index]);
-                                });
-                          } else {
-                            return const Center(
-                              child: Text('Say Hii! 👋',
-                                  style: TextStyle(fontSize: 20)),
-                            );
-                          }
-                      }
-                    },
                   ),
-                ),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream: _messageStream,
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          //if data is loading
+                          case ConnectionState.waiting:
+                          case ConnectionState.none:
+                            return const SizedBox();
+ //// heello 
+                          //if some or all data is loaded then show it
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            //final data = snapshot.data?.docs;
+                           final data = snapshot.data as QuerySnapshot<Map<String, dynamic>>?;
+if (data != null) {
+  _list = data.docs.map((e) => Message.fromJson(e.data())).toList();
+} else {
+  // Handle the case when data is null or empty
+  _list = [];
+}
+                                print("hello world");
 
-                //progress indicator for showing uploading
-                if (_isUploading)
-                  const Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                          child: CircularProgressIndicator(strokeWidth: 2))),
+                            if (_list.isNotEmpty) {
+                              return ListView.builder(
+                                  reverse: false,
+                                  itemCount: _list.length,
+                                  padding: EdgeInsets.only(top: mq.height * .01),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return MessageCard(message: _list[index]);
+                                  });
+                            } else {
+                              return const Center(
+                                child: Text('Say Hii! 👋',
+                                    style: TextStyle(fontSize: 20)),
+                              );
+                            }
+                        }
+                      },
+                    ),
+                  ),
 
-                //chat input filed
-                _chatInput(),
+                  //progress indicator for showing uploading
+                  if (_isUploading)
+                    const Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                            child: CircularProgressIndicator(strokeWidth: 2))),
 
-                //show emojis on keyboard emoji button click & vice versa
-                if (_showEmoji)
-                  SizedBox(
-                    height: mq.height * .35,
-                  )
-              ],
-            ),
-          ),
+                  //chat input filed
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20.h),
+                    child: _chatInput()),
+
+                 
+                ],
+              ),
+            );
+          }
         ),
       ),
     );
@@ -124,49 +141,64 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _appBar() {
     return InkWell(
         onTap: () {},
-        child: Row(children: [
-          //back button
-          IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back, color: Colors.black54)),
-
-          //user profile picture
-          ClipRRect(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.height * .03),
-            child: CachedNetworkImage(
-              width: MediaQuery.of(context).size.height * .05,
-              height: MediaQuery.of(context).size.height * .05,
-              imageUrl: widget.user.photoUrl ?? "",
-              errorWidget: (context, url, error) =>
-                  const CircleAvatar(child: Icon(CupertinoIcons.person)),
+        child: Container(
+          margin: EdgeInsets.only(top: 50.h),
+                decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: Offset(0, 3),
             ),
-          ),
+          ],
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5))),
 
-          //for adding some space
-          const SizedBox(width: 10),
-
-          //user name & last seen time
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //user name
-              Text(widget.user.firstName ?? "",
-                  style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500)),
-
-              //for adding some space
-              const SizedBox(height: 2),
-
-              //last seen time of user
-              Text("last seen no active",
-                  style: const TextStyle(fontSize: 13, color: Colors.black54)),
-            ],
-          )
-        ]));
+          child: Row(children: [
+            //back button
+            IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back, color: Colors.black54)),
+        
+            //user profile picture
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(MediaQuery.of(context).size.height * .03),
+              child: CachedNetworkImage(
+                width: MediaQuery.of(context).size.height * .05,
+                height: MediaQuery.of(context).size.height * .05,
+                imageUrl: widget.user.photoUrl ?? "",
+                errorWidget: (context, url, error) =>
+                    const CircleAvatar(child: Icon(CupertinoIcons.person)),
+              ),
+            ),
+        
+            //for adding some space
+            const SizedBox(width: 10),
+        
+            //user name & last seen time
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //user name
+                Text(widget.user.firstName ?? "",
+                    style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500)),
+        
+                //for adding some space
+                const SizedBox(height: 2),
+        
+                //last seen time of user
+                Text("last seen no active",
+                    style: const TextStyle(fontSize: 13, color: Colors.black54)),
+              ],
+            )
+          ]),
+        ));
   }
 
   // bottom chat input field
@@ -185,36 +217,36 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 children: [
                   //emoji button
-                  IconButton(
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      icon: const Icon(Icons.emoji_emotions,
-                          color: Colors.blueAccent, size: 25)),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       FocusScope.of(context).unfocus();
+                  //     },
+                  //     icon: const Icon(Icons.emoji_emotions,
+                  //         color: Colors.blueAccent, size: 25)),
 
                   Expanded(
-                      child: TextField(
-                    controller: textController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    onTap: () {},
-                    decoration: const InputDecoration(
-                        hintText: 'Type Something...',
-                        hintStyle: TextStyle(color: Colors.blueAccent),
-                        border: InputBorder.none),
-                  )),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20.h),
+                        child: TextField(
+                                          controller: textController,
+                                          keyboardType: TextInputType.multiline,
+                                          maxLines: null,
+                                          onTap: () {},
+                                          decoration: const InputDecoration(
+                          hintText: 'Type Something...',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: InputBorder.none),
+                                        ),
+                      )),
 
                   //pick image from gallery button
-                  IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(Icons.image,
-                          color: Colors.blueAccent, size: 26)),
+                  // IconButton(
+                  //     onPressed: () async {},
+                  //     icon: const Icon(Icons.image,
+                  //         color: Colors.blueAccent, size: 26)),
 
                   //take image from camera button
-                  IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(Icons.camera_alt_rounded,
-                          color: Colors.blueAccent, size: 26)),
+                
 
                   //adding some space
                   SizedBox(width: MediaQuery.of(context).size.width * .02),
@@ -238,7 +270,7 @@ class _ChatScreenState extends State<ChatScreen> {
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
             shape: const CircleBorder(),
-            color: Colors.green,
+            color: mainAppColor,
             child: const Icon(Icons.send, color: Colors.white, size: 28),
           )
         ],

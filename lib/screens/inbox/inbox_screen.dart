@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
@@ -22,12 +23,15 @@ class _InboxScreenState extends State<InboxScreen> {
   bool _isSearching = false;
   List<SignupSavepDataFirebase> chatList = [];
   List<String> receiverList = [];
+  bool _isLoadingWidget = false;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchData();
+ 
   }
 
 
@@ -35,11 +39,16 @@ class _InboxScreenState extends State<InboxScreen> {
   Future<void> fetchData() async {
     try {
       // Replace 'senderId' with the actual sender ID
+      setState(() {
+        _isLoadingWidget = true;
+      });
       String senderId = FirebaseAuth.instance.currentUser!.uid;
       receiverList = await getReceiverIdsBySenderId(senderId);
       setState(() {
+        _isLoadingWidget = false;
         
       });
+     
       print(receiverList);
     } catch (e) {
       print('Error fetching user IDs: $e');
@@ -79,6 +88,7 @@ class _InboxScreenState extends State<InboxScreen> {
                             ? Container(
                                 width: 200.w,
                                 child: TextField(
+                                  controller: searchController,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Name , Email ...',
@@ -89,8 +99,15 @@ class _InboxScreenState extends State<InboxScreen> {
                                   style: style.copyWith(
                                       color: Colors.black, fontSize: 15.sp),
                                   onChanged: (value) {
+                                    print(value);
                                     //search logic
-                                    _searchlist.clear();
+                                   
+
+                                    setState(() {
+                                       _searchlist.clear();
+                                      
+                                    });
+                                  
                                     for (var i in alllist) {
                                       if (i.firstName
                                               .toString()
@@ -107,6 +124,11 @@ class _InboxScreenState extends State<InboxScreen> {
                                               .toLowerCase()
                                               .contains(value.toLowerCase())) {
                                         _searchlist.add(i);
+                                      }
+                                      if(value == "") {
+                                        setState(() {
+                                          _searchlist.clear();
+                                        });
                                       }
                                       setState(() {
                                         _searchlist;
@@ -213,21 +235,41 @@ class _InboxScreenState extends State<InboxScreen> {
                                                   e.data()))
                                           .toList() ??
                                       [];
-                                  if (alllist.isNotEmpty) {
+                                  if (_searchlist.isNotEmpty) {
                                     return ListView.builder(
-                                        itemCount: _searchlist.length,
+                                      itemCount: _searchlist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
-                                              user: _searchlist[index]);
+                                              user: _searchlist[index] , isSelected: false, );
                                         });
-                                  } else {
-                                    return const Center(
-                                      child: Text("No connections FOUND!"),
+                                  }else if(_searchlist.isEmpty && searchController.text.isNotEmpty) {
+                                     return  Center(
+                                      child:Text("No matching results found" , style:  style.copyWith(
+                                color: mainAppColor,
+                                fontSize:  20.sp 
+                              ),
+                              textAlign: TextAlign.center,
+                              
+                              ),);
+
+
+                                  } 
+                                  
+                                  else {
+                                    return  Center(
+                                      child:Text("Start Searching.." , style:  style.copyWith(
+                                color: mainAppColor,
+                                fontSize:  20.sp 
+                              ),
+                              textAlign: TextAlign.center,
+                              
+                              ),
                                     );
                                   }
                               }
                             })
-                        :     receiverList.isNotEmpty ?    StreamBuilder(
+                        :     !_isLoadingWidget ? 
+                         !receiverList.isEmpty?   StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('users')
                                 .where('userId',
@@ -258,7 +300,11 @@ class _InboxScreenState extends State<InboxScreen> {
                                         itemCount: chatList.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
-                                              user: chatList[index]);
+                                              user: chatList[index],
+                                              isSelected: false,
+                                              
+                                              
+                                              );
                                         });
                                   } else {
                                     return const Center(
@@ -266,11 +312,26 @@ class _InboxScreenState extends State<InboxScreen> {
                                     );
                                   }
                               }
-                            }) : Container(
+                            })  : Container(
+                               alignment: Alignment.center,
+                              height: 100.h,
+                              
+                              child: Text("No chats Found :(\n Start chatting by searching users" , style:  style.copyWith(
+                                color: mainAppColor,
+                                fontSize:  20.sp 
+                              ),
+                              textAlign: TextAlign.center,
+                              
+                              )
+                            )
+                            
+                            
+                            
+                            : Container(
                               alignment: Alignment.center,
                               height: 100.h,
                               width: 100.h,
-                              child: Text("")) )
+                              child: CircularProgressIndicator()))
               ],
             ),
           ),

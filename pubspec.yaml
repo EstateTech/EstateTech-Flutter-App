@@ -66,6 +66,7 @@ dependencies:
   cached_network_image: ^3.2.3
   country_code_picker: ^3.0.0
   drop_shadow: ^0.1.0
+  shimmer: ^3.0.0
 
 
 dev_dependencies:
