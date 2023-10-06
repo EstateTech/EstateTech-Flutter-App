@@ -1,4 +1,5 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/message.dart';
@@ -69,7 +70,7 @@ class _MessageCardState extends State<MessageCard> {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      widget.message.sent,
+                     Utils.getFormatttedTime(context: context, time: widget.message.sent),
                       style: style.copyWith(
                           fontSize: 13.sp, color: Colors.black54),
                     ),
@@ -136,7 +137,7 @@ class _MessageCardState extends State<MessageCard> {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      widget.message.sent,
+                      Utils.getFormatttedTime(context: context, time: widget.message.sent),
                       style: style.copyWith(
                           fontSize: 13.sp, color: Colors.black54),
                     ),
