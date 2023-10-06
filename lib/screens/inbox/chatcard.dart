@@ -99,3 +99,4 @@ class _ChatCardState extends State<ChatCard> {
     );
   }
 }
+

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:crypto_estate_tech/notification/notification_screen.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/BestOffer.dart';
+import 'package:provider/provider.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({
@@ -46,7 +49,7 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return SafeArea(
       child: Column(
         children: [
@@ -124,19 +127,27 @@ class _ExplorePageState extends State<ExplorePage>
                 SizedBox(
                   width: 10.h,
                 ),
-                Container(
-                  height: size.width * 0.12,
-                  width: size.width * 0.12,
-                  padding: EdgeInsets.all(10.h),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NotificationScreen()));
+                  },
+                  child: Container(
+                    height: size.width * 0.12,
+                    width: size.width * 0.12,
+                    padding: EdgeInsets.all(10.h),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Shade2purple,
+                      ),
+                    ),
+                    child: SvgPicture.asset(
+                      "assets/images/bell_line_icon.svg",
                       color: Shade2purple,
                     ),
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/images/bell_line_icon.svg",
-                    color: Shade2purple,
                   ),
                 ),
               ],
@@ -264,22 +275,30 @@ class _ExplorePageState extends State<ExplorePage>
                       });
                     }),
                 Expanded(child: SizedBox()),
-                Container(
-                    padding: EdgeInsets.all(7.h),
-                    height: 50.h,
-                    width: 60.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: unselectedTabcolor,
-                            blurRadius: 4,
-                            offset: Offset(0, 5), // Shadow position
-                          ),
-                        ],
-                        border: Border.all(color: Shade2purple),
-                        borderRadius: BorderRadius.circular(10.r)),
-                    child: SvgPicture.asset("assets/images/dollar_icon.svg"))
+                GestureDetector(
+                  onTap: () {
+                    fileProvider.updateCurrency(
+                        fileProvider.currency == "USD" ? 'AED' : 'USD');
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(7.h),
+                      height: 50.h,
+                      width: 60.h,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: unselectedTabcolor,
+                              blurRadius: 4,
+                              offset: Offset(0, 5), // Shadow position
+                            ),
+                          ],
+                          border: Border.all(color: Shade2purple),
+                          borderRadius: BorderRadius.circular(10.r)),
+                      child: fileProvider.currency == 'USD'
+                          ? SvgPicture.asset("assets/images/dollar_icon.svg")
+                          : Image.asset('assets/images/dirham.png')),
+                )
               ],
             ),
           ),

@@ -1,7 +1,9 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/buy.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/rent.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/sell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -74,9 +76,9 @@ class _SearchScreenState extends State<SearchScreen>
                 children: [
                   Rent(),
                   // Widget for Wishlist tab
-                  Center(child: Text('Buy')),
+                   BuyScreen(),
                   // Widget for Inbox tab
-                  Center(child: Text('Sell')),
+                  SellScreen(),
                 ],
               ),
             ),

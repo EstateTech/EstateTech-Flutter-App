@@ -6,7 +6,7 @@ import 'package:crypto_estate_tech/screens/AuthScreens/congratulations_screen.da
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/postCompleteCongratulationsScreen.dart';
 
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
-import 'package:crypto_estate_tech/screens/homeScreen/search_screen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/search_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthrough.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen.dart';
 import 'package:flutter/material.dart';

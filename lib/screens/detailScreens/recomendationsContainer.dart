@@ -66,6 +66,7 @@ class RecomendationContainer extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => postDetailScreen(
+                                postId: documents[index].id,
                                 postModel: post,
                               ),
                             ),
