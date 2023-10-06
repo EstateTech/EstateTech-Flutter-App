@@ -4,6 +4,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +66,7 @@ class _PostState extends State<Post> {
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
-
+    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
       height: 330.h,
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -226,7 +227,7 @@ class _PostState extends State<Post> {
                             fontWeight: FontWeight.w600,
                           ),
                           children: [
-                            const TextSpan(text: "300,000 AED"),
+                            TextSpan(text: "300,000 ${fileProvider.currency}"),
                             TextSpan(
                               text: " / year",
                               style: style.copyWith(

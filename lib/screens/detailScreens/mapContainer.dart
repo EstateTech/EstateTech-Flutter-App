@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/dialogMortgage.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class MapContainer extends StatefulWidget {
   final PostModel postModel;
@@ -96,6 +98,7 @@ class _MapContainerState extends State<MapContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 450.h,
@@ -138,9 +141,9 @@ class _MapContainerState extends State<MapContainer> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: PriceContainers(
-                      text: "AED 300,000",
+                      text: "${fileProvider.currency} 300,000",
                     ),
                   ),
                   SizedBox(

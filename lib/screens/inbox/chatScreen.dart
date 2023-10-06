@@ -5,6 +5,7 @@ import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/inbox/messagecard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatScreen extends StatefulWidget {
   final SignupSavepDataFirebase user;
@@ -31,88 +32,90 @@ class _ChatScreenState extends State<ChatScreen> {
     Size mq = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: SafeArea(
-        child: WillPopScope(
-          //if emojis are shown & back button is pressed then hide emojis
-          //or else simple close current screen on back button click
-          onWillPop: () {
-            if (_showEmoji) {
-              setState(() => _showEmoji = !_showEmoji);
-              return Future.value(false);
-            } else {
-              return Future.value(true);
-            }
-          },
-          child: Scaffold(
-            //app bar
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              flexibleSpace: _appBar(),
+      child: WillPopScope(
+        //if emojis are shown & back button is pressed then hide emojis
+        //or else simple close current screen on back button click
+        onWillPop: () {
+          if (_showEmoji) {
+            setState(() => _showEmoji = !_showEmoji);
+            return Future.value(false);
+          } else {
+            return Future.value(true);
+          }
+        },
+        child: Scaffold(
+          //app bar
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Padding(
+              padding: EdgeInsets.only(top: 30.h),
+              child: _appBar(),
             ),
+            elevation: 0,
+          ),
 
-            backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+          backgroundColor: const Color.fromARGB(255, 234, 248, 255),
 
-            //body
-            body: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder(
-                    stream: getAllMessages(widget.user),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        //if data is loading
-                        case ConnectionState.waiting:
-                        case ConnectionState.none:
-                          return const SizedBox();
- //// heello 
-                        //if some or all data is loaded then show it
-                        case ConnectionState.active:
-                        case ConnectionState.done:
-                          final data = snapshot.data?.docs;
-                          _list = data
-                                  ?.map((e) => Message.fromJson(e.data()))
-                                  .toList() ??
-                              [];
+          //body
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                  stream: getAllMessages(widget.user),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      //if data is loading
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return const SizedBox();
+                      //// heello
+                      //if some or all data is loaded then show it
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        final data = snapshot.data?.docs;
+                        _list = data
+                                ?.map((e) => Message.fromJson(e.data()))
+                                .toList() ??
+                            [];
 
-                          if (_list.isNotEmpty) {
-                            return ListView.builder(
-                                reverse: true,
-                                itemCount: _list.length,
-                                padding: EdgeInsets.only(top: mq.height * .01),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return MessageCard(message: _list[index]);
-                                });
-                          } else {
-                            return const Center(
-                              child: Text('Say Hii! 👋',
-                                  style: TextStyle(fontSize: 20)),
-                            );
-                          }
-                      }
-                    },
-                  ),
+                        if (_list.isNotEmpty) {
+                          return ListView.builder(
+                              reverse: true,
+                              itemCount: _list.length,
+                              padding: EdgeInsets.only(top: mq.height * .01),
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return MessageCard(message: _list[index]);
+                              });
+                        } else {
+                          return const Center(
+                            child: Text('Say Hii! 👋',
+                                style: TextStyle(fontSize: 20)),
+                          );
+                        }
+                    }
+                  },
                 ),
+              ),
 
-                //progress indicator for showing uploading
-                if (_isUploading)
-                  const Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                          child: CircularProgressIndicator(strokeWidth: 2))),
+              //progress indicator for showing uploading
+              if (_isUploading)
+                const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                        child: CircularProgressIndicator(strokeWidth: 2))),
 
-                //chat input filed
-                _chatInput(),
+              //chat input filed
+              _chatInput(),
 
-                //show emojis on keyboard emoji button click & vice versa
-                if (_showEmoji)
-                  SizedBox(
-                    height: mq.height * .35,
-                  )
-              ],
-            ),
+              //show emojis on keyboard emoji button click & vice versa
+              if (_showEmoji)
+                SizedBox(
+                  height: mq.height * .35,
+                )
+            ],
           ),
         ),
       ),
@@ -127,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
           //back button
           IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back, color: Colors.black54)),
+              icon: const Icon(Icons.arrow_back, color: Colors.white)),
 
           //user profile picture
           ClipRRect(
@@ -137,13 +140,14 @@ class _ChatScreenState extends State<ChatScreen> {
               width: MediaQuery.of(context).size.height * .05,
               height: MediaQuery.of(context).size.height * .05,
               imageUrl: widget.user.photoUrl ?? "",
+              fit: BoxFit.cover,
               errorWidget: (context, url, error) =>
                   const CircleAvatar(child: Icon(CupertinoIcons.person)),
             ),
           ),
 
           //for adding some space
-          const SizedBox(width: 10),
+          SizedBox(width: 10.w),
 
           //user name & last seen time
           Column(
@@ -152,17 +156,17 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               //user name
               Text(widget.user.firstName ?? "",
-                  style: const TextStyle(
-                      fontSize: 16,
+                  style: TextStyle(
+                      fontSize: 16.sp,
                       color: Colors.black87,
                       fontWeight: FontWeight.w500)),
 
               //for adding some space
-              const SizedBox(height: 2),
+              SizedBox(height: 2.h),
 
               //last seen time of user
-              Text("last seen no active",
-                  style: const TextStyle(fontSize: 13, color: Colors.black54)),
+              // Text("last seen no active",
+              //     style: const TextStyle(fontSize: 13, color: Colors.black54)),
             ],
           )
         ]));
@@ -188,14 +192,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () {
                         FocusScope.of(context).unfocus();
                       },
-                      icon: const Icon(Icons.emoji_emotions,
+                      icon: const Icon(Icons.message,
                           color: Colors.blueAccent, size: 25)),
 
                   Expanded(
                       child: TextField(
-
                     controller: textController,
-
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     onTap: () {},
@@ -206,16 +208,16 @@ class _ChatScreenState extends State<ChatScreen> {
                   )),
 
                   //pick image from gallery button
-                  IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(Icons.image,
-                          color: Colors.blueAccent, size: 26)),
+                  // IconButton(
+                  //     onPressed: () async {},
+                  //     icon: const Icon(Icons.image,
+                  //         color: Colors.blueAccent, size: 26)),
 
                   //take image from camera button
-                  IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(Icons.camera_alt_rounded,
-                          color: Colors.blueAccent, size: 26)),
+                  // IconButton(
+                  //     onPressed: () async {},
+                  //     icon: const Icon(Icons.camera_alt_rounded,
+                  //         color: Colors.blueAccent, size: 26)),
 
                   //adding some space
                   SizedBox(width: MediaQuery.of(context).size.width * .02),
@@ -239,9 +241,8 @@ class _ChatScreenState extends State<ChatScreen> {
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
             shape: const CircleBorder(),
-            color: Colors.green,
+            color: Colors.blue,
             child: const Icon(Icons.send, color: Colors.white, size: 28),
-
           )
         ],
       ),

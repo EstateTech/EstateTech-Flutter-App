@@ -71,6 +71,7 @@ class _WishlistPageState extends State<WishlistPage> {
                             MaterialPageRoute(
                               builder: (context) => postDetailScreen(
                                 postModel: post,
+                                postId: snapshot.data!.docs[index].id,
                               ),
                             ),
                           );
