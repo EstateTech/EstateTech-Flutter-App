@@ -51,7 +51,8 @@ class _InboxScreenState extends State<InboxScreen> {
      
       print(receiverList);
     } catch (e) {
-      print('Error fetching user IDs: $e');
+      print('Error fetching user ID: $e');
+    
     }
   }
 
