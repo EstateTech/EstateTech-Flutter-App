@@ -91,6 +91,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                               MaterialPageRoute(
                                 builder: (context) => postDetailScreen(
                                   postModel: post,
+                                  postId: documents[index].id,
                                 ),
                               ),
                             );
@@ -140,6 +141,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => postDetailScreen(
+                                  postId: documents[index].id,
                                   postModel: post,
                                 ),
                               ),

@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/provider/filterProvider.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +59,8 @@ class _GridPostState extends State<GridPost> {
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
+
+    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
@@ -141,8 +145,8 @@ class _GridPostState extends State<GridPost> {
             fit: BoxFit.scaleDown,
             alignment: Alignment.center,
             child: Text(
-              //getFirstThreeWords(widget.postModel.propertyDescription!),
-              "Hello world",
+              getFirstThreeWords(widget.postModel.propertyDescription!),
+              // "${widget.postModel}",
               style: style.copyWith(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -180,7 +184,7 @@ class _GridPostState extends State<GridPost> {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600),
                     children: <TextSpan>[
-                  const TextSpan(text: "300,0000 AED"),
+                  TextSpan(text: "300,0000 ${fileProvider.currency}"),
                   TextSpan(
                     text: ' / year',
                     style: style2.copyWith(

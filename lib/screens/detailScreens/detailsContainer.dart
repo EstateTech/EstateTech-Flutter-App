@@ -345,15 +345,15 @@ class DetailsContainer extends StatelessWidget {
                   ),
                   profileContainer(),
                   SizedBox(
-                    height: 10.h,
+                    height: 60.h,
                   ),
-                  DividerContainer(context),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  RecomendationContainer(
-                    postModel: postModel,
-                  )
+                  // DividerContainer(context),
+                  // SizedBox(
+                  //   height: 10.h,
+                  // ),
+                  // RecomendationContainer(
+                  //   postModel: postModel,
+                  // )
                 ],
               ),
             ),

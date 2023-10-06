@@ -66,7 +66,8 @@ dependencies:
   cached_network_image: ^3.2.3
   country_code_picker: ^3.0.0
   drop_shadow: ^0.1.0
-
+  url_launcher: ^6.1.14
+  share_plus: ^7.1.0
 
 dev_dependencies:
   flutter_test:

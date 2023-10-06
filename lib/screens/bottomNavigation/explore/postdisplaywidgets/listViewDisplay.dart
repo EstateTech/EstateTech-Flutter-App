@@ -83,6 +83,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                               MaterialPageRoute(
                                 builder: (context) => postDetailScreen(
                                   postModel: post,
+                                  postId: documents[index].id,
                                 ),
                               ),
                             );
@@ -129,6 +130,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                             MaterialPageRoute(
                               builder: (context) => postDetailScreen(
                                 postModel: post,
+                                postId: documents[index].id,
                               ),
                             ),
                           );

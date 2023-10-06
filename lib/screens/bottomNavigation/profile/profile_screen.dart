@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/notification/notification_screen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/NotificationsSettingsScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/PersonalInformationScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/loginSecurityScreen.dart';
@@ -183,13 +184,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 25.h,
-                          width: 25.h,
-                          child: const Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Shade2purple,
-                          ),
-                        ),
+                            height: 25.h,
+                            width: 25.h,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PersonalInformation()));
+                              },
+                              icon: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: Shade2purple,
+                              ),
+                            )),
                         SizedBox(
                           width: 15.h,
                         ),
@@ -376,8 +385,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const NotificationSettingsScreen()));
+                            builder: (context) => NotificationScreen()));
                   },
                 ),
                 ListTileProfileOptions(

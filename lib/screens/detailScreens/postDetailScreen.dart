@@ -1,17 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/own_methods.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/provider/likesProvider.dart';
+import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/detailsContainer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class postDetailScreen extends StatefulWidget {
   final PostModel postModel;
-  const postDetailScreen({super.key, required this.postModel});
+  final String postId;
+  const postDetailScreen(
+      {super.key, required this.postModel, required this.postId});
 
   @override
   State<postDetailScreen> createState() => _postDetailScreenState();
@@ -23,6 +33,12 @@ class _postDetailScreenState extends State<postDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final filterProvider =
+        Provider.of<PostLikesProvider>(context, listen: true);
+
+    String currentUserId =
+        FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
+    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -113,28 +129,48 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white),
-                                    child: Icon(
-                                      Icons.share_rounded,
-                                      color: const Color(0xff444444),
-                                      size: 25.h,
-                                    ),
+                                    child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          Share.share('${widget.postId}');
+                                        },
+                                        icon: Icon(
+                                          Icons.share_rounded,
+                                          color: const Color(0xff444444),
+                                          size: 25.h,
+                                        )),
                                   ),
                                   SizedBox(
                                     width: 10.w,
                                   ),
                                   Container(
-                                    height: 40.h,
-                                    width: 40.h,
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white),
-                                    child: Icon(
-                                      Icons.favorite,
-                                      color: const Color(0xff444444),
-                                      size: 25.h,
-                                    ),
-                                  ),
+                                      height: 40.h,
+                                      width: 40.h,
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white),
+                                      child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {
+                                            filterProvider.toggleLike(
+                                                widget.postId, currentUserId);
+                                          },
+                                          icon: Consumer<PostLikesProvider>(
+                                            builder: (context, provider, _) {
+                                              return Icon(
+                                                provider.likedPostIds
+                                                        .contains(widget.postId)
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_border,
+                                                color: provider.likedPostIds
+                                                        .contains(widget.postId)
+                                                    ? Colors.red
+                                                    : Colors.grey,
+                                                size: 30.0,
+                                              );
+                                            },
+                                          )))
                                 ],
                               ),
                             ],
@@ -227,8 +263,8 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         fontWeight: FontWeight.bold),
                     children: <TextSpan>[
                       const TextSpan(text: '300,0000 '),
-                      const TextSpan(
-                        text: 'AED',
+                      TextSpan(
+                        text: '${fileProvider.currency}',
                       ),
                       TextSpan(
                         text: ' / year',
@@ -247,19 +283,294 @@ class _postDetailScreenState extends State<postDetailScreen> {
                 )
               ],
             ),
-            Container(
-              height: 40.h,
-              width: 150.h,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [mainAppColor, Colors.black]),
-                  borderRadius: BorderRadius.circular(15.r)),
-              child: Text(
-                "I'm interested",
-                style: style2.copyWith(color: Colors.white, fontSize: 15.sp),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                        // <-- SEE HERE
+                        borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(25.0),
+                    )),
+                    context: context,
+                    builder: ((context) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Center(
+                              child: Container(
+                                width: 50.w,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFFD9D9D9),
+                                    borderRadius: BorderRadius.circular(10.r)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                try {
+                                  launchUrlString(
+                                      'whatsapp://send?phone=+11111&text=${Uri.encodeFull('testApp')}');
+                                } catch (e) {
+                                  print('Error Launching WhatsApp');
+                                }
+                              },
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [mainAppColor, Colors.black]),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 30.w,
+                                        height: 30.h,
+                                        child: Image.asset(
+                                            'assets/images/whatsapp.png')),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "Contact via Whatsapp",
+                                        style: style2.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 16.sp),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                OwnMethods().openMail('test@gmail.com');
+                              },
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [mainAppColor, Colors.black]),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 30.w,
+                                        height: 30.h,
+                                        child: Icon(
+                                          Icons.email_outlined,
+                                          color: Colors.white,
+                                          size: 32.w,
+                                        )),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        //  width: 175.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.transparent)),
+                                        child: Text(
+                                          "Connect via Email",
+                                          style: style2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                OwnMethods().makePhoneCall('+1111111');
+                              },
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [mainAppColor, Colors.black]),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 30.w,
+                                        height: 30.h,
+                                        child: Icon(
+                                          Icons.phone,
+                                          color: Colors.white,
+                                          size: 32.w,
+                                        )),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        //  width: 175.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.transparent)),
+                                        child: Text(
+                                          "Make a phone call",
+                                          style: style2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                                Fluttertoast.showToast(
+                                    msg: 'You booked Successfully');
+                              },
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [mainAppColor, Colors.black]),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 30.w,
+                                        height: 30.h,
+                                        child: Icon(
+                                          Icons.edit_calendar_outlined,
+                                          color: Colors.white,
+                                          size: 32.w,
+                                        )),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        //  width: 175.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.transparent)),
+                                        child: Text(
+                                          "Book a visit to the location",
+                                          style: style2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Container(
+                              height: 50.h,
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [mainAppColor, Colors.black]),
+                                  borderRadius: BorderRadius.circular(15.r)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 30.w,
+                                      height: 30.h,
+                                      child: Icon(
+                                        Icons.person_outline,
+                                        color: Colors.white,
+                                        size: 32.w,
+                                      )),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      //  width: 175.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.transparent)),
+                                      child: Text(
+                                        "Visit the user profile",
+                                        style: style2.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 16.sp),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }));
+              },
+              child: Container(
+                height: 40.h,
+                width: 150.h,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [mainAppColor, Colors.black]),
+                    borderRadius: BorderRadius.circular(15.r)),
+                child: Text(
+                  "I'm interested",
+                  style: style2.copyWith(color: Colors.white, fontSize: 15.sp),
+                ),
               ),
             )
           ],
