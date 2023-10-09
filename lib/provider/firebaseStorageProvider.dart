@@ -15,14 +15,19 @@ class FirebaseStorageProvider extends ChangeNotifier {
   bool _isUploading = false;
   bool get isUploading => _isUploading;
 
-  double _progress = 0.0;
-  double get progress => _progress;
+  
+
+   setisUploading(bool isUploading){
+    this._isUploading=isUploading;
+    notifyListeners();
+
+   }
 
   Future<List<String>?> uploadImages(
       List<XFile> imageFiles, BuildContext context) async {
     try {
-      _isUploading = true;
-      notifyListeners();
+      // _isUploading = true;
+      // notifyListeners();
 
       List<String> downloadUrls = [];
 
@@ -40,9 +45,9 @@ class FirebaseStorageProvider extends ChangeNotifier {
             storageReference.putFile(File(imageFile.path));
         // to get the progress of task
         uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-          double progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          _progress = progress;
+          // double progress =
+          //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          // _progress = progress;
           notifyListeners();
         });
         final TaskSnapshot taskSnapshot = await uploadTask;
@@ -53,15 +58,15 @@ class FirebaseStorageProvider extends ChangeNotifier {
         downloadUrls.add(downloadUrl);
       }
 
-      _isUploading = false;
-      notifyListeners();
+      // _isUploading = false;
+      // notifyListeners();
 
       showSnackBar(context, "Successfully Uploaded");
 
       return downloadUrls;
     } catch (error) {
-      _isUploading = false;
-      notifyListeners();
+      // _isUploading = false;
+      // notifyListeners();
 
       // Handle error
       print('Image upload error: $error');

@@ -7,6 +7,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyS
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocode/geocode.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -39,12 +40,17 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   bool isLoading = false;
+  GeoCode geoCode = GeoCode();
+  
+
 
   LatLng _latLng = const LatLng(37.43296265331129, -122.08832357078792);
   CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+
+  
 
   _setMarker() {
     return Marker(
@@ -116,8 +122,8 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
       });
       _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
 
-      await Future.delayed(const Duration(seconds: 1));
-      final GoogleMapController controller = await _controller.future;
+     await Future.delayed(const Duration(seconds: 1));
+     final GoogleMapController controller = await _controller.future;
       setState(() {
         controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
       });
@@ -183,13 +189,105 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
     }
   }
 
+
+  Future<void> _updateMapLocation(String address) async {
+    
+
+
+ try {
+  setState(() {
+    isLoading = true;
+  });
+
+
+  
+    for(int i=0; i<2 ;i++) {
+    
+    Coordinates coordinates = await geoCode.forwardGeocoding(
+        address: address);
+        print("latitude ${coordinates.latitude}");
+        print("longitude ${coordinates.longitude}");
+
+        if(coordinates.latitude != null || coordinates.longitude != null){
+
+
+        
+
+       
+        
+
+
+
+    setState(() {
+        _latLng = LatLng(coordinates.latitude ?? 0.0, coordinates.longitude ?? 0.0);
+        _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
+        // postMdl.getCurrentWeather(position.latitude, position.longitude);
+        // postMdl.setUserPostion(position);
+      });
+      _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
+
+     await Future.delayed(const Duration(seconds: 1));
+     final GoogleMapController controller = await _controller.future;
+      setState(() {
+        controller.animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+      });
+
+
+            List<Placemark> placemarks =
+          await placemarkFromCoordinates(_latLng.latitude, _latLng.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        // addressController.text =
+        //     "${place.locality}, ${place.subLocality}, ${place.country}";
+        isLoading = false;
+      });
+      break;
+        } 
+    }
+
+
+
+  } catch (e) {
+    print(e);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Location not found for $address'),
+        ),
+      );
+
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+
+  
+  }
+    
+
+        
+        
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
+        alignment: Alignment.center,
         decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -243,6 +341,10 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                               Icons.location_on,
                               color: Colors.black,
                             )),
+                            onSubmitted: (value) {
+                              _updateMapLocation(value.toString());
+                              
+                            },
                       )),
                   //Adjust container
                   widget.isConfirmPinScreen
@@ -275,32 +377,40 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                       : const SizedBox.shrink()
                 ],
               ),
-
+        
               //  color: Colors.amber,
             ),
             Padding(
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: isLoading
-                  ? const CircularProgressIndicator(
-                      color: mainAppColor,
-                    )
+                  ? Container(
+                    child: Column(
+                      children: [
+                        const CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                          Text("Please Wait.... Address is fetching" ,
+                          style:  style.copyWith(color: Colors.white),)
+                      ],
+                    ),
+                  )
                   : customPostCreateBottomWidget(
                       OnPressedNextButton: () {
                         if (addressController.text.isNotEmpty) {
                           setState(() {
                             widget.postModel.latLong =
                                 GeoPoint(_latLng.latitude, _latLng.longitude);
-
+        
                             widget.postModel.city =
                                 addressController.text.split(',').first;
-
+        
                             widget.postModel.propertyAddressLine2 =
                                 addressController.text;
-
+        
                             widget.postModel.country =
                                 addressController.text.split(',').last;
                           });
-
+        
                           widget.isConfirmPinScreen
                               ? Navigator.push(
                                   context,

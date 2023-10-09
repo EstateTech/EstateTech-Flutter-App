@@ -43,9 +43,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
   Widget build(BuildContext context) {
     final xFileProvider = Provider.of<XFileProvider>(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(widget.postModel.toJson());
-      }),
+     
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,

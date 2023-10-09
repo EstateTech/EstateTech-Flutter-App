@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/rentalTypeScreen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,6 +35,16 @@ class _FeatureScreenState extends State<FeatureScreen> {
     CounterItem(title: 'Built up area(m2)', counter: 120),
     CounterItem(title: 'Plot area(m2)', counter: 120),
   ];
+  List<TextEditingController> textControllers = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (int i = 0; i < counterItems.length; i++) {
+      textControllers.add(TextEditingController());
+      textControllers[i].text = counterItems[i].counter.toString();
+    }
+  }
 
   void _incrementCounter(int index) {
     setState(() {
@@ -59,91 +72,116 @@ class _FeatureScreenState extends State<FeatureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(gradient: appBackgroundGradient),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const CustomCreatePostHeader(),
-              // SizedBox(
-              //   height: 20.h,
-              // ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Share some basics about your place",
-                    style: style.copyWith(
-                        fontSize: 25.sp,
-                        color: textwalktrough,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    "You can add more details later",
-                    style: style.copyWith(
-                        fontSize: 15.sp,
-                        color: textwalktrough,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-
-              SingleChildScrollView(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(gradient: appBackgroundGradient),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
                 child: Column(
-                  children: counterItems.map((item) {
-                    return FeatureCounterWidget(
-                        onValueChanged: (v) {
-                          counterItems[counterItems.indexOf(item)].counter ==
-                              int.parse(v);
-                          ;
-                        },
-                        onIcreament: () {
-                          _incrementCounter(counterItems.indexOf(item));
-                        },
-                        onDecreament: () {
-                          _decrementCounter(counterItems.indexOf(item));
-                        },
-                        title: item.title,
-                        counter: item.counter,
-                        paddingToggle: item.counter >= 120 || item.counter >= 9
-                            ? true
-                            : false);
-                  }).toList(),
-                ),
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const CustomCreatePostHeader(),
+                    // SizedBox(
+                    //   height: 20.h,
+                    // ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Share some basics about your place",
+                          style: style.copyWith(
+                              fontSize: 25.sp,
+                              color: textwalktrough,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                          "You can add more details later",
+                          style: style.copyWith(
+                              fontSize: 15.sp,
+                              color: textwalktrough,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
 
-              Padding(
-                padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
-                child: customPostCreateBottomWidget(
-                  OnPressedNextButton: () {
-                    widget.postModel.guest = counterItems[0].counter;
-                    widget.postModel.bedrooms = counterItems[1].counter;
-                    widget.postModel.bathrooms = counterItems[2].counter;
-                    widget.postModel.propertyArea = counterItems[3].counter;
-                    widget.postModel.propertyBuildArea =
-                        counterItems[4].counter;
-                    widget.postModel.propertyPlotArea = counterItems[5].counter;
+                    SingleChildScrollView(
+                      child: Column(
+                        children: counterItems.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          CounterItem item = entry.value;
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WalkThroughScreenPost2(
-                                  isStep2: true,
-                                  postmodel: widget.postModel,
-                                )));
-                  },
-                  OnPressedbackButton: () {
-                    print(widget.postModel.toJson());
-                    //  Navigator.pop(context);
-                  },
+                          return FeatureCounterWidget(
+                              controller: textControllers[index],
+                              onValueChanged: (v) {
+                                counterItems[counterItems.indexOf(item)]
+                                        .counter ==
+                                    int.parse(v);
+                                ;
+                              },
+                              onIcreament: () {
+                                _incrementCounter(counterItems.indexOf(item));
+                              },
+                              onDecreament: () {
+                                _decrementCounter(counterItems.indexOf(item));
+                              },
+                              title: item.title,
+                              counter: item.counter,
+                              paddingToggle:
+                                  item.counter >= 120 || item.counter >= 9
+                                      ? true
+                                      : false);
+                        }).toList(),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 12.h, left: 12.h, bottom: 30.h),
+                      child: customPostCreateBottomWidget(
+                        OnPressedNextButton: () {
+                          widget.postModel.guest = counterItems[0].counter;
+                          widget.postModel.bedrooms = counterItems[1].counter;
+                          widget.postModel.bathrooms = counterItems[2].counter;
+                          widget.postModel.propertyArea =
+                              counterItems[3].counter;
+                          widget.postModel.propertyBuildArea =
+                              counterItems[4].counter;
+                          widget.postModel.propertyPlotArea =
+                              counterItems[5].counter;
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => WalkThroughScreenPost2(
+                          //               isStep2: true,
+                          //               postmodel: widget.postModel,
+                          //             )));
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RentalTypeScreen(postModel: widget.postModel,)));
+                        },
+                        OnPressedbackButton: () {
+                          print(widget.postModel.toJson());
+
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -159,7 +197,8 @@ class _FeatureScreenState extends State<FeatureScreen> {
       required String title,
       required int counter,
       required ValueChanged<String> onValueChanged,
-      bool paddingToggle = false}) {
+      bool paddingToggle = false,
+      required TextEditingController controller}) {
     return Container(
       height: 55.h,
       margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -201,14 +240,18 @@ class _FeatureScreenState extends State<FeatureScreen> {
                     width: 50.w,
                     height: 50.h,
                     child: TextFormField(
-                      controller: TextEditingController(
-                        text: counter.toString(),
-                      ),
+                      controller: controller,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                           fillColor: Colors.purple, focusColor: Colors.purple),
-                      keyboardType: TextInputType.number,
+                      keyboardType: Platform.isIOS
+                          ? TextInputType.numberWithOptions(
+                              signed: true, decimal: true)
+                          : TextInputType.number,
                       onChanged: onValueChanged,
+                      onFieldSubmitted: (value) {
+                        print("object");
+                      },
                     ),
                   )),
 

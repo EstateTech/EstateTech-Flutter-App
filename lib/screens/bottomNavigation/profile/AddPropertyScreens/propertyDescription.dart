@@ -20,108 +20,129 @@ class PropertyDescriptionScreen extends StatefulWidget {
 
 class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
   TextEditingController descriptionController = TextEditingController();
+  Set<String> selectedItems = Set<String>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     print(widget.postModel.toJson());
-      //   },
-      // ),
-      body: Container(
-        padding: EdgeInsets.only(left: 20.h, right: 20.h),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(gradient: appBackgroundGradient),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const CustomCreatePostHeader(),
-              // SizedBox(
-              //   height: 20.h,
-              // ),
-              Column(
-                children: [
-                  Text(
-                    "Now, let’s give your house a title & description",
-                    style: style.copyWith(
-                        fontSize: 25.sp,
-                        color: textwalktrough,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    "Describe your property in a few words, create your amazing motto!",
-                    style:
-                        style.copyWith(fontSize: 15.sp, color: textwalktrough),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    height: 110.h,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.r)),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            maxLines: null,
-                            controller: descriptionController,
-                            decoration: const InputDecoration(
-                              hintText: 'Type your motto here .....',
-                              border: InputBorder.none,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     print(widget.postModel.toJson());
+        //   },
+        // ),
+
+        body: Container(
+          padding: EdgeInsets.only(left: 20.h, right: 20.h),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(gradient: appBackgroundGradient),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const CustomCreatePostHeader(),
+                    // SizedBox(
+                    //   height: 20.h,
+                    // ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Now, let’s give your house a title & description",
+                            style: style.copyWith(
+                                fontSize: 25.sp,
+                                color: textwalktrough,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "Describe your property in a few words, create your amazing motto!",
+                            style: style.copyWith(
+                                fontSize: 15.sp, color: textwalktrough),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            height: 110.h,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.r)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                      maxLines: null,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.done,
+                                      controller: descriptionController,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Type your motto here .....',
+                                        border: InputBorder.none,
+                                      ),
+                                      onSubmitted: (value) {}),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    // Handle pencil icon button press
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            // Handle pencil icon button press
-                          },
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "Chose up to 2 highlights of the aboce to describe your property.",
+                            style: style.copyWith(
+                                fontSize: 15.sp, color: textwalktrough),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          PropertyDescription()
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    "Chose up to 2 highlights of the aboce to describe your property.",
-                    style:
-                        style.copyWith(fontSize: 15.sp, color: textwalktrough),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  PropertyDescription()
-                ],
-              ),
 
-              Padding(
-                padding: EdgeInsets.only(
-                    right: 12.h, left: 12.h, bottom: 30.h, top: 10.h),
-                child: customPostCreateBottomWidget(
-                  OnPressedNextButton: () {
-                    widget.postModel.propertyDescription =
-                        descriptionController.text;
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 12.h, left: 12.h, bottom: 30.h, top: 10.h),
+                      child: customPostCreateBottomWidget(
+                        OnPressedNextButton: () {
+                          widget.postModel.propertyDescription =
+                              descriptionController.text;
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WalkthroughStep3(
-                                  postModel: widget.postModel,
-                                )));
-                  },
-                  OnPressedbackButton: () {
-                    Navigator.pop(context);
-                  },
+                          selectedItems.forEach((item) {
+                            print(item);
+                          });
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WalkthroughStep3(
+                                        postModel: widget.postModel,
+                                      )));
+                        },
+                        OnPressedbackButton: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -138,10 +159,18 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
       children: descriptionFeature.entries.map((entry) {
         final title = entry.key;
         final widget = entry.value;
+        final isSelected = selectedItems.contains(title);
 
         return GestureDetector(
           onTap: () {
             // Handle widget tap event
+            setState(() {
+              if (isSelected) {
+                selectedItems.remove(title);
+              } else {
+                selectedItems.add(title);
+              }
+            });
           },
           child: Container(
             height: 40.h,
@@ -151,6 +180,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(color: Shade2purple),
+              color: isSelected ? Colors.white : Colors.transparent,
             ),
             child: Row(
               children: [

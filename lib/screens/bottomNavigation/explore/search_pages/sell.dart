@@ -84,7 +84,7 @@ class _SellScreenState extends State<SellScreen> {
                           },
               
                           children: <Widget>[
-                            FilterWidget(),
+                            FilterWidget(isPeriodTimeRequired: false,),
                           ],
                         ))),
               ),

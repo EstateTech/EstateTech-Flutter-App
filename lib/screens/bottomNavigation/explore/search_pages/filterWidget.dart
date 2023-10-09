@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FilterWidget extends StatefulWidget {
-  const FilterWidget({super.key});
+ final bool isPeriodTimeRequired ;
+  const FilterWidget({super.key, required this.isPeriodTimeRequired});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -145,12 +146,12 @@ class _FilterWidgetState extends State<FilterWidget> {
               ),
             ),
             SizedBox(height: 20.0),
-            Text(
+           widget.isPeriodTimeRequired ?  Text(
               'Period:',
               style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 10.0),
-            Container(
+            ):SizedBox.shrink(),
+           widget.isPeriodTimeRequired ?  SizedBox(height: 10.0) :SizedBox.shrink(),
+           widget.isPeriodTimeRequired ?  Container(
               height: 50.0,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -189,7 +190,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   );
                 },
               ),
-            ),
+            ) : SizedBox.shrink(),
             SizedBox(height: 20.0),
             Text(
               'Price Range:',

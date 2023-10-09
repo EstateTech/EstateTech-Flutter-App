@@ -48,73 +48,76 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   print(widget.postModel.toJson());
-      //}),
-      body: Container(
-        padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(gradient: appBackgroundGradient),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              const CustomCreatePostHeader(),
-              SizedBox(
-                height: 10.h,
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Confirm is the address of your property",
-                    style: style.copyWith(
-                        fontSize: 25.sp,
-                        color: textwalktrough,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    "Your address is only shared with users after they’ve made a reservation",
-                    style: style.copyWith(
-                        fontSize: 15.sp,
-                        color: textwalktrough,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-              AddressInTextFields(),
-              Padding(
-                padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
-                child: customPostCreateBottomWidget(
-                  OnPressedNextButton: () {
-                    if (_key.currentState!.validate()) {
-                      widget.postModel.propertyAddressLine1 =
-                          controllers[0].text;
-                      widget.postModel.propertyAddressLine2 =
-                          controllers[1].text;
-                      widget.postModel.city = controllers[3].text;
-                      widget.postModel.state = controllers[4].text;
-                      widget.postModel.postalCode = controllers[5].text;
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PropertyMappedScreen(
-                                    isConfirmPinScreen: true,
-                                    postModel: widget.postModel,
-                                  )));
-                    }
-                  },
-                  OnPressedbackButton: () {
-                    Navigator.pop(context);
-                  },
+    return GestureDetector(
+      onTap: (() {
+        FocusScope.of(context).unfocus();
+      }),
+      child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(gradient: appBackgroundGradient),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                   SizedBox(height: 5.h,),
+                    const CustomCreatePostHeader(),
+                  
+                    Column(
+                      children: [
+                        Text(
+                          "Confirm is the address of your property",
+                          style: style.copyWith(
+                              fontSize: 25.sp,
+                              color: textwalktrough,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                          "Your address is only shared with users after they’ve made a reservation",
+                          style: style.copyWith(
+                              fontSize: 15.sp,
+                              color: textwalktrough,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    AddressInTextFields(),
+                    Padding(
+                      padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
+                      child: customPostCreateBottomWidget(
+                        OnPressedNextButton: () {
+                          if (_key.currentState!.validate()) {
+                            widget.postModel.propertyAddressLine1 =
+                                controllers[0].text;
+                            widget.postModel.propertyAddressLine2 =
+                                controllers[1].text;
+                            widget.postModel.city = controllers[3].text;
+                            widget.postModel.state = controllers[4].text;
+                            widget.postModel.postalCode = controllers[5].text;
+              
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PropertyMappedScreen(
+                                          isConfirmPinScreen: true,
+                                          postModel: widget.postModel,
+                                        )));
+                          }
+                        },
+                        OnPressedbackButton: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

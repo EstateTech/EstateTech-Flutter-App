@@ -28,6 +28,7 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final xFileProvider = Provider.of<XFileProvider>(context);
+    final storageProvider = Provider.of<FirebaseStorageProvider>(context);
 
     List<XFile> xFiles = xFileProvider.xFiles;
     var size = MediaQuery.of(context).size;
@@ -38,53 +39,57 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
     Future uploadImages() async {
       Timestamp currentDate = Timestamp.now();
       // Call the upload method from the ImageUploadController
+      storageProvider.setisUploading(true);
 
       await firebaseStorageprovider.uploadImages(xFiles, context).then((value) {
-        firebaseStorageprovider.createPost(
-            PostModel(
-                propertyType: widget.postModel.propertyType,
-                propertyPortion: widget.postModel.propertyPortion,
-                latLong: widget.postModel.latLong,
-                propertyOwnerNumber: widget.postModel.propertyOwnerNumber,
-                propertyAddressLine1: widget.postModel.propertyAddressLine1,
-                propertyAddressLine2: widget.postModel.propertyAddressLine2,
-                city: widget.postModel.city,
-                state: widget.postModel.state,
-                postalCode: widget.postModel.postalCode,
-                guest: widget.postModel.guest,
-                bedrooms: widget.postModel.bedrooms,
-                bathrooms: widget.postModel.bathrooms,
-                propertyArea: widget.postModel.propertyArea,
-                propertyBuildArea: widget.postModel.propertyBuildArea,
-                propertyPlotArea: widget.postModel.propertyPlotArea,
-                utilities: widget.postModel.utilities,
-                propertyPhotos: value,
-                propertyDescription: widget.postModel.propertyDescription,
-                preferedCurrency: widget.postModel.preferedCurrency,
-                amount: widget.postModel.amount,
-                propertyListingType: widget.postModel.propertyListingType,
-                additionalInfo: widget.postModel.additionalInfo,
-                userid: FirebaseAuth.instance.currentUser!.uid,
-                likes: widget.postModel.likes,
-                propertyFeature: widget.postModel.propertyFeature,
-                datePosted: currentDate,
-                postFeature: bestofferPf,
-                
+        firebaseStorageprovider
+            .createPost(
+                PostModel(
+                  propertyType: widget.postModel.propertyType,
+                  propertyPortion: widget.postModel.propertyPortion,
+                  latLong: widget.postModel.latLong,
+                  propertyOwnerNumber: widget.postModel.propertyOwnerNumber,
+                  propertyAddressLine1: widget.postModel.propertyAddressLine1,
+                  propertyAddressLine2: widget.postModel.propertyAddressLine2,
+                  city: widget.postModel.city,
+                  state: widget.postModel.state,
+                  postalCode: widget.postModel.postalCode,
+                  guest: widget.postModel.guest,
+                  bedrooms: widget.postModel.bedrooms,
+                  bathrooms: widget.postModel.bathrooms,
+                  propertyArea: widget.postModel.propertyArea,
+                  propertyBuildArea: widget.postModel.propertyBuildArea,
+                  propertyPlotArea: widget.postModel.propertyPlotArea,
+                  utilities: widget.postModel.utilities,
+                  propertyPhotos: value,
+                  propertyDescription: widget.postModel.propertyDescription,
+                  preferedCurrency: widget.postModel.preferedCurrency,
+                  amount: widget.postModel.amount,
+                  propertyListingType: widget.postModel.propertyListingType,
+                  additionalInfo: widget.postModel.additionalInfo,
+                  userid: FirebaseAuth.instance.currentUser!.uid,
+                  likes: widget.postModel.likes,
+                  propertyFeature: widget.postModel.propertyFeature,
+                  datePosted: currentDate,
+                  postFeature: bestofferPf,
                 ),
-            context);
+                context)
+            .then((value) {
+          storageProvider.setisUploading(false);
+        });
+      }).catchError((e) {
+        storageProvider.setisUploading(false);
       });
     }
 
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   print(widget.postModel.toJson());
-      // }),
+      resizeToAvoidBottomInset: false,
       body: Consumer<FirebaseStorageProvider>(
           builder: (context, firebaseStorageProvider, _) {
         final isUploading = firebaseStorageProvider.isUploading;
-        final progress = firebaseStorageProvider.progress;
+
         return isUploading
-            ? loadingWidget(progress)
+            ? loadingWidget()
             : Container(
                 height: size.height,
                 width: size.width,
@@ -92,78 +97,86 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                 decoration: BoxDecoration(
                   gradient: appBackgroundGradient,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomCreatePostHeader(),
+                          Column(
+                            children: [
+                              CustomCreatePostHeader(),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Text(
+                                "Additional Info",
+                                style: style.copyWith(
+                                    fontSize: 30.sp,
+                                    color: textwalktrough,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                "You may also want to give additional info or details for the users who might be interested in your property:",
+                                style: style.copyWith(
+                                    fontSize: 15.sp, color: textwalktrough),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Container(
+                                alignment: Alignment.topLeft,
+                                height: 200.h,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  maxLines: null,
+                                  controller: additionaltextEditingController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Additional info',
+                                    border: InputBorder.none,
+                                  ),
+                                  onSubmitted: (value){},
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: 20.h,
                           ),
-                          Text(
-                            "Additional Info",
-                            style: style.copyWith(
-                                fontSize: 30.sp,
-                                color: textwalktrough,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text(
-                            "You may also want to give additional info or details for the users who might be interested in your property:",
-                            style: style.copyWith(
-                                fontSize: 15.sp, color: textwalktrough),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 200.h,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15.r)),
-                            child: TextField(
-                              maxLines: null,
-                              controller: additionaltextEditingController,
-                              decoration: InputDecoration(
-                                hintText: 'Additional info',
-                                border: InputBorder.none,
-                              ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 12.h, left: 12.h, bottom: 30.h),
+                            child: customPostCreateBottomWidget(
+                              OnPressedNextButton: () {
+                                setState(() {
+                                  widget.postModel.additionalInfo =
+                                      additionaltextEditingController.text;
+                                });
+                                uploadImages().then((value) {
+                                  Navigator.pushNamed(
+                                      context, postCompletedCongratulationsScreen);
+                                });
+                                print(widget.postModel.toJson());
+                              },
+                              OnPressedbackButton: () {
+                                Navigator.pop(context);
+                              },
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 12.h, left: 12.h, bottom: 30.h),
-                        child: customPostCreateBottomWidget(
-                          OnPressedNextButton: () {
-                            setState(() {
-                              widget.postModel.additionalInfo =
-                                  additionaltextEditingController.text;
-                            });
-                            uploadImages().then((value) {
-                              Navigator.pushNamed(
-                                  context, postCompletedCongratulationsScreen);
-                            });
-                            print(widget.postModel.toJson());
-                          },
-                          OnPressedbackButton: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
       }),

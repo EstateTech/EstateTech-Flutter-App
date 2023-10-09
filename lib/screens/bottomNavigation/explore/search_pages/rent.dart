@@ -84,7 +84,7 @@ class _RentState extends State<Rent> {
                         },
             
                         children: <Widget>[
-                          FilterWidget(),
+                          FilterWidget(isPeriodTimeRequired:  true,),
                         ],
                       ))),
             ),

@@ -88,7 +88,7 @@ class _BuyScreenState extends State<BuyScreen> {
                           },
               
                           children: <Widget>[
-                            FilterWidget(),
+                            FilterWidget(isPeriodTimeRequired: false,),
                           ],
                         ))),
               ),
