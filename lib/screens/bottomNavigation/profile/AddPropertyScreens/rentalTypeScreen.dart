@@ -31,10 +31,20 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
     'Sell': ['Offer to Sell', 'Offer to Rent', 'Short Term Options'],
   };
   int selectedItem = -1;
+  bool isRentalPeriodSaved = false;
 
-  List<String> rentalList = ["Montly","Yearly","Weekly"];
+  List<String> rentalList = ["Montly", "Yearly", "Weekly"];
+  bool _isExpanded = false;
+  DateTimeRange dateTimeRange = DateTimeRange(
+    end: DateTime.now().add(const Duration(days: 30)),
+    start: DateTime.now().subtract(const Duration(days: 30)),
+  );
+
   @override
   Widget build(BuildContext context) {
+    final start = dateTimeRange.start;
+    final end = dateTimeRange.end;
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h, top: 25.h),
@@ -42,33 +52,35 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(gradient: appBackgroundGradient),
         child: Column(
-        //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //  mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 10.h,
+            ),
             Align(
-              alignment: Alignment.topCenter,
-              child: CustomCreatePostHeader()),
-            
-             SizedBox(height: 30.h,),
-             
-              Text(
-                  "Share some more important  basics about your place",
-                  style: style.copyWith(
-                      fontSize: 25.sp,
-                      color: textwalktrough,
-                      fontWeight: FontWeight.w600),
-                ),
-                                Text(
+                alignment: Alignment.topCenter,
+                child: CustomCreatePostHeader()),
+            SizedBox(
+              height: 30.h,
+            ),
+            Text(
+              "Share some more important  basics about your place",
+              style: style.copyWith(
+                  fontSize: 25.sp,
+                  color: textwalktrough,
+                  fontWeight: FontWeight.w600),
+            ),
+            Text(
               "Your choice helps potential buyers or renters understand your property listing.",
               style: style.copyWith(
                 fontSize: 15.sp,
                 color: textwalktrough,
               ),
-                ),
-
-                SizedBox(height: 20.h,),
-
-                Container(
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
               width: double.infinity,
               padding: EdgeInsets.only(left: 10.h, right: 10.h),
               decoration: BoxDecoration(
@@ -80,18 +92,18 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
                 value: selectedMainOption,
                 isExpanded: true,
                 onChanged: (String? newValue) {
-              setState(() {
-                selectedMainOption = newValue!;
-                // Reset the sub-option when the main option changes
-                selectedSubOption = subOptions[selectedMainOption]![0];
-              });
+                  setState(() {
+                    selectedMainOption = newValue!;
+                    // Reset the sub-option when the main option changes
+                    selectedSubOption = subOptions[selectedMainOption]![0];
+                  });
                 },
                 items:
-                mainOptions.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
+                    mainOptions.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
                 }).toList(),
               ),
             ),
@@ -109,31 +121,77 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
                 underline: SizedBox.shrink(),
                 value: selectedSubOption,
                 onChanged: (String? newValue) {
-              setState(() {
-                selectedSubOption = newValue!;
-              });
+                  setState(() {
+                    selectedSubOption = newValue!;
+                  });
                 },
                 items: subOptions[selectedMainOption]!
-                .map<DropdownMenuItem<String>>(
-              (String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              },
+                    .map<DropdownMenuItem<String>>(
+                  (String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  },
                 ).toList(),
               ),
             ),
- SizedBox(height: 20.h,),
-
-           
-            selectedMainOption == "Rent" ?  PropertyDescription() : SizedBox.shrink(),
+            SizedBox(
+              height: 20.h,
+            ),
+            selectedMainOption == "Rent"
+                ?  !isRentalPeriodSaved  ? PropertyDescription() : SizedBox.shrink()
+                : SizedBox.shrink(),
+            SizedBox(
+              height: 20.h,
+            ),
+           selectedMainOption == "Rent" ? Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset:
+                            Offset(0, 3), // changes the position of the shadow
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25.r),
+                    child: ExpansionTile(
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        "Select Rental Period",
+                        style: style.copyWith(
+                            color: Shade2purple,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      trailing: SizedBox.shrink(),
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          _isExpanded = value;
+                        });
+                      },
+                      children: <Widget>[
+                        //  FilterWidget(isPeriodTimeRequired: false,),
+                        ShowDateTimeRange(start, end)
+                      ],
+                    ))) :SizedBox.shrink(),
             Padding(
-              padding: EdgeInsets.only(top: 200.h,right: 12.h, left: 12.h, bottom: 10.h),
+              padding: EdgeInsets.only(
+                  top: 100.h, right: 12.h, left: 12.h, bottom: 10.h),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: customPostCreateBottomWidget(
                   OnPressedNextButton: () {
+                    widget.postModel.rentType = selectedMainOption;
+                    widget.postModel.rentSubType = selectedSubOption;
+                    widget.postModel.rentalPeriod = rentalList[selectedItem];
+                    print(
+                        "${selectedMainOption} , ${selectedSubOption} , ${selectedItem}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -154,14 +212,85 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
     );
   }
 
+  Widget ShowDateTimeRange(DateTime start, DateTime end) {
+    return Container(
+      child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "From",
+              style: style2.copyWith(
+                  color: mainAppColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "To",
+              style: style2.copyWith(
+                  color: mainAppColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 5.h, right: 5.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  child: OutlinedButton(
+                onPressed: pickDateRange,
+                child: Text(
+                  "${start.year}/${start.month}/${start.day}",
+                  style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+                ),
+              )),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                  child: OutlinedButton(
+                onPressed: pickDateRange,
+                child: Text(
+                  '${end.year}/${end.month}/${end.day}',
+                  style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+                ),
+              ))
+            ],
+          ),
+        )
+      ]),
+    );
+  }
+
+  Future pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+        context: context,
+        initialDateRange: dateTimeRange,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100));
+
+    if (newDateRange == null) return;
+
+    setState(() {
+      dateTimeRange = newDateRange;
+      isRentalPeriodSaved = true;
+    });
+  }
+
   Widget PropertyDescription() {
     return Wrap(
       spacing: 9.0,
       runSpacing: 7.0,
       children: rentalList.asMap().entries.map((entry) {
-         
         int index = entry.key; // Extract the index
-    bool isSelected = selectedItem == index; 
+        bool isSelected = selectedItem == index;
+        String value = entry.value;
 
         return GestureDetector(
           onTap: () {
@@ -179,13 +308,12 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(color: Shade2purple),
-             color: isSelected ? Colors.white : Colors.transparent,
+              color: isSelected ? Colors.white : Colors.transparent,
             ),
             child: Row(
               children: [
-           
                 Text(
-                  entry.value,
+                  value,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,

@@ -9,6 +9,8 @@ class FilterProvider with ChangeNotifier {
   bool isFilterApplied = false;
   String? postFeature;
 
+  
+
   void updateFilterAppliedField(bool value) {
     isFilterApplied = value;
     notifyListeners();

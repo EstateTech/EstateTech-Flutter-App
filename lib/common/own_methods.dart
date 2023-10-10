@@ -21,4 +21,20 @@ class OwnMethods {
     );
     await launchUrl(launchUri);
   }
+
+  String getCurrentDayAndMonth() {
+  final now = DateTime.now();
+  return '${now.day} ${_getMonthName(now.month)}';
+}
+
+String _getMonthName(int month) {
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  return monthNames[month - 1];
+}
+
+
+
+
 }

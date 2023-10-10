@@ -16,13 +16,14 @@ class SellScreen extends StatefulWidget {
 }
 
 class _SellScreenState extends State<SellScreen> {
-    List<bool> isSelectedList =
+  List<bool> isSelectedList =
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
+  List<bool> isBuyOptionSelectedList = [false, false, false];
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
-   // filterProvider.updateFilterAppliedField(false);
+    // filterProvider.updateFilterAppliedField(false);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -32,121 +33,142 @@ class _SellScreenState extends State<SellScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SellOption(() { }, "Offer\nTo Sell"),
-                SellOption(() { }, "Offer\nTo Rent"),
-                SellOption(() { }, "Short Term\nOptions")
+                SellOption(() {
+                  setState(() {
+                    isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
+                    isBuyOptionSelectedList[1] = false;
+                    isBuyOptionSelectedList[2] = false;
+                  });
+                }, "Offer\nTo Sell", isBuyOptionSelectedList[0]),
+                SellOption(() {
+                  setState(() {
+                     isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
+                  isBuyOptionSelectedList[0] = false;
+                  isBuyOptionSelectedList[2] = false;
+                    
+                  });
+
+
+                 
+                }, "Offer\nTo Rent", isBuyOptionSelectedList[1]),
+                SellOption(() {
+                  setState(() {
+                      isBuyOptionSelectedList[2] = !isBuyOptionSelectedList[2];
+                  isBuyOptionSelectedList[1] = false;
+                  isBuyOptionSelectedList[0] = false;
+                    
+                  });
                 
-      
+                }, "Short Term\nOptions", isBuyOptionSelectedList[2])
               ],
             ),
-      
-                        SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.h,right: 15.h),
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+                padding: EdgeInsets.only(left: 15.h, right: 15.h),
                 child: LocationExpandableWidget(context)),
-              SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 12.h,right: 12.h),
-                child: Container(
-                     decoration: BoxDecoration(
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.h, right: 12.h),
+              child: Container(
+                  decoration: BoxDecoration(
                       color: Colors.white,
-                        boxShadow: [
+                      boxShadow: [
                         BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes the position of the shadow
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(
+                              0, 3), // changes the position of the shadow
                         ),
                       ],
-                        borderRadius: BorderRadius.circular(10.r)),
-              
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25.r),
-                        child: ExpansionTile(
-                          backgroundColor: Colors.white,
-                          title: Text(
-                            "Customized search",
-                            style: style.copyWith(
-                                color: Shade2purple,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          // childrenPadding: EdgeInsets.zero,
-                          trailing: SizedBox.shrink(),
-                          onExpansionChanged: (value) {
-                            setState(() {
-                              _isExpanded = value;
-                            });
-                          },
-              
-                          children: <Widget>[
-                            FilterWidget(isPeriodTimeRequired: false,),
-                          ],
-                        ))),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              GestureDetector(
-                onTap: () {
-                  filterProvider.updateFilterAppliedField(false);
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15.h,right: 15.h),
-                  child: Container(
-                                       decoration: BoxDecoration(
-                        color: Colors.white,
-                          boxShadow: [
-                          BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes the position of the shadow
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25.r),
+                      child: ExpansionTile(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          "Customized search",
+                          style: style.copyWith(
+                              color: Shade2purple,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        // childrenPadding: EdgeInsets.zero,
+                        trailing: SizedBox.shrink(),
+                        onExpansionChanged: (value) {
+                          setState(() {
+                            _isExpanded = value;
+                          });
+                        },
+
+                        children: <Widget>[
+                          FilterWidget(
+                            isPeriodTimeRequired: false,
                           ),
                         ],
-                          borderRadius: BorderRadius.circular(10.r)),
-                
-                      width: double.infinity,
-                      height: 55.h,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(left: 20.w),
-                     
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(25.r),
-                          child: Text(
-                            "All",
-                            textAlign: TextAlign.left,
-                            style: style.copyWith(
-                                color: Shade2purple,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w700),
-                          ))),
-                ),
-              )
+                      ))),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                filterProvider.updateFilterAppliedField(false);
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.h, right: 15.h),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(
+                                0, 3), // changes the position of the shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(10.r)),
+                    width: double.infinity,
+                    height: 55.h,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.r),
+                        child: Text(
+                          "All",
+                          textAlign: TextAlign.left,
+                          style: style.copyWith(
+                              color: Shade2purple,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w700),
+                        ))),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-
   Container LocationExpandableWidget(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes the position of the shadow
-          ),
-        ],
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.4),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes the position of the shadow
+            ),
+          ],
           borderRadius: BorderRadius.circular(10.r)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.r),
@@ -272,10 +294,7 @@ class _SellScreenState extends State<SellScreen> {
   }
 }
 
-
-
-
-Widget SellOption(VoidCallback onTap, String text) {
+Widget SellOption(VoidCallback onTap, String text, bool isSelected) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -283,7 +302,7 @@ Widget SellOption(VoidCallback onTap, String text) {
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 20.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? Colors.purple : Colors.white,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
@@ -296,11 +315,12 @@ Widget SellOption(VoidCallback onTap, String text) {
       ),
       child: Padding(
         padding:
-            EdgeInsets.only(left:20.h, right: 20.h, top: 10.h, bottom: 10.h),
+            EdgeInsets.only(left: 20.h, right: 20.h, top: 10.h, bottom: 10.h),
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: style.copyWith(fontSize: 18.sp, color: Shade2purple),
+          style: style.copyWith(
+              fontSize: 18.sp, color: isSelected ? Colors.white : Shade2purple),
         ),
       ),
     ),

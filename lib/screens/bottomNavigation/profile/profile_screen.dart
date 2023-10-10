@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/notification/notification_screen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/rentalTypeScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/NotificationsSettingsScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/PersonalInformationScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/loginSecurityScreen.dart';
@@ -391,7 +392,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Privacy & Sharing",
                   imagepath: 'assets/images/privacy_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RentalTypeScreen(
+                              postModel: PostModel(),
+                            )));
+                    
+
+
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Legal",

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_estate_tech/common/fixedvalues.dart';
+import 'package:crypto_estate_tech/common/own_methods.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/inbox/chatScreen.dart';
@@ -92,7 +93,7 @@ class _ChatCardState extends State<ChatCard> {
                   fontSize: 14.sp),
             ),
             trailing: Text(
-              "7 Nov",
+              OwnMethods().getCurrentDayAndMonth(),
               style: numberStyle.copyWith(fontSize: 15.sp, color: Colors.grey),
             )),
       ),

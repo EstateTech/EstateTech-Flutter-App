@@ -184,7 +184,7 @@ class _GridPostState extends State<GridPost> {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600),
                     children: <TextSpan>[
-                  TextSpan(text: "300,0000 ${fileProvider.currency}"),
+                  TextSpan(text: "300,0000 ${fileProvider.currencySign} ${fileProvider.currency}"),
                   TextSpan(
                     text: ' / year',
                     style: style2.copyWith(

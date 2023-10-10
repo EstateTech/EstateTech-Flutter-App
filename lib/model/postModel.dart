@@ -30,6 +30,9 @@ class PostModel {
   List<String>? propertyFeature;
   Timestamp? datePosted;
   String? postFeature;
+  String? rentType;
+  String? rentSubType;
+  String? rentalPeriod;
 
   PostModel(
       {this.propertyType,
@@ -59,7 +62,11 @@ class PostModel {
       this.propertyFeature,
       this.country,
       this.datePosted,
-      this.postFeature});
+      this.postFeature,
+      this.rentType,
+      this.rentSubType,
+      this.rentalPeriod
+      }  );
 
   PostModel.fromJson(Map<String, dynamic> json) {
     propertyType = json['propertyType'];
@@ -95,6 +102,11 @@ class PostModel {
     } else {
       likes = json['likes']; // Assign an empty list if 'likes' is null
     }
+    rentType = json['rentType'];
+    rentSubType = json['rentSubType'];
+    rentalPeriod = json['rentalPeriod'];
+
+
   }
 
   Map<String, dynamic> toJson() {
@@ -127,7 +139,9 @@ class PostModel {
     data['propertyFeature'] = propertyFeature;
     data['datePosted'] = datePosted;
     data['postFeature'] = postFeature;
-
+    data['rentType'] = rentType;
+    data['rentSubType'] = rentSubType;
+    data['rentalPeriod'] = rentalPeriod;
     return data;
   }
 

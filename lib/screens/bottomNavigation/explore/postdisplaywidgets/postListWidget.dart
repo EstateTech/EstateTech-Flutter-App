@@ -227,7 +227,7 @@ class _PostState extends State<Post> {
                             fontWeight: FontWeight.w600,
                           ),
                           children: [
-                            TextSpan(text: "300,000 ${fileProvider.currency}"),
+                            TextSpan(text: "300,000 ${fileProvider.currencySign} ${fileProvider.currency}"),
                             TextSpan(
                               text: " / year",
                               style: style.copyWith(

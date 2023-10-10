@@ -25,16 +25,14 @@ class _InboxScreenState extends State<InboxScreen> {
   List<String> receiverList = [];
   bool _isLoadingWidget = false;
   TextEditingController searchController = TextEditingController();
+  String senderId = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchData();
- 
   }
-
-
 
   Future<void> fetchData() async {
     try {
@@ -42,17 +40,15 @@ class _InboxScreenState extends State<InboxScreen> {
       setState(() {
         _isLoadingWidget = true;
       });
-      String senderId = FirebaseAuth.instance.currentUser!.uid;
+      senderId = FirebaseAuth.instance.currentUser!.uid;
       receiverList = await getReceiverIdsBySenderId(senderId);
       setState(() {
         _isLoadingWidget = false;
-        
       });
-     
-      print(receiverList);
+
+      print(" the reciver id in the fetchdata method is $receiverList");
     } catch (e) {
       print('Error fetching user ID: $e');
-    
     }
   }
 
@@ -102,13 +98,11 @@ class _InboxScreenState extends State<InboxScreen> {
                                   onChanged: (value) {
                                     print(value);
                                     //search logic
-                                   
 
                                     setState(() {
-                                       _searchlist.clear();
-                                      
+                                      _searchlist.clear();
                                     });
-                                  
+
                                     for (var i in alllist) {
                                       if (i.firstName
                                               .toString()
@@ -126,7 +120,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                               .contains(value.toLowerCase())) {
                                         _searchlist.add(i);
                                       }
-                                      if(value == "") {
+                                      if (value == "") {
                                         setState(() {
                                           _searchlist.clear();
                                         });
@@ -154,7 +148,7 @@ class _InboxScreenState extends State<InboxScreen> {
                             setState(() {
                               _isSearching = !_isSearching;
                             });
-                            if(!_isSearching) {
+                            if (!_isSearching) {
                               fetchData();
                             }
                           },
@@ -169,29 +163,6 @@ class _InboxScreenState extends State<InboxScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            // Usage
-                            // fetchAndPrintDocumentIds();
-                            //  getAncestorDocumentIdsWithSubcollections("chats","messages");
-
-                            getReceiverIdsBySenderId(
-                                FirebaseAuth.instance.currentUser!.uid);
-                          },
-                          child: Icon(
-                            Icons.edit,
-                            color: Color(0xFF3A3153),
-                            size: 29.w,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Icon(
-                          Icons.delete_outline,
-                          color: Color(0xFF3A3153),
-                          size: 29.w,
-                        )
                       ],
                     )
                   ],
@@ -238,101 +209,143 @@ class _InboxScreenState extends State<InboxScreen> {
                                       [];
                                   if (_searchlist.isNotEmpty) {
                                     return ListView.builder(
-                                      itemCount: _searchlist.length,
+                                        itemCount: _searchlist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
-                                              user: _searchlist[index] , isSelected: false, );
+                                            user: _searchlist[index],
+                                            isSelected: false,
+                                          );
                                         });
-                                  }else if(_searchlist.isEmpty && searchController.text.isNotEmpty) {
-                                     return  Center(
-                                      child:Text("No matching results found" , style:  style.copyWith(
-                                color: mainAppColor,
-                                fontSize:  20.sp 
-                              ),
-                              textAlign: TextAlign.center,
-                              
-                              ),);
-
-
-                                  } 
-                                  
-                                  else {
-                                    return  Center(
-                                      child:Text("Start Searching.." , style:  style.copyWith(
-                                color: mainAppColor,
-                                fontSize:  20.sp 
-                              ),
-                              textAlign: TextAlign.center,
-                              
-                              ),
+                                  } else if (_searchlist.isEmpty &&
+                                      searchController.text.isNotEmpty) {
+                                    return Center(
+                                      child: Text(
+                                        "No matching results found",
+                                        style: style.copyWith(
+                                            color: mainAppColor,
+                                            fontSize: 20.sp),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                  } else {
+                                    return Center(
+                                      child: Text(
+                                        "Start Searching..",
+                                        style: style.copyWith(
+                                            color: mainAppColor,
+                                            fontSize: 20.sp),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     );
                                   }
                               }
                             })
-                        :     !_isLoadingWidget ? 
-                         !receiverList.isEmpty?   StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('users')
-                                .where('userId',
-                                    whereIn:
-                                        receiverList) // Filter documents by user IDs
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                case ConnectionState.none:
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+                        : !_isLoadingWidget
+                            ? !receiverList.isEmpty
+                                ? StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('users')
+                                        .where('userId',
+                                            whereIn:
+                                                receiverList) // Filter documents by user IDs
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.waiting:
+                                        case ConnectionState.none:
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
 
-                                case ConnectionState.active:
-                                case ConnectionState.done:
+                                        case ConnectionState.active:
+                                        case ConnectionState.done:
+                                          final data = snapshot.data?.docs;
 
-                                  final data = snapshot.data?.docs;
-        
-                                  chatList = data
-                                          ?.map((e) =>
-                                              SignupSavepDataFirebase.fromJson(
-                                                  e.data()))
-                                          .toList() ??
-                                      [];
-                                  if (chatList.isNotEmpty) {
-                                    return ListView.builder(
-                                        itemCount: chatList.length,
-                                        itemBuilder: (context, index) {
-                                          return ChatCard(
-                                              user: chatList[index],
-                                              isSelected: false,
-                                              
-                                              
-                                              );
-                                        });
-                                  } else {
-                                    return const Center(
-                                      child: Text("No Chats!"),
-                                    );
-                                  }
-                              }
-                            })  : Container(
-                               alignment: Alignment.center,
-                              height: 100.h,
-                              
-                              child: Text("No chats Found :(\n Start chatting by searching users" , style:  style.copyWith(
-                                color: mainAppColor,
-                                fontSize:  20.sp 
-                              ),
-                              textAlign: TextAlign.center,
-                              
-                              )
-                            )
-                            
-                            
-                            
+                                          chatList = data
+                                                  ?.map((e) =>
+                                                      SignupSavepDataFirebase
+                                                          .fromJson(e.data()))
+                                                  .toList() ??
+                                              [];
+                                              print(chatList.length);
+                                              print(chatList[0].userId);
+                                             // print(getConversationID(chatList[0].userId!));
+                                          if (chatList.isNotEmpty) {
+                                            return ListView.builder(
+                                                itemCount: chatList.length,
+                                                itemBuilder: (context, index) { 
+                                                  String item = chatList[index]
+                                                      .firstName
+                                                      .toString();
+                                                  return Dismissible(
+                                                    key: Key(item),
+                                                    background: Card(
+                                                      color: mainAppColor,
+                                                      child: Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  right: 10.h),
+                                                          child: Icon(
+                                                            Icons.delete,
+                                                            color: Colors.white,
+                                                            size: 40.sp,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    direction: DismissDirection
+                                                        .endToStart,
+                                                    onDismissed: (direction) {
+                                                      print("heello");
+                                                       print(  " the id in on dismissed is ${chatList[index].userId}");
+                                                      // print(getConversationID(chatList[index].userId!));
+                                                     
+                                                      deleteChatDocument(getConversationID(chatList[index].userId!) , context )
+                                                      .then((value) {
+                                                        setState(() {
+                                                          chatList.removeAt(index);
+                                                           fetchData();
+                                                        });
+                                                       
+                                                      })
+                                                      ;
+
+
+                                                     
+                                                        
+
+                                                     
+                                                    },
+                                                    child: ChatCard(
+                                                      user: chatList[index],
+                                                      isSelected: false,
+                                                    ),
+                                                  );
+                                                });
+                                          } else {
+                                            return const Center(
+                                              child: Text("No Chats!"),
+                                            );
+                                          }
+                                      }
+                                    })
+                                : Container(
+                                    alignment: Alignment.center,
+                                    height: 100.h,
+                                    child: Text(
+                                      "No chats Found :(\n Start chatting by searching users",
+                                      style: style.copyWith(
+                                          color: mainAppColor, fontSize: 20.sp),
+                                      textAlign: TextAlign.center,
+                                    ))
                             : Container(
-                              alignment: Alignment.center,
-                              height: 100.h,
-                              width: 100.h,
-                              child: CircularProgressIndicator()))
+                                alignment: Alignment.center,
+                                height: 100.h,
+                                width: 100.h,
+                                child: CircularProgressIndicator()))
               ],
             ),
           ),

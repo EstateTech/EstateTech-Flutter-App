@@ -21,6 +21,9 @@ class _BuyScreenState extends State<BuyScreen> {
    List<bool> isSelectedList =
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
+   List<bool> isBuyOptionSelectedList = [false, false, false];
+
+  
   @override
   Widget build(BuildContext context) {
       final filterProvider = Provider.of<FilterProvider>(context, listen: true);
@@ -34,9 +37,41 @@ class _BuyScreenState extends State<BuyScreen> {
             Row(
                mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                  BuyOptions(() {}, "Ready\n To Move"),
-                  BuyOptions(() {}, "Off\nPlan"),
-                  BuyOptions(() {}, "Under\nConstruction"),
+                  BuyOptions(() {
+                    setState(() {
+                                  isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
+                                  isBuyOptionSelectedList[1] = false;
+                                  isBuyOptionSelectedList[2] = false;
+
+                    });
+                  }, "Ready\n To Move" , isBuyOptionSelectedList[0]),
+                  BuyOptions(() {
+                    setState(() {
+
+                      isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
+                      isBuyOptionSelectedList[0] = false;
+                      isBuyOptionSelectedList[2] = false;
+                      
+
+
+
+                    });
+
+
+
+                  }, "Off\nPlan" , isBuyOptionSelectedList[1]),
+                  BuyOptions(() {
+                    setState(() {
+                      isBuyOptionSelectedList[2] = !isBuyOptionSelectedList[2];
+                      isBuyOptionSelectedList[1] = false;
+                      isBuyOptionSelectedList[0] = false;
+                      
+
+                    });
+
+
+
+                  }, "Under\nConstruction" , isBuyOptionSelectedList[2]),
              
               
               ],
@@ -285,17 +320,7 @@ decoration: BoxDecoration(
     );
   }
 
-
-
-
-
-
-
-}
-
-
-
-Widget BuyOptions(VoidCallback onTap, String text) {
+  Widget BuyOptions(VoidCallback onTap, String text , bool isSelectedd) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -303,11 +328,12 @@ Widget BuyOptions(VoidCallback onTap, String text) {
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 20.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelectedd ? Colors.purple :Colors.white,
         borderRadius: BorderRadius.circular(12.r),
+        
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
+            color:  Colors.grey.withOpacity(0.4),
             spreadRadius: 5,
             blurRadius: 7,
             offset: Offset(0, 3), // changes the position of the shadow
@@ -320,9 +346,20 @@ Widget BuyOptions(VoidCallback onTap, String text) {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: style.copyWith(fontSize: 15.sp, color: Shade2purple),
+          style: style.copyWith(fontSize: 15.sp, color:  isSelectedd ? Colors.white : Shade2purple),
         ),
       ),
     ),
   );
 }
+
+
+
+
+
+
+
+}
+
+
+

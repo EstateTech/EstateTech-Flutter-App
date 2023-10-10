@@ -128,6 +128,38 @@ String getConversationID(String id) => user!.uid.hashCode <= id.hashCode ? '${us
  }
 
 
+ Future<void> deleteChatDocument(String receiverIdd,BuildContext context) async {
+  //print(" the id in delete method is ${getConversationID(receiverIdd)}");
+  print("${user!.uid}_----${receiverIdd}");
+ 
+
+ final batch = FirebaseFirestore.instance.batch();
+
+  // Delete the parent document
+  final parentDocumentRef = FirebaseFirestore.instance.collection('chats').doc(receiverIdd);
+  batch.delete(parentDocumentRef);
+
+  // Delete the subcollection
+  final subcollectionRef = parentDocumentRef.collection('messages');
+  final subcollectionSnapshot = await subcollectionRef.get();
+  subcollectionSnapshot.docs.forEach((doc) {
+    batch.delete(doc.reference);
+  });
+
+  try {
+    // Commit the batched write operation
+    await batch.commit();
+
+    // Update the UI or perform any other necessary operations
+    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    chatProvider.fetchData(user!.uid);
+  } catch (e) {
+    print('Error deleting document and subcollection: $e');
+  }
+  }
+
+
+
 
 
 

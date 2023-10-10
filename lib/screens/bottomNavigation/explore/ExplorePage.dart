@@ -279,6 +279,10 @@ class _ExplorePageState extends State<ExplorePage>
                   onTap: () {
                     fileProvider.updateCurrency(
                         fileProvider.currency == "USD" ? 'AED' : 'USD');
+
+                        fileProvider.updateCurrencySign(
+                          fileProvider.currencySign == "\$" ? "د.إ." : '\$'
+                        );
                   },
                   child: Container(
                       padding: EdgeInsets.all(7.h),

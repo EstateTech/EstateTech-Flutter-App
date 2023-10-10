@@ -13,9 +13,12 @@ class ChatProvider extends ChangeNotifier {
   Future<void> fetchData(String currentUserId) async {
     // Fetch your data and update the userIds list
     userIds = await getReceiverIdsBySenderId(currentUserId);
-   
-
     // Notify listeners that the data has changed
     notifyListeners();
   }
+
+  
+
+
+
 }

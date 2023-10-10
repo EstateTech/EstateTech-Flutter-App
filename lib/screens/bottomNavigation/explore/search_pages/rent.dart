@@ -20,6 +20,8 @@ class _RentState extends State<Rent> {
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
 
+    List<bool> isBuyOptionSelectedList = [false, false];
+
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
@@ -35,8 +37,28 @@ class _RentState extends State<Rent> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  timelineOptionWidget(() {}, "Long-term"),
-                  timelineOptionWidget(() {}, "Short-term")
+                  timelineOptionWidget(() {
+                    setState(() {
+                      isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
+                      isBuyOptionSelectedList[1] = false;
+                    });
+
+
+                  }, "Long-term" , isBuyOptionSelectedList[0]
+                  
+                  
+                  ),
+                  timelineOptionWidget(() {
+                    setState(() {
+                      isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
+                      isBuyOptionSelectedList[0] = false;
+                      
+
+                    });
+
+
+
+                  }, "Short-term" , isBuyOptionSelectedList[1])
                 ],
               ),
             ),
@@ -271,7 +293,7 @@ class _RentState extends State<Rent> {
   }
 }
 
-Widget timelineOptionWidget(VoidCallback onTap, String text) {
+Widget timelineOptionWidget(VoidCallback onTap, String text , bool isSelected) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -279,7 +301,7 @@ Widget timelineOptionWidget(VoidCallback onTap, String text) {
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 20.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? Colors.purple :   Colors.white,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
@@ -295,7 +317,9 @@ Widget timelineOptionWidget(VoidCallback onTap, String text) {
             EdgeInsets.only(left: 25.h, right: 25.h, top: 10.h, bottom: 10.h),
         child: Text(
           text,
-          style: style.copyWith(fontSize: 18.sp, color: Shade2purple),
+          style: style.copyWith(fontSize: 18.sp, color:
+          
+          isSelected ?  Colors.white :  Shade2purple),
         ),
       ),
     ),

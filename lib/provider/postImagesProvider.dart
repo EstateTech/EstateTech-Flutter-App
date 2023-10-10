@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class XFileProvider with ChangeNotifier {
   String currency = 'AED';
+  String currencySign = "\$";
 
   List<XFile> _xFiles = [];
 
@@ -17,4 +18,12 @@ class XFileProvider with ChangeNotifier {
     currency = newCurrency;
     notifyListeners();
   }
+
+  updateCurrencySign(String sign) {
+    currencySign = sign;
+    notifyListeners();
+  
 }
+}
+
+
