@@ -7,23 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-String getFirstThreeWords(String sentence) {
-  // Split the sentence into individual words
-  List<String> words = sentence.split(' ');
 
-  // Take the first three words or less if the sentence has fewer than three words
-  List<String> firstThreeWords = words.take(3).toList();
 
-  // Join the words back into a sentence
-  String result = firstThreeWords.join(' ');
 
-  return result;
-}
 
-String joinWithComma(List<String> strings) {
-  String result = strings.join(', ');
-  return result;
-}
+
+
+
+
 
 String Convertdate(Timestamp? timestamp) {
 // Converting the Timestamp to DateTime

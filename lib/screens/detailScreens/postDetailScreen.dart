@@ -5,7 +5,7 @@ import 'package:crypto_estate_tech/common/own_methods.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/detailsContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -184,13 +184,15 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
-                            width: 80.h,
+                            width: 120.h,
                             height: 60.h,
-                            decoration: const BoxDecoration(),
+                            decoration: const BoxDecoration(
+                             // color: Colors.amber
+                            ),
                             child: Column(
                               children: [
                                 Container(
-                                  width: 60.h,
+                                  
                                   height: 25.h,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -198,26 +200,27 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                       borderRadius:
                                           BorderRadius.circular(10.r)),
                                   child: Text(
-                                    "360°",
+                                    "360° Virtual Tour",
                                     style: style.copyWith(
-                                        color: Colors.black, fontSize: 14.sp),
+                                        color: Colors.black, fontSize: 12.sp),
                                   ),
                                 ),
                                 const SizedBox(
-                                  height: 5.0,
+                                  height: 10.0,
                                 ),
                                 Container(
-                                  width: 60.h,
+                                 // width: 60.h,
                                   height: 25.h,
+                                  margin: EdgeInsets.only(left: 25.w,right: 15.w),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius:
                                           BorderRadius.circular(10.r)),
                                   child: Text(
-                                    "Meta",
+                                    "MetaVerse",
                                     style: style.copyWith(
-                                        color: Colors.black, fontSize: 14.sp),
+                                        color: Colors.black, fontSize: 12.sp),
                                   ),
                                 )
                               ],

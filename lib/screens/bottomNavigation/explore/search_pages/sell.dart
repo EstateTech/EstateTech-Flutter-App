@@ -20,6 +20,11 @@ class _SellScreenState extends State<SellScreen> {
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
   List<bool> isBuyOptionSelectedList = [false, false, false];
+  List<String> sellOptions = [
+    "Offer\nTo Sell",
+    "Offer\nTo Rent",
+    "Short Term\nOptions"
+  ];
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
@@ -32,35 +37,7 @@ class _SellScreenState extends State<SellScreen> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SellOption(() {
-                  setState(() {
-                    isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
-                    isBuyOptionSelectedList[1] = false;
-                    isBuyOptionSelectedList[2] = false;
-                  });
-                }, "Offer\nTo Sell", isBuyOptionSelectedList[0]),
-                SellOption(() {
-                  setState(() {
-                     isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
-                  isBuyOptionSelectedList[0] = false;
-                  isBuyOptionSelectedList[2] = false;
-                    
-                  });
-
-
-                 
-                }, "Offer\nTo Rent", isBuyOptionSelectedList[1]),
-                SellOption(() {
-                  setState(() {
-                      isBuyOptionSelectedList[2] = !isBuyOptionSelectedList[2];
-                  isBuyOptionSelectedList[1] = false;
-                  isBuyOptionSelectedList[0] = false;
-                    
-                  });
-                
-                }, "Short Term\nOptions", isBuyOptionSelectedList[2])
-              ],
+              children: _buildContainers(),
             ),
             SizedBox(
               height: 20.h,
@@ -155,6 +132,27 @@ class _SellScreenState extends State<SellScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildContainers() {
+    return sellOptions.asMap().entries.map((entry) {
+      final int index = entry.key;
+      final String option = entry.value;
+
+      return sellOptionWidget(() {
+        for (int i = 0; i < isBuyOptionSelectedList.length; i++) {
+          if (i == index) {
+            setState(() {
+              isBuyOptionSelectedList[i] = true;
+            });
+          } else {
+            setState(() {
+              isBuyOptionSelectedList[i] = false;
+            });
+          }
+        }
+      }, option, isBuyOptionSelectedList[index]);
+    }).toList();
   }
 
   Container LocationExpandableWidget(BuildContext context) {
@@ -294,7 +292,7 @@ class _SellScreenState extends State<SellScreen> {
   }
 }
 
-Widget SellOption(VoidCallback onTap, String text, bool isSelected) {
+Widget sellOptionWidget(VoidCallback onTap, String text, bool isSelected) {
   return GestureDetector(
     onTap: onTap,
     child: Container(

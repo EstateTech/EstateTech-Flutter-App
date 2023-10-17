@@ -6,7 +6,7 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyDescription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -178,12 +178,17 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w700),
             ),
-            Text(
-              "Upload from your device",
-              style: style.copyWith(
-                color: textwalktrough,
-                fontSize: 15.sp,
-                decoration: TextDecoration.underline,
+            GestureDetector(
+              onTap: (){
+                  _getImage(ImageSource.gallery);
+              },
+              child: Text(
+                "Upload from your device",
+                style: style.copyWith(
+                  color: textwalktrough,
+                  fontSize: 15.sp,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
           ],

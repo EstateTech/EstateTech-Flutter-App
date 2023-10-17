@@ -392,17 +392,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Privacy & Sharing",
                   imagepath: 'assets/images/privacy_icon.svg',
-                  onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RentalTypeScreen(
-                              postModel: PostModel(),
-                            )));
-                    
-
-
-                  },
+                  onTap: () {},
                 ),
                 ListTileProfileOptions(
                   text: "Legal",

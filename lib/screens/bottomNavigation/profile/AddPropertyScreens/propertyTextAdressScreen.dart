@@ -3,17 +3,21 @@ import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyMappedScreen.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyConfirmMapScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PropertyTextAddressScreen extends StatefulWidget {
   const PropertyTextAddressScreen({
     required this.postModel,
-    super.key,
+
+    super.key, required this.latLng,
   });
 
   final PostModel postModel;
+  final LatLng latLng;
 
   @override
   State<PropertyTextAddressScreen> createState() =>
@@ -65,9 +69,10 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                   SizedBox(height: 5.h,),
+                    SizedBox(
+                      height: 5.h,
+                    ),
                     const CustomCreatePostHeader(),
-                  
                     Column(
                       children: [
                         Text(
@@ -91,7 +96,8 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
                     ),
                     AddressInTextFields(),
                     Padding(
-                      padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
+                      padding: EdgeInsets.only(
+                          right: 12.h, left: 12.h, bottom: 30.h),
                       child: customPostCreateBottomWidget(
                         OnPressedNextButton: () {
                           if (_key.currentState!.validate()) {
@@ -102,13 +108,13 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
                             widget.postModel.city = controllers[3].text;
                             widget.postModel.state = controllers[4].text;
                             widget.postModel.postalCode = controllers[5].text;
-              
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PropertyMappedScreen(
-                                          isConfirmPinScreen: true,
+                                    builder: (context) => PropertyConfirmedMappedScreen(
                                           postModel: widget.postModel,
+                                          latLng: widget.latLng,
                                         )));
                           }
                         },

@@ -22,10 +22,12 @@ class _InboxScreenState extends State<InboxScreen> {
   final List<SignupSavepDataFirebase> _searchlist = [];
   bool _isSearching = false;
   List<SignupSavepDataFirebase> chatList = [];
+  List<SignupSavepDataFirebase> _chatSearchList = [];
   List<String> receiverList = [];
   bool _isLoadingWidget = false;
   TextEditingController searchController = TextEditingController();
   String senderId = "";
+  bool _isChatListSearched = false;
 
   @override
   void initState() {
@@ -73,106 +75,95 @@ class _InboxScreenState extends State<InboxScreen> {
           child: Scaffold(
             backgroundColor: Colors.white,
             appBar: PreferredSize(
-              preferredSize: Size(MediaQuery.of(context).size.width * 1, 70),
+              preferredSize: Size(MediaQuery.of(context).size.width * 1, 60),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        _isSearching
-                            ? Container(
-                                width: 200.w,
-                                child: TextField(
-                                  controller: searchController,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Name , Email ...',
-                                    hintStyle: style.copyWith(
-                                        color: Colors.grey, fontSize: 15.sp),
-                                  ),
-                                  autofocus: true,
-                                  style: style.copyWith(
-                                      color: Colors.black, fontSize: 15.sp),
-                                  onChanged: (value) {
-                                    print(value);
-                                    //search logic
-
-                                    setState(() {
-                                      _searchlist.clear();
-                                    });
-
-                                    for (var i in alllist) {
-                                      if (i.firstName
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) ||
-                                          i.lastName
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(value
-                                                  .toString()
-                                                  .toLowerCase()) ||
-                                          i.email
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase())) {
-                                        _searchlist.add(i);
-                                      }
-                                      if (value == "") {
-                                        setState(() {
-                                          _searchlist.clear();
-                                        });
-                                      }
-                                      setState(() {
-                                        _searchlist;
-                                      });
-                                    }
-                                  },
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: _isChatListSearched
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              child: searchTextField(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isChatListSearched = !_isChatListSearched;
+                              });
+                            },
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.purple,
+                            ),
+                          )
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              _isSearching
+                                  ? Container(
+                                      width: 200.w,
+                                      //height: 5.h,
+                                      child: searchTextField(),
+                                    )
+                                  : Text(
+                                      'Inbox',
+                                      style: GoogleFonts.dmSans(
+                                          color: Color(0xFF3A3153),
+                                          fontSize: 22.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                           _isSearching ?  
+                           GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isSearching = !_isSearching;
+                                 
+                                   
+                                  });
+                                },
+                                child: Icon(
+                                  CupertinoIcons.clear_circled_solid,
+                                  color: Color(0xFF3A3153),
+                                  size: 29.w,
                                 ),
                               )
-                            : Text(
-                                'Inbox',
-                                style: GoogleFonts.dmSans(
-                                    color: Color(0xFF3A3153),
-                                    fontSize: 22.sp,
-                                    fontWeight: FontWeight.w700),
+                           
+                           
+                           
+                           
+                           : GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isChatListSearched = !_isChatListSearched;
+                                    _chatSearchList = chatList;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF3A3153),
+                                  size: 29.w,
+                                ),
                               ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isSearching = !_isSearching;
-                            });
-                            if (!_isSearching) {
-                              fetchData();
-                            }
-                          },
-                          child: Icon(
-                            _isSearching
-                                ? CupertinoIcons.clear_circled_solid
-                                : Icons.search,
-                            color: Color(0xFF3A3153),
-                            size: 29.w,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                            ],
+                          )
+                        ],
+                      ),
               ),
             ),
             body: Column(
               children: [
                 SizedBox(
-                  height: 20.h,
+                  height: 10.h,
                 ),
                 Container(
                   height: 1.h,
@@ -267,64 +258,29 @@ class _InboxScreenState extends State<InboxScreen> {
                                                           .fromJson(e.data()))
                                                   .toList() ??
                                               [];
-                                              print(chatList.length);
-                                              print(chatList[0].userId);
-                                             // print(getConversationID(chatList[0].userId!));
+                                          // print(chatList.length);
+                                          //  print(chatList[0].userId);
+                                          // print(getConversationID(chatList[0].userId!));
                                           if (chatList.isNotEmpty) {
-                                            return ListView.builder(
-                                                itemCount: chatList.length,
-                                                itemBuilder: (context, index) { 
-                                                  String item = chatList[index]
-                                                      .firstName
-                                                      .toString();
-                                                  return Dismissible(
-                                                    key: Key(item),
-                                                    background: Card(
+                                            if (_chatSearchList.isEmpty &&
+                                                searchController
+                                                    .text.isNotEmpty) {
+                                              return Center(
+                                                child: Text(
+                                                  "No matching results found",
+                                                  style: style.copyWith(
                                                       color: mainAppColor,
-                                                      child: Align(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 10.h),
-                                                          child: Icon(
-                                                            Icons.delete,
-                                                            color: Colors.white,
-                                                            size: 40.sp,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    direction: DismissDirection
-                                                        .endToStart,
-                                                    onDismissed: (direction) {
-                                                      print("heello");
-                                                       print(  " the id in on dismissed is ${chatList[index].userId}");
-                                                      // print(getConversationID(chatList[index].userId!));
-                                                     
-                                                      deleteChatDocument(getConversationID(chatList[index].userId!) , context )
-                                                      .then((value) {
-                                                        setState(() {
-                                                          chatList.removeAt(index);
-                                                           fetchData();
-                                                        });
-                                                       
-                                                      })
-                                                      ;
-
-
-                                                     
-                                                        
-
-                                                     
-                                                    },
-                                                    child: ChatCard(
-                                                      user: chatList[index],
-                                                      isSelected: false,
-                                                    ),
-                                                  );
-                                                });
+                                                      fontSize: 20.sp),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            } else if (_isChatListSearched) {
+                                              return chatListViewBuilder(
+                                                  _chatSearchList);
+                                            } else {
+                                              return chatListViewBuilder(
+                                                  chatList);
+                                            }
                                           } else {
                                             return const Center(
                                               child: Text("No Chats!"),
@@ -336,7 +292,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                     alignment: Alignment.center,
                                     height: 100.h,
                                     child: Text(
-                                      "No chats Found :(\n Start chatting by searching users",
+                                      "No chats Found :(",
                                       style: style.copyWith(
                                           color: mainAppColor, fontSize: 20.sp),
                                       textAlign: TextAlign.center,
@@ -345,12 +301,139 @@ class _InboxScreenState extends State<InboxScreen> {
                                 alignment: Alignment.center,
                                 height: 100.h,
                                 width: 100.h,
-                                child: CircularProgressIndicator()))
+                                child: CircularProgressIndicator(
+                                  color: mainAppColor,
+                                )))
               ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
+                if (!_isSearching) {
+                  fetchData();
+                }
+              },
+              child: Icon(Icons.message),
+              backgroundColor: mainAppColor,
             ),
           ),
         ),
       ),
+    );
+  }
+
+  ListView chatListViewBuilder(List<SignupSavepDataFirebase> list) {
+    return ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          String item = list[index].firstName.toString();
+          return Dismissible(
+            key: Key(item),
+            background: Card(
+              color: mainAppColor,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 10.h),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 40.sp,
+                  ),
+                ),
+              ),
+            ),
+            direction: DismissDirection.endToStart,
+            onDismissed: (direction) {
+              print("heello");
+              print(" the id in on dismissed is ${list[index].userId}");
+              // print(getConversationID(chatList[index].userId!));
+
+              deleteChatDocument(
+                      getConversationID(list[index].userId!), context)
+                  .then((value) {
+                setState(() {
+                  list.removeAt(index);
+                  fetchData();
+                });
+              });
+            },
+            child: ChatCard(
+              user: list[index],
+              isSelected: false,
+            ),
+          );
+        });
+  }
+
+  TextField searchTextField() {
+    return TextField(
+      controller: searchController,
+      decoration: InputDecoration(
+        isCollapsed: true,
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        border: InputBorder.none,
+        hintText: 'Name , Email ...',
+        hintStyle: style.copyWith(color: Colors.grey, fontSize: 18.sp),
+      ),
+      autofocus: true,
+      style: style.copyWith(color: Colors.black, fontSize: 18.sp),
+      onChanged: (value) {
+        print(value);
+
+        if (_isSearching) {
+          setState(() {
+            _searchlist.clear();
+          });
+
+          for (var i in alllist) {
+            if (i.firstName
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toLowerCase()) ||
+                i.lastName
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toString().toLowerCase()) ||
+                i.email
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toLowerCase())) {
+              _searchlist.add(i);
+            }
+            if (value == "") {
+              setState(() {
+                _searchlist.clear();
+              });
+            }
+            setState(() {
+              _searchlist;
+            });
+          }
+        } else {
+          setState(() {
+            _chatSearchList.clear();
+          });
+          for (var i in chatList) {
+            if (i.firstName
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toLowerCase()) ||
+                i.lastName
+                    .toString()
+                    .toLowerCase()
+                    .contains(value.toString().toLowerCase())) {
+              _chatSearchList.add(i);
+            }
+            setState(() {
+              _chatSearchList;
+            });
+          }
+        }
+      },
     );
   }
 }

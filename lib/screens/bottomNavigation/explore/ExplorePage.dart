@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:crypto_estate_tech/notification/notification_screen.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -281,7 +281,13 @@ class _ExplorePageState extends State<ExplorePage>
                         fileProvider.currency == "USD" ? 'AED' : 'USD');
 
                         fileProvider.updateCurrencySign(
-                          fileProvider.currencySign == "\$" ? "د.إ." : '\$'
+                          fileProvider.currencySign == "\$" ? "\د.إ." : '\$'
+
+                          //to do here
+
+
+
+                          
                         );
                   },
                   child: Container(

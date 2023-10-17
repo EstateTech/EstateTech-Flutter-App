@@ -1,4 +1,5 @@
 import 'package:crypto_estate_tech/common/divider.dart';
+import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
@@ -6,7 +7,7 @@ import 'package:crypto_estate_tech/screens/detailScreens/AnimetiesContainer.dart
 import 'package:crypto_estate_tech/screens/detailScreens/insightsContainer.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/mapContainer.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/profileContainer.dart';
-import 'package:crypto_estate_tech/screens/detailScreens/recomendationsContainer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -82,7 +83,7 @@ class DetailsContainer extends StatelessWidget {
                             height: 10.h,
                           ),
                           Text(
-                            getFirstThreeWords(postModel.propertyDescription!),
+                        Utils.   getFirstThreeWords(postModel.propertyDescription!),
                             style: style2.copyWith(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w900,

@@ -21,6 +21,8 @@ class _RentState extends State<Rent> {
   bool _isExpanded = false;
 
     List<bool> isBuyOptionSelectedList = [false, false];
+    List<String> rentOptions = ["Long-term" , "Short-term"];
+    String optionSelected = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class _RentState extends State<Rent> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-     // margin: EdgeInsets.only(left: 20.h, right: 20.h),
+     
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -36,30 +38,7 @@ class _RentState extends State<Rent> {
               padding:  EdgeInsets.only(left: 15.h,right: 15.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  timelineOptionWidget(() {
-                    setState(() {
-                      isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
-                      isBuyOptionSelectedList[1] = false;
-                    });
-
-
-                  }, "Long-term" , isBuyOptionSelectedList[0]
-                  
-                  
-                  ),
-                  timelineOptionWidget(() {
-                    setState(() {
-                      isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
-                      isBuyOptionSelectedList[0] = false;
-                      
-
-                    });
-
-
-
-                  }, "Short-term" , isBuyOptionSelectedList[1])
-                ],
+                children: _buildContainers()
               ),
             ),
             SizedBox(
@@ -100,13 +79,22 @@ class _RentState extends State<Rent> {
                         // childrenPadding: EdgeInsets.zero,
                         trailing: SizedBox.shrink(),
                         onExpansionChanged: (value) {
+                          print(optionSelected);
+                         
                           setState(() {
                             _isExpanded = value;
                           });
                         },
             
                         children: <Widget>[
-                          FilterWidget(isPeriodTimeRequired:  true,),
+                          FilterWidget(
+                            isPeriodTimeRequired:  true,
+                            OptionSelected: optionSelected,
+
+                           
+                            
+                            
+                            ),
                         ],
                       ))),
             ),
@@ -154,6 +142,31 @@ class _RentState extends State<Rent> {
         ),
       ),
     );
+  }
+
+
+
+  List<Widget> _buildContainers() {
+    return rentOptions.asMap().entries.map((entry) {
+      final int index = entry.key;
+      final String option = entry.value;
+
+
+      return timelineOptionWidget(() {
+        for (int i = 0; i < isBuyOptionSelectedList.length; i++) {
+          if (i == index) {
+            setState(() {
+              optionSelected = rentOptions[i];
+              isBuyOptionSelectedList[i] = true;
+            });
+          } else {
+            setState(() {
+              isBuyOptionSelectedList[i] = false;
+            });
+          }
+        }
+      }, option, isBuyOptionSelectedList[index]);
+    }).toList();
   }
 
   Container LocationExpandableWidget(BuildContext context) {

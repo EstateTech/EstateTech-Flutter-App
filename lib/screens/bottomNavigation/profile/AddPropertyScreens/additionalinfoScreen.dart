@@ -6,7 +6,7 @@ import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

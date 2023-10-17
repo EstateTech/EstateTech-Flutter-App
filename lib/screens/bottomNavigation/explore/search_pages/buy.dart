@@ -22,6 +22,7 @@ class _BuyScreenState extends State<BuyScreen> {
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
    List<bool> isBuyOptionSelectedList = [false, false, false];
+   List<String> buyOptionsList = ["Ready\n To Move", "Off\nPlan","Under\nConstruction" ];
 
   
   @override
@@ -36,45 +37,7 @@ class _BuyScreenState extends State<BuyScreen> {
           children: [
             Row(
                mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                  BuyOptions(() {
-                    setState(() {
-                                  isBuyOptionSelectedList[0] = !isBuyOptionSelectedList[0];
-                                  isBuyOptionSelectedList[1] = false;
-                                  isBuyOptionSelectedList[2] = false;
-
-                    });
-                  }, "Ready\n To Move" , isBuyOptionSelectedList[0]),
-                  BuyOptions(() {
-                    setState(() {
-
-                      isBuyOptionSelectedList[1] = !isBuyOptionSelectedList[1];
-                      isBuyOptionSelectedList[0] = false;
-                      isBuyOptionSelectedList[2] = false;
-                      
-
-
-
-                    });
-
-
-
-                  }, "Off\nPlan" , isBuyOptionSelectedList[1]),
-                  BuyOptions(() {
-                    setState(() {
-                      isBuyOptionSelectedList[2] = !isBuyOptionSelectedList[2];
-                      isBuyOptionSelectedList[1] = false;
-                      isBuyOptionSelectedList[0] = false;
-                      
-
-                    });
-
-
-
-                  }, "Under\nConstruction" , isBuyOptionSelectedList[2]),
-             
-              
-              ],
+              children: _buildContainers()
             ),
       
              SizedBox(
@@ -176,6 +139,28 @@ class _BuyScreenState extends State<BuyScreen> {
       ),
     
     );
+  }
+
+
+  List<Widget> _buildContainers() {
+    return buyOptionsList.asMap().entries.map((entry) {
+      final int index = entry.key;
+      final String option = entry.value;
+
+      return BuyOptions(() {
+        for (int i = 0; i < isBuyOptionSelectedList.length; i++) {
+          if (i == index) {
+            setState(() {
+              isBuyOptionSelectedList[i] = true;
+            });
+          } else {
+            setState(() {
+              isBuyOptionSelectedList[i] = false;
+            });
+          }
+        }
+      }, option, isBuyOptionSelectedList[index]);
+    }).toList();
   }
 
 

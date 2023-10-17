@@ -4,7 +4,7 @@ import 'package:crypto_estate_tech/provider/chatProvider.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -189,9 +189,9 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
                   OnPressedNextButton: () {
                     widget.postModel.rentType = selectedMainOption;
                     widget.postModel.rentSubType = selectedSubOption;
-                    widget.postModel.rentalPeriod = rentalList[selectedItem];
-                    print(
-                        "${selectedMainOption} , ${selectedSubOption} , ${selectedItem}");
+                 //   widget.postModel.rentalPeriod = rentalList[selectedItem];
+                    // print(
+                    //     "${selectedMainOption} , ${selectedSubOption} , ${rentalList[selectedItem]}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -213,74 +213,97 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
   }
 
   Widget ShowDateTimeRange(DateTime start, DateTime end) {
-    return Container(
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            "From",
+            style: style2.copyWith(
+                color: mainAppColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "To",
+            style: style2.copyWith(
+                color: mainAppColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
+      SizedBox(
+        height: 10.h,
+      ),
+      Padding(
+        padding: EdgeInsets.only(left: 5.h, right: 5.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "From",
-              style: style2.copyWith(
-                  color: mainAppColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold),
+            Expanded(
+                child: OutlinedButton(
+              onPressed: pickDateRange,
+              child: Text(
+                "${start.year}/${start.month}/${start.day}",
+                style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+              ),
+            )),
+            const SizedBox(
+              width: 12,
             ),
-            Text(
-              "To",
-              style: style2.copyWith(
-                  color: mainAppColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold),
-            )
+            Expanded(
+                child: OutlinedButton(
+              onPressed: pickDateRange,
+              child: Text(
+                '${end.year}/${end.month}/${end.day}',
+                style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+              ),
+            ))
           ],
         ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 5.h, right: 5.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: OutlinedButton(
-                onPressed: pickDateRange,
-                child: Text(
-                  "${start.year}/${start.month}/${start.day}",
-                  style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
-                ),
-              )),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                  child: OutlinedButton(
-                onPressed: pickDateRange,
-                child: Text(
-                  '${end.year}/${end.month}/${end.day}',
-                  style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
-                ),
-              ))
-            ],
-          ),
-        )
-      ]),
-    );
+      )
+    ]);
   }
 
   Future pickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
-        context: context,
-        initialDateRange: dateTimeRange,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2100));
+   DateTimeRange? newDateRange = await showDateRangePicker(
+  context: context,
+ // initialDateRange: dateTimeRange,
+  firstDate: DateTime.now(),
+  lastDate: DateTime(2100),
 
-    if (newDateRange == null) return;
 
-    setState(() {
-      dateTimeRange = newDateRange;
-      isRentalPeriodSaved = true;
-    });
+  builder: (context, Widget? child) => Theme(
+    data: Theme.of(context).copyWith(
+        dialogBackgroundColor:
+          mainAppColor,
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            iconTheme: IconThemeData(
+                color: Theme.of(context).primaryColorLight)),
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+            onPrimary: Colors.white,
+            primary: mainAppColor)),
+    child: child!,
+  ),
+
+
+
+
+
+
+
+
+
+);
+
+if (newDateRange == null) return;
+
+setState(() {
+  dateTimeRange = newDateRange;
+  isRentalPeriodSaved = true;
+});
+
   }
 
   Widget PropertyDescription() {
@@ -292,34 +315,59 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
         bool isSelected = selectedItem == index;
         String value = entry.value;
 
-        return GestureDetector(
-          onTap: () {
-            // Handle widget tap event
+         bool isEnabled = false; // Initialize as disabled
 
-            setState(() {
-              selectedItem = index; // Set the selected item
-            });
-          },
-          child: Container(
-            height: 40.h,
-            width: 150.w,
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(color: Shade2purple),
-              color: isSelected ? Colors.white : Colors.transparent,
-            ),
-            child: Row(
-              children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
+    if (selectedSubOption == "Long-term") {
+      // Enable "yearly" and "monthly" for long-term
+      isEnabled = (value == "Yearly" || value == "Montly");
+    } else if (selectedSubOption == "Short-term") {
+      // Enable "weekly" for short-term
+      isEnabled = (value == "Weekly");
+    }
+
+        return IgnorePointer(
+            ignoring: !isEnabled, 
+          child: GestureDetector(
+            onTap: () {
+              // Handle widget tap event
+        
+              setState(() {
+                selectedItem = index; // Set the selected item
+              });
+            },
+            child: Container(
+              height: 40.h,
+              width: 150.w,
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(color: Shade2purple),
+                color: 
+                selectedSubOption == "Long-term" &&
+                                        index == 2
+                                    ? Colors.black38
+                                    : selectedSubOption == "Short-term" &&
+                                            index == 0
+                                        ? Colors.black38
+                                        : selectedSubOption ==
+                                                    "Short-term" &&
+                                                index == 1
+                                            ? Colors.black38:  
+                
+                isSelected ? Colors.white : Colors.transparent,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

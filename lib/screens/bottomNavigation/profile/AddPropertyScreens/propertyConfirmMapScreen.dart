@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,28 +11,27 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/featuresScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyTextAdressScreen.dart';
 
 import '../../../../common/widgetConstants.dart';
 import '../../../../model/postModel.dart';
 
-class PropertyMappedScreen extends StatefulWidget {
-  final PostModel postModel;
+
+
+class PropertyConfirmedMappedScreen extends StatefulWidget {
   
 
-  const PropertyMappedScreen({
-    Key? key,
-
-
-    required this.postModel,
-  }) : super(key: key);
+  final PostModel postModel;
+  final LatLng latLng;
+  const PropertyConfirmedMappedScreen({super.key, required this.postModel , required this.latLng});
 
   @override
-  State<PropertyMappedScreen> createState() => _PropertyMappedScreenState();
+  State<PropertyConfirmedMappedScreen> createState() => _PropertyConfirmedMappedScreenState();
 }
 
-class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
-  //String address = '';
+class _PropertyConfirmedMappedScreenState extends State<PropertyConfirmedMappedScreen> {
+
   TextEditingController addressController = TextEditingController();
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -109,12 +106,10 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
 
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) async {
-      print("1--${position.latitude}");
+   
 
       setState(() {
-        _latLng = LatLng(position.latitude, position.longitude);
+        _latLng = LatLng(widget.latLng.latitude, widget.latLng.longitude);
         _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
         // postMdl.getCurrentWeather(position.latitude, position.longitude);
         // postMdl.setUserPostion(position);
@@ -139,11 +134,10 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
        
        
       
-    }).catchError((e) {
-      debugPrint(e);
-      print(" error in current get location  ${e}");
-    });
+  
   }
+
+
   Future getAddress(double latitude, double longitude) async {
     try {
       print("${latitude} , ${longitude}");
@@ -193,7 +187,6 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
             _latLng = LatLng(
                 coordinates.latitude ?? 0.0, coordinates.longitude ?? 0.0);
             _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
-
           });
           _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
 
@@ -222,20 +215,17 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
           });
           break;
         } else {
-          setState(() {
-            isLoading=false ;
-          });
-          //_getCurrentPosition();
+          _getCurrentPosition();
         }
       }
     } catch (e) {
       print(e);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Location not found for $address'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Location not found for $address'),
+      //   ),
+      // );
 
       setState(() {
         isLoading = false;
@@ -249,22 +239,20 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
       markerId: MarkerId('selected_location'),
       position: location,
     );
-   
 
     setState(() {
       // Update the markers set
       _markers.clear();
       _markers.add(newMarker);
-       _latLng = location;
     });
- print("${_latLng.latitude} ---------${_latLng.longitude}");
+
     // Reverse geocode the location to get the address
     getAddress(location.latitude, location.longitude);
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+        return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
@@ -277,10 +265,13 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const CustomCreatePostHeader(),
-           
+            // SizedBox(
+            //   height: 20.h,
+            // ),
             Text(
              
-                   "Where is your property located?",
+                  "Is the pin on the right spot?",
+                 
               style: style.copyWith(
                   fontSize: 25.sp,
                   color: textwalktrough,
@@ -326,11 +317,45 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                               color: Colors.black,
                             )),
                         onSubmitted: (value) {
-                          _updateMapLocation(value.toString().trim());
+                          _updateMapLocation(value.toString());
                         },
                       )),
                   //Adjust container
 
+                       Align(
+                          alignment: Alignment.bottomRight,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (_markers.isNotEmpty) {
+                                LatLng selectedLocation =
+                                    _markers.first.position;
+                                final GoogleMapController controller =
+                                    await _controller.future;
+                                controller.animateCamera(
+                                  CameraUpdate.newLatLng(selectedLocation),
+                                );
+                              }
+                            },
+                            child: Container(
+                              height: 50.h,
+                              width: 90.w,
+                              margin: EdgeInsets.only(bottom: 5.h, right: 5.h),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Shade2purple),
+                                  borderRadius: BorderRadius.circular(30.r)),
+                              child: Text(
+                                "Adjust",
+                                style: style.copyWith(
+                                    color: Shade2purple,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        )
+                     
                 ],
               ),
 
@@ -354,7 +379,6 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                     )
                   : customPostCreateBottomWidget(
                       OnPressedNextButton: () {
-                        print(_latLng.latitude);
                         if (addressController.text.isNotEmpty) {
                           setState(() {
                             widget.postModel.latLong =
@@ -370,14 +394,14 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                                 addressController.text.split(',').last;
                           });
 
-                           Navigator.push(
+                          
+                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          PropertyTextAddressScreen(
+                                      builder: (context) => FeatureScreen(
                                             postModel: widget.postModel,
-                                            latLng: _latLng,
                                           )));
+                             
                         } else {
                           Fluttertoast.showToast(
                               msg: 'Please wait unitl system fetch addreess');
@@ -392,5 +416,6 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
         ),
       ),
     );
+
   }
 }

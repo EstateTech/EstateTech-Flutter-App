@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/dialogMortgage.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';

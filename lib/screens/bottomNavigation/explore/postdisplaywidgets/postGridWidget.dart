@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,6 +63,7 @@ class _GridPostState extends State<GridPost> {
 
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
+      height: 330.h ,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
       decoration: const BoxDecoration(),
@@ -141,18 +143,15 @@ class _GridPostState extends State<GridPost> {
           SizedBox(
             height: 5.h,
           ),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.center,
-            child: Text(
-              getFirstThreeWords(widget.postModel.propertyDescription!),
-              // "${widget.postModel}",
-              style: style.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black),
-              maxLines: 2,
-            ),
+          Text(
+            Utils.getFirstThreeWords(widget.postModel.propertyDescription!),
+            // "${widget.postModel}",
+            overflow: TextOverflow.ellipsis,
+            style: style.copyWith(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black),
+            maxLines: 1,
           ),
           SizedBox(
             height: 3.h,
@@ -174,25 +173,40 @@ class _GridPostState extends State<GridPost> {
           SizedBox(
             height: 4.h,
           ),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.center,
-            child: RichText(
-                text: TextSpan(
-                    style: style.copyWith(
-                        color: Colors.black,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600),
-                    children: <TextSpan>[
-                  TextSpan(text: "300,0000 ${fileProvider.currencySign} ${fileProvider.currency}"),
-                  TextSpan(
-                    text: ' / year',
-                    style: style2.copyWith(
-                        color: Colors.black,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ])),
+          Row(
+            children: [
+              Text(
+                "${fileProvider.currencySign}",
+                style: style.copyWith(
+                    color: Colors.black,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.center,
+                child: RichText(
+                    text: TextSpan(
+                        style: style.copyWith(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600),
+                        children: <TextSpan>[
+                    
+                     TextSpan(text: Utils.convertCurrency("300000", fileProvider.currency)),
+                     //  TextSpan( text: "300 "),
+                       
+                       // TextSpan(text: "${fileProvider.currency}"),
+                      TextSpan(
+                        text: ' / year',
+                        style: style2.copyWith(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ])),
+              ),
+            ],
           )
         ],
       ),

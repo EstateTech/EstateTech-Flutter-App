@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
-import 'package:crypto_estate_tech/provider/postImagesProvider.dart';
+import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -172,7 +173,7 @@ class _PostState extends State<Post> {
                   height: 3.h,
                 ),
                 Text(
-                  getFirstThreeWords(widget.postModel.propertyDescription!),
+             Utils.     getFirstThreeWords(widget.postModel.propertyDescription!),
                   style: style.copyWith(
                     color: Shade2purple,
                     fontWeight: FontWeight.w600,
@@ -195,7 +196,7 @@ class _PostState extends State<Post> {
                   height: 3.h,
                 ),
                 Text(
-                  joinWithComma(widget.postModel.utilities!),
+                Utils.     joinWithComma(widget.postModel.utilities!),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: style2.copyWith(
@@ -227,7 +228,7 @@ class _PostState extends State<Post> {
                             fontWeight: FontWeight.w600,
                           ),
                           children: [
-                            TextSpan(text: "300,000 ${fileProvider.currencySign} ${fileProvider.currency}"),
+                            TextSpan(text: "${fileProvider.currencySign}300,000${fileProvider.currency}"),
                             TextSpan(
                               text: " / year",
                               style: style.copyWith(

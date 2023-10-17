@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FilterWidget extends StatefulWidget {
- final bool isPeriodTimeRequired ;
-  const FilterWidget({super.key, required this.isPeriodTimeRequired});
+  final bool isPeriodTimeRequired;
+  final String OptionSelected;
+  const FilterWidget(
+      {super.key,
+      required this.isPeriodTimeRequired,
+      this.OptionSelected = ""});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -22,6 +26,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   List<int> bedrooms = [1, 2, 3, 4, 5];
   List<int> bathrooms = [1, 2, 3, 4, 5, 6];
   List<String> periods = ['Yearly', 'Monthly', 'Weekly'];
+
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context);
@@ -146,51 +151,103 @@ class _FilterWidgetState extends State<FilterWidget> {
               ),
             ),
             SizedBox(height: 20.0),
-           widget.isPeriodTimeRequired ?  Text(
-              'Period:',
-              style: TextStyle(fontSize: 16.0),
-            ):SizedBox.shrink(),
-           widget.isPeriodTimeRequired ?  SizedBox(height: 10.0) :SizedBox.shrink(),
-           widget.isPeriodTimeRequired ?  Container(
-              height: 50.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: periods.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = selectedPeriod == periods[index];
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedPeriod = periods[index];
-                      });
-                      filterProvider.updatePeriod(periods[index]);
-                    },
-                    child: Container(
-                      width: 100.0,
-                      height: 50.0,
-                      margin: EdgeInsets.only(right: 10.0),
-                      decoration: BoxDecoration(
-                        color: isSelected ? Colors.purple : Colors.transparent,
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          periods[index],
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.bold,
+            widget.isPeriodTimeRequired
+                ? Text(
+                    'Period:',
+                    style: TextStyle(fontSize: 16.0),
+                  )
+                : SizedBox.shrink(),
+            widget.isPeriodTimeRequired
+                ? SizedBox(height: 10.0)
+                : SizedBox.shrink(),
+            widget.isPeriodTimeRequired
+                ? Container(
+                    height: 50.0,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: periods.length,
+                      itemBuilder: (context, index) {
+                        bool isSelected = selectedPeriod == periods[index];
+                        bool isEnabled = false; // Initialize as disabled
+
+                        if (widget.OptionSelected == "Long-term") {
+                          // Enable yearly and monthly for long-term
+                          isEnabled = (periods[index] == "Yearly" ||
+                              periods[index] == "Monthly");
+                        } else if (widget.OptionSelected == "Short-term") {
+                          // Enable weekly for short-term
+                          isEnabled = (periods[index] == "Weekly");
+                        } else if(widget.OptionSelected == "") {
+                          isEnabled = true;
+                        }
+
+                        return IgnorePointer(
+                          ignoring: !isEnabled,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (isEnabled) {
+                                setState(() {
+                                  selectedPeriod = periods[index];
+                                });
+
+                                print(selectedPeriod);
+                                filterProvider.updatePeriod(periods[index]);
+                              }
+                            },
+                            child: Container(
+                              width: 100.0,
+                              height: 50.0,
+                              margin: EdgeInsets.only(right: 10.0),
+                              decoration: BoxDecoration(
+                                color: widget.OptionSelected == "Long-term" &&
+                                        index == 2
+                                    ? Colors.grey
+                                    : widget.OptionSelected == "Short-term" &&
+                                            index == 0
+                                        ? Colors.grey
+                                        : widget.OptionSelected ==
+                                                    "Short-term" &&
+                                                index == 1
+                                            ? Colors.grey
+                                            : isSelected
+                                                ? Colors.purple
+                                                : Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  periods[index],
+                                  style: TextStyle(
+                                    color:
+                                        widget.OptionSelected == "Long-term" &&
+                                                index == 2
+                                            ? Colors.black
+                                            : widget.OptionSelected ==
+                                                        "Short-term" &&
+                                                    index == 0
+                                                ? Colors.black
+                                                : widget.OptionSelected ==
+                                                            "Short-term" &&
+                                                        index == 1
+                                                    ? Colors.black
+                                                    : isSelected
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ) : SizedBox.shrink(),
+                  )
+                : SizedBox.shrink(),
             SizedBox(height: 20.0),
             Text(
               'Price Range:',

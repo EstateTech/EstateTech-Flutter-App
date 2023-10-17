@@ -36,7 +36,7 @@ class _BestOffersState extends State<BestOffers> {
        widget.currentViewIndex == 0  ? 
        GridViewWidget(postFeature : widget.postFeature):
          ListViewWidget(postFeature : widget.postFeature)
-        //  CourselBuilder()
+
       ],
     );
   }

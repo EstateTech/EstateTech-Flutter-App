@@ -88,7 +88,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                                       textInputAction: TextInputAction.done,
                                       controller: descriptionController,
                                       decoration: const InputDecoration(
-                                        hintText: 'Type your motto here .....',
+                                        hintText: 'Description here.....',
                                         border: InputBorder.none,
                                       ),
                                       onSubmitted: (value) {}),
@@ -106,7 +106,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                             height: 10.h,
                           ),
                           Text(
-                            "Chose up to 2 highlights of the aboce to describe your property.",
+                            "Choose up to 2 highlights of the above to describe your property.",
                             style: style.copyWith(
                                 fontSize: 15.sp, color: textwalktrough),
                           ),
