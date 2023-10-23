@@ -49,16 +49,6 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
                     fontWeight: FontWeight.w500),
               ),
               Expanded(
-                // height: 400.h,
-                // width: double.infinity,
-                //     child:   PropertyTypeGridWidget(
-                //   selectedText: '',
-                //   onPressed: () {},
-                //   widgetMap: widget.isMorePropertyScreen
-                //       ? selectPropertyFeaturesMap
-                //       : selectPropertyTypeMap,
-                // )
-
                 child: GridView.builder(
                   padding: EdgeInsets.zero,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

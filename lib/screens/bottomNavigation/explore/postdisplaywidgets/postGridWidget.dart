@@ -3,7 +3,6 @@ import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
-import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

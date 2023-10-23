@@ -71,7 +71,10 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                   likes: widget.postModel.likes,
                   propertyFeature: widget.postModel.propertyFeature,
                   datePosted: currentDate,
-                  postFeature: bestofferPf,
+                  postFeature: trendingPf,
+                  rentSubType: widget.postModel.rentSubType,
+                  rentalPeriod: widget.postModel.rentalPeriod,
+                  rentType: widget.postModel.rentType
                 ),
                 context)
             .then((value) {
@@ -79,6 +82,7 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
         });
       }).catchError((e) {
         storageProvider.setisUploading(false);
+        print("error ocuured");
       });
     }
 
