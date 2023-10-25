@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 
 class FilterProvider with ChangeNotifier {
-  String? propertyType;
-  int? bedrooms;
-  int? bathrooms;
-  String? period;
+  String propertyType = "House";
+  int bedrooms = 1;
+  int bathrooms = 1; 
+ 
   int? price;
   bool isFilterApplied = false;
   String? postFeature;
+  String rentalPeriod = "Yearly";
+  String rentalType = "Rent";
+  String rentalSubtype = "Long-term";
+
+
+  void updateRentalProperties(String rP, String rT, String rST){
+    rentalPeriod = rP;
+    rentalType = rT;
+    rentalSubtype = rST;
+    notifyListeners();
+  }
+
 
   
 
@@ -16,25 +28,21 @@ class FilterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePropertyType(String? value) {
+  void updatePropertyType(String value) {
     propertyType = value;
     notifyListeners();
   }
 
-  void updateBedrooms(int? value) {
+  void updateBedrooms(int value) {
     bedrooms = value;
     notifyListeners();
   }
 
-  void updateBathrooms(int? value) {
+  void updateBathrooms(int value) {
     bathrooms = value;
     notifyListeners();
   }
 
-  void updatePeriod(String? value) {
-    period = value;
-    notifyListeners();
-  }
 
   void updatePrice(int? value) {
     price = value;

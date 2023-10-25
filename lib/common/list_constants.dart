@@ -67,3 +67,24 @@ List<HomeViews> bestlocations = [
           "https://images.unsplash.com/photo-1533395427226-788cee25cc7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=388&q=80",
       name: "Dubai Marina")
 ];
+
+
+
+
+
+
+  String RENT = "Rent";
+  String LONG_TERM = "Long-term";
+  String SHORT_TERM = "Short-term";
+  String READY_TO_MOVE = "Ready-to-move";
+  String OFF_PLAN = "Off-plan";
+  String UNDER_CONSTRUCTION = "Under-construction";
+  String OFFER_TO_SELL = "Offer to Sell"; 
+  String OFFER_TO_RENT= 'Offer to Rent'; 
+  String SHORT_TERM_OPTIONS ="Short Term Options";
+  String BUY = "Buy";
+  String SELL  = "Sell";
+
+String MONTLY = "Montly"; 
+String YEARLY = "Yearly";
+ String WEEKLY = "Weekly";

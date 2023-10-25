@@ -1,3 +1,4 @@
+import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +31,13 @@ class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context);
-    String selectedColor = filterProvider.propertyType ?? 'House';
-    int selectedBedroom = filterProvider.bedrooms ?? -1;
-    int selectedBathroom = filterProvider.bathrooms ?? -1;
-    String selectedPeriod = filterProvider.period ?? "";
+    String selectedColor = filterProvider.propertyType;
+    int selectedBedroom = filterProvider.bedrooms;
+    int selectedBathroom = filterProvider.bathrooms; 
+    String selectedPeriod = filterProvider.rentalPeriod; 
+    
+
+
     double minPrice = 420;
     double maxPrice = 135500;
     return Container(
@@ -49,7 +53,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 setState(() {
                   selectedColor = newValue!;
                 });
-                filterProvider.updatePropertyType(newValue);
+                filterProvider.updatePropertyType(newValue ?? "");
               },
               items: colors.map((color) {
                 return DropdownMenuItem<String>(
@@ -174,10 +178,17 @@ class _FilterWidgetState extends State<FilterWidget> {
                           // Enable yearly and monthly for long-term
                           isEnabled = (periods[index] == "Yearly" ||
                               periods[index] == "Monthly");
+
+                          print("object");
+                         // isSelected = "Yearly" == periods[0];
+
+
+                          isSelected = (periods[0] == "Yearly" &&  index ==0  );
                         } else if (widget.OptionSelected == "Short-term") {
                           // Enable weekly for short-term
                           isEnabled = (periods[index] == "Weekly");
-                        } else if(widget.OptionSelected == "") {
+                          isSelected = "Weekly" == periods[2];
+                        } else if (widget.OptionSelected == "") {
                           isEnabled = true;
                         }
 
@@ -191,7 +202,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                                 });
 
                                 print(selectedPeriod);
-                                filterProvider.updatePeriod(periods[index]);
+                                //  filterProvider.updatePeriod(periods[index]);
+
+                                filterProvider.updateRentalProperties(
+                                    periods[index],
+                                    RENT,
+                                    widget.OptionSelected);
                               }
                             },
                             child: Container(

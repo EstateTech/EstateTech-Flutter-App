@@ -111,8 +111,8 @@ class FirebaseStorageProvider extends ChangeNotifier {
         "propertyFeature": post.propertyFeature,
         "datePosted": post.datePosted,
         "postFeature": post.postFeature,
-        "rentalType" : post.rentType,
-        "rentalSubtype" : post.rentSubType,
+        "rentalType" : post.rentalType,
+        "rentalSubtype" : post.rentalSubtype,
         "rentalPeriod" : post.rentalPeriod
       });
       print('Post created successfully!');

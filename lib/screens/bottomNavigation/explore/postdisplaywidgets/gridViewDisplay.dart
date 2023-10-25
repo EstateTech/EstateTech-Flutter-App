@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
@@ -36,15 +37,10 @@ class _GridViewWidgetState extends State<GridViewWidget> {
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
-    queryStream = getQueryStream(filterProvider.propertyType ?? "",
-        filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
-
-        
-
     return Expanded(
       child: filterProvider.isFilterApplied
           ? StreamBuilder<QuerySnapshot>(
-              stream: queryStream,
+              stream: postsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -53,11 +49,11 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                     style: style.copyWith(fontSize: 18.sp, color: mainAppColor),
                   ));
                 }
-      
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-      
+
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
                       child: Text(
@@ -65,28 +61,48 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                     style: style.copyWith(fontSize: 18.sp, color: mainAppColor),
                   ));
                 }
-      
+
                 // Process the data from snapshot
                 List<DocumentSnapshot<Map<String, dynamic>>> documents =
                     snapshot.data!.docs
                         .cast<DocumentSnapshot<Map<String, dynamic>>>();
-      
+
+                List<DocumentSnapshot<Map<String, dynamic>>> filteredDocuments =
+                    documents.where((document) {
+                  PostModel post = PostModel.fromJson(document.data()!);
+
+                  return post.propertyType == filterProvider.propertyType ||
+                      post.bedrooms == filterProvider.bedrooms ||
+                      post.bathrooms == filterProvider.bathrooms ||
+                      post.rentalPeriod == filterProvider.rentalPeriod ||
+                      post.rentalSubtype == filterProvider.rentalSubtype ||
+                      post.rentalType == filterProvider.rentalType   
+                     // widget.postFeature == filterProvider.postFeature
+                      ;
+                }).toList();
+
+                print(filteredDocuments.length);
+
+                 if(filteredDocuments.isNotEmpty){
                 return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 25.0,
-                      crossAxisSpacing: 2.0,
-                    ),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 25.0,
+                            crossAxisSpacing: 2.0,
+                            childAspectRatio: 0.8),
                     physics: ScrollPhysics(),
-                    itemCount: documents.length,
+                    itemCount: filteredDocuments.length,
                     itemBuilder: (context, index) {
                       PostModel post =
-                          PostModel.fromJson(documents[index].data()!);
+                          PostModel.fromJson(filteredDocuments[index].data()!);
+                          print("the id of the post is ${filteredDocuments[index].id}");
+print(" BEDROOMS ===> ${post.bedrooms} BATHROOMS =====> ${post.bathrooms}  RENTAL PERIOD ====> ${post.rentalPeriod}  RENTAL SUB type ${post.rentalSubtype}  RENTAL Type =======> ${post.rentalType} PROPERTY TYPE ====> ${post.propertyType}");
                       List<String> likes = [];
                       if (post.likes != null) {
                         likes = post.likes!;
                       }
+
                       return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -94,7 +110,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                               MaterialPageRoute(
                                 builder: (context) => postDetailScreen(
                                   postModel: post,
-                                  postId: documents[index].id,
+                                  postId: filteredDocuments[index].id,
                                 ),
                               ),
                             );
@@ -102,29 +118,32 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                           child: GridPost(
                             postModel: post,
                             userId: post.userid!,
-                            id: documents[index].id,
+                            id: filteredDocuments[index].id,
                             likes: likes,
                           ));
                     });
+                 } else {
+                  return Center(child: Text('No posts found'));
+                 }
+            
+            
               },
             )
           : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: postsStream,
               builder: (context, snapshot) {
-               
-      
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasData) {
                   List<DocumentSnapshot<Map<String, dynamic>>> documents =
                       snapshot.data!.docs;
                   int postCount = documents.length;
-      
+
                   return GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              mainAxisSpacing: 20.0,
+                              mainAxisSpacing: 25.0,
                               crossAxisSpacing: 2.0,
                               childAspectRatio: 0.7),
                       itemCount: postCount,
@@ -139,6 +158,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                         return GestureDetector(
                           onTap: () {
                             //navigate to details page
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

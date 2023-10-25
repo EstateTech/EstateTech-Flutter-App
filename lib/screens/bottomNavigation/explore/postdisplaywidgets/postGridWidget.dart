@@ -65,13 +65,16 @@ class _GridPostState extends State<GridPost> {
       height: 330.h ,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
-      decoration: const BoxDecoration(),
+      decoration: const BoxDecoration(
+      
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
-              SizedBox(
+              Container(
+              
                   height: 150.h,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
@@ -139,9 +142,7 @@ class _GridPostState extends State<GridPost> {
                   ))),
             ],
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+         
           Text(
             Utils.getFirstThreeWords(widget.postModel.propertyDescription!),
             // "${widget.postModel}",

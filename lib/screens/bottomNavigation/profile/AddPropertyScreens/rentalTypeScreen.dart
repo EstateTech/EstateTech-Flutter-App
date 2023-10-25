@@ -19,16 +19,16 @@ class RentalTypeScreen extends StatefulWidget {
 }
 
 class _RentalTypeScreenState extends State<RentalTypeScreen> {
-  String selectedMainOption = 'Rent';
-  String selectedSubOption = 'Long-term';
+  String selectedMainOption = RENT;
+  String selectedSubOption = LONG_TERM;
   // Options for the main dropdown
-  List<String> mainOptions = ['Rent', 'Buy', 'Sell'];
+  List<String> mainOptions = [RENT, BUY, SELL];
 
   // Sub-options for the sub dropdown based on the main option selected
   Map<String, List<String>> subOptions = {
-    'Rent': ['Long-term', 'Short-term'],
-    'Buy': ['Ready-to-move', 'Off-plan', 'Under-construction'],
-    'Sell': ['Offer to Sell', 'Offer to Rent', 'Short Term Options'],
+    RENT: [LONG_TERM, SHORT_TERM],
+    BUY: [READY_TO_MOVE, OFF_PLAN, UNDER_CONSTRUCTION],
+   SELL: [OFFER_TO_SELL, OFFER_TO_RENT, SHORT_TERM_OPTIONS],
   };
   int selectedItem = -1;
   bool isRentalPeriodSaved = false;
@@ -187,8 +187,13 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
                 alignment: Alignment.bottomCenter,
                 child: customPostCreateBottomWidget(
                   OnPressedNextButton: () {
-                    widget.postModel.rentType = selectedMainOption;
-                    widget.postModel.rentSubType = selectedSubOption;
+                    widget.postModel.rentalType = selectedMainOption;
+                    widget.postModel.rentalSubtype = selectedSubOption;
+                    if(selectedMainOption == "Long-term") {
+                      widget.postModel.rentalPeriod = rentalList[selectedItem];
+                    }else {
+                      widget.postModel.rentalPeriod = "NoPeriod";
+                    }
                  //   widget.postModel.rentalPeriod = rentalList[selectedItem];
                     // print(
                     //     "${selectedMainOption} , ${selectedSubOption} , ${rentalList[selectedItem]}");

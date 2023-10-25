@@ -280,14 +280,11 @@ class _ExplorePageState extends State<ExplorePage>
                     fileProvider.updateCurrency(
                         fileProvider.currency == "USD" ? 'AED' : 'USD');
 
-                        fileProvider.updateCurrencySign(
-                          fileProvider.currencySign == "\$" ? "\د.إ." : '\$'
+                    fileProvider.updateCurrencySign(
+                        fileProvider.currencySign == "\$" ? "\د.إ." : '\$'
 
-                          //to do here
+                        //to do here
 
-
-
-                          
                         );
                   },
                   child: Container(

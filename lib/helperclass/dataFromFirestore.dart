@@ -62,14 +62,32 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getPostsStream(String postFeature) {
 }
 
 Stream<QuerySnapshot> getQueryStream(
-    String propertyType, int bedrooms, int bathrooms) {
+    String propertyType, int bedrooms, int bathrooms, 
+    String rentalPeriod, 
+    String rentalSubtype ,
+     String rentalType    ) {
   return FirebaseFirestore.instance
       .collection('posts')
       .where('propertyType', isEqualTo: propertyType)
       .where('bedrooms', isEqualTo: bedrooms)
       .where('bathrooms', isEqualTo: bathrooms)
+      .where('rentalPeriod' , isEqualTo:  rentalPeriod)
+      .where('rentalSubtype' , isEqualTo: rentalSubtype)
+      .where('rentalType',isEqualTo: rentalType)
       .snapshots();
+      
 }
+
+
+
+
+
+
+
+
+
+
+
 
 // get similar post
 Stream<QuerySnapshot> getSimilarPostsStream(String propertyType) {
@@ -197,6 +215,23 @@ Future<List<String>> getReceiverIdsBySenderId(String currentUserId) async {
     return [];
   }
 }
+
+
+
+
+Future<void> updatePost(String postId, String rentalPeriod, String rentalSubtype, String rentalType) async {
+  try {
+    await FirebaseFirestore.instance.collection('posts').doc(postId).update({
+      'rentalPeriod': rentalPeriod,
+      'rentalSubtype': rentalSubtype,
+      'rentalType': rentalType,
+    });
+    print('Post updated successfully');
+  } catch (e) {
+    print('Error updating post: $e');
+  }
+}
+
 
 
 

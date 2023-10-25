@@ -1,4 +1,5 @@
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
+import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/provider/filterProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/search_pages/buy.dart';
@@ -42,6 +43,18 @@ class _SearchScreenState extends State<SearchScreen>
                 onTap: (index) {
                   setState(() {
                     //  currentIndex = index;
+                    print(" the currentt indexx ${index}");
+                    if(index == 0) {
+                      filterProvider.updateRentalProperties(YEARLY, RENT, LONG_TERM);
+                    }else if(index == 1) {
+                      filterProvider.updateRentalProperties("NoPeriod", BUY, READY_TO_MOVE);
+                    }else if(index == 2) {
+                      filterProvider.updateRentalProperties("NoPeriod", SELL, OFFER_TO_SELL);
+                    }
+
+
+
+
                   });
                 },
                 labelStyle: style.copyWith(fontSize: 20.sp),
@@ -76,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen>
                 children: [
                   Rent(),
                   // Widget for Wishlist tab
-                   BuyScreen(),
+                  BuyScreen(),
                   // Widget for Inbox tab
                   SellScreen(),
                 ],
@@ -104,8 +117,14 @@ class _SearchScreenState extends State<SearchScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
+              
               onTap: () {
-                Navigator.pop(context);
+                 filterProvider.updateFilterAppliedField(false);
+                Navigator.pushReplacementNamed(
+                  context,
+                  homeScreenRoute,
+                );
+               
               },
               child: Container(
                   width: 40.w,
@@ -134,48 +153,34 @@ class _SearchScreenState extends State<SearchScreen>
                   )),
             ),
 
-            // GestureDetector(
-            //   onTap: () {
-            //     filterProvider.updateFilterAppliedField(false);
-            //     Navigator.pop(context);
-            //   },
-            //   child: Container(
-            //     child: Row(
-            //       children: [
-            //         Container(
-            //           height: 30.h,
-            //           width: 30.h,
-            //           decoration: BoxDecoration(
-            //               shape: BoxShape.circle,
-            //               border: Border.all(color: Colors.grey.shade600)),
-            //           child: Icon(Icons.close),
-            //         ),
-            //         SizedBox(
-            //           width: 12.h,
-            //         ),
-            //         Text(
-            //           "Close",
-            //           style:
-            //               style2.copyWith(fontSize: 18.sp, color: Shade2purple),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+          
             GestureDetector(
               onTap: () {
                 // search clicked
-                print(filterProvider.propertyType);
-                print(filterProvider.bedrooms);
-                print(filterProvider.bathrooms);
-                print(filterProvider.period);
+                print("onSearchTapppeddd");
 
-                filterProvider.updateFilterAppliedField(true);
-
+              
+                  filterProvider.updateFilterAppliedField(true);
+                
                 Navigator.pushNamed(
                   context,
                   homeScreenRoute,
                 );
+
+                print(
+                    " the filtered property is ${filterProvider.propertyType}");
+                print(" the filtered bedrooms are ${filterProvider.bedrooms}");
+                print(
+                    " the filtered bathrooms are ${filterProvider.bathrooms}");
+            
+                print(
+                    " the filtered rental period is ${filterProvider.rentalPeriod}");
+                print(
+                    "the filtered rental subPeriod is ${filterProvider.rentalSubtype}");
+                print(
+                    "the filtered rentaltype is ${filterProvider.rentalType}");
+
+                print("the filtered postFeature is ${filterProvider.postFeature}");
               },
               child: Container(
                 width: 100.w,

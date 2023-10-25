@@ -30,8 +30,8 @@ class PostModel {
   List<String>? propertyFeature;
   Timestamp? datePosted;
   String? postFeature;
-  String? rentType;
-  String? rentSubType;
+  String? rentalType;
+  String? rentalSubtype;
   String? rentalPeriod;
 
   PostModel(
@@ -63,8 +63,8 @@ class PostModel {
       this.country,
       this.datePosted,
       this.postFeature,
-      this.rentType,
-      this.rentSubType,
+      this.rentalType,
+      this.rentalSubtype,
       this.rentalPeriod
       }  );
 
@@ -102,8 +102,8 @@ class PostModel {
     } else {
       likes = json['likes']; // Assign an empty list if 'likes' is null
     }
-    rentType = json['rentType'];
-    rentSubType = json['rentSubType'];
+    rentalType = json['rentalType'];
+    rentalSubtype = json['rentalSubtype'];
     rentalPeriod = json['rentalPeriod'];
 
 
@@ -139,8 +139,8 @@ class PostModel {
     data['propertyFeature'] = propertyFeature;
     data['datePosted'] = datePosted;
     data['postFeature'] = postFeature;
-    data['rentType'] = rentType;
-    data['rentSubType'] = rentSubType;
+    data['rentalType'] = rentalType;
+    data['rentalSubtype'] = rentalSubtype;
     data['rentalPeriod'] = rentalPeriod;
     return data;
   }
