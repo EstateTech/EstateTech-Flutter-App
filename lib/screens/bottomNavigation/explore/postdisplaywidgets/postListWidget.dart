@@ -4,6 +4,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -68,6 +69,8 @@ class _PostState extends State<Post> {
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+
     return Container(
       height: 330.h,
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -173,7 +176,8 @@ class _PostState extends State<Post> {
                   height: 3.h,
                 ),
                 Text(
-             Utils.     getFirstThreeWords(widget.postModel.propertyDescription!),
+                  Utils.getFirstThreeWords(
+                      widget.postModel.propertyDescription!),
                   style: style.copyWith(
                     color: Shade2purple,
                     fontWeight: FontWeight.w600,
@@ -196,7 +200,7 @@ class _PostState extends State<Post> {
                   height: 3.h,
                 ),
                 Text(
-                Utils.     joinWithComma(widget.postModel.utilities!),
+                  Utils.joinWithComma(widget.postModel.utilities!),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: style2.copyWith(
@@ -217,87 +221,126 @@ class _PostState extends State<Post> {
                 SizedBox(
                   height: 3.h,
                 ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: RichText(
+                //         text: TextSpan(
+                //           style: style.copyWith(
+                //             color: greyShadeColor,
+                //             fontSize: 16.sp,
+                //             fontWeight: FontWeight.w600,
+                //           ),
+                //           children: [
+                //             TextSpan(text: "${fileProvider.currencySign}300,000${fileProvider.currency}"),
+                //             TextSpan(
+                //               text: " / year",
+                //               style: style.copyWith(
+                //                   fontSize: 16.sp,
+                //                   color: Shade2purple,
+                //                   fontWeight: FontWeight
+                //                       .normal // Specify your desired color for "/ year"
+                //                   ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       height: 15.h,
+                //       width: 15.h,
+                //       child: SvgPicture.asset(
+                //         'assets/images/star_icon.svg', // Replace with your SVG asset path
+                //         width: 100, // Set your desired width
+                //         height: 100, // Set your desired height
+                //       ),
+                //     ),
+                //     RichText(
+                //       text: TextSpan(
+                //         style: style.copyWith(
+                //             fontSize: 15.sp, color: const Color(0xff4E4A59)),
+                //         children: const <TextSpan>[
+                //           TextSpan(text: '4.21'),
+                //           TextSpan(
+                //             text: '(135)',
+                //           ),
+                //         ],
+                //       ),
+                //     )
+                //   ],
+                // ),
+                // Row(
+                //   children: [
+                //     RichText(
+                //       text: TextSpan(
+                //         style: style.copyWith(
+                //           color: greyShadeColor,
+                //           fontSize: 20.sp,
+                //           fontWeight: FontWeight.w600,
+                //         ),
+                //         children: const [
+                //           TextSpan(text: "24 BTC"),
+                //         ],
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 5.w,
+                //     ),
+                //     Image.asset(
+                //       'assets/images/bitcoin_icon.png',
+                //       width: 25.w,
+                //       height: 25.h,
+                //     ),
+                //     Text(
+                //       " / year",
+                //       style: style.copyWith(
+                //           fontSize: 16.sp,
+                //           color: Shade2purple,
+                //           fontWeight: FontWeight
+                //               .normal // Specify your desired color for "/ year"
+                //           ),
+                //     ),
+                //   ],
+                // ),
                 Row(
                   children: [
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: style.copyWith(
-                            color: greyShadeColor,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          children: [
-                            TextSpan(text: "${fileProvider.currencySign}300,000${fileProvider.currency}"),
-                            TextSpan(
-                              text: " / year",
-                              style: style.copyWith(
-                                  fontSize: 16.sp,
-                                  color: Shade2purple,
-                                  fontWeight: FontWeight
-                                      .normal // Specify your desired color for "/ year"
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                      width: 15.h,
-                      child: SvgPicture.asset(
-                        'assets/images/star_icon.svg', // Replace with your SVG asset path
-                        width: 100, // Set your desired width
-                        height: 100, // Set your desired height
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        style: style.copyWith(
-                            fontSize: 15.sp, color: const Color(0xff4E4A59)),
-                        children: const <TextSpan>[
-                          TextSpan(text: '4.21'),
-                          TextSpan(
-                            text: '(135)',
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: style.copyWith(
-                          color: greyShadeColor,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        children: const [
-                          TextSpan(text: "24 BTC"),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Image.asset(
-                      'assets/images/bitcoin_icon.png',
-                      width: 25.w,
-                      height: 25.h,
-                    ),
                     Text(
-                      " / year",
+                      "${fileProvider.currencySign}",
                       style: style.copyWith(
-                          fontSize: 16.sp,
-                          color: Shade2purple,
-                          fontWeight: FontWeight
-                              .normal // Specify your desired color for "/ year"
-                          ),
+                          color: Colors.black,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                      child: RichText(
+                          text: TextSpan(
+                              style: style.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600),
+                              children: <TextSpan>[
+                            TextSpan(
+                                text: Utils.convertCurrency(
+                                    "300000",
+                                    fileProvider.currency,
+                                    authProvider.eth,
+                                    authProvider.btc)),
+                            //  TextSpan( text: "300 "),
+
+                            // TextSpan(text: "${fileProvider.currency}"),
+                            TextSpan(
+                              text: ' / year',
+                              style: style2.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ])),
                     ),
                   ],
-                ),
+                )
               ],
             ),
           ),

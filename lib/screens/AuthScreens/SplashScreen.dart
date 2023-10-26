@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../homeScreen/home_screen.dart';
 
@@ -15,6 +17,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var authProvider;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -29,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: mainAppColor,
       body: Center(
@@ -64,6 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       )));
         }
       });
+
+      authProvider.updateCurrencyRates();
     } else {
       Navigator.pushNamed(context, welcomeScreenRoute);
     }
