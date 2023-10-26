@@ -183,7 +183,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                          // isSelected = "Yearly" == periods[0];
 
 
-                          isSelected = (periods[0] == "Yearly" &&  index ==0  );
+                        
                         } else if (widget.OptionSelected == "Short-term") {
                           // Enable weekly for short-term
                           isEnabled = (periods[index] == "Weekly");
