@@ -21,7 +21,7 @@ class _BuyScreenState extends State<BuyScreen> {
    List<bool> isSelectedList =
       List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
-   List<bool> isBuyOptionSelectedList = [false, false, false];
+   List<bool> isBuyOptionSelectedList = [true, false, false];
    List<String> buyOptionsList = ["Ready\n To Move", "Off\nPlan","Under\nConstruction" ];
 
   
@@ -143,6 +143,7 @@ class _BuyScreenState extends State<BuyScreen> {
 
 
   List<Widget> _buildContainers() {
+      final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     return buyOptionsList.asMap().entries.map((entry) {
       final int index = entry.key;
       final String option = entry.value;
@@ -159,6 +160,10 @@ class _BuyScreenState extends State<BuyScreen> {
             });
           }
         }
+       
+         filterProvider.updateRentalProperties("NoPeriod", BUY, buyOptionsList[index]);
+
+
       }, option, isBuyOptionSelectedList[index]);
     }).toList();
   }

@@ -122,38 +122,33 @@ class _InboxScreenState extends State<InboxScreen> {
                           ),
                           Row(
                             children: [
-                           _isSearching ?  
-                           GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isSearching = !_isSearching;
-                                 
-                                   
-                                  });
-                                },
-                                child: Icon(
-                                  CupertinoIcons.clear_circled_solid,
-                                  color: Color(0xFF3A3153),
-                                  size: 29.w,
-                                ),
-                              )
-                           
-                           
-                           
-                           
-                           : GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isChatListSearched = !_isChatListSearched;
-                                    _chatSearchList = chatList;
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.search,
-                                  color: Color(0xFF3A3153),
-                                  size: 29.w,
-                                ),
-                              ),
+                              _isSearching
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _isSearching = !_isSearching;
+                                        });
+                                      },
+                                      child: Icon(
+                                        CupertinoIcons.clear_circled_solid,
+                                        color: Color(0xFF3A3153),
+                                        size: 29.w,
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _isChatListSearched =
+                                              !_isChatListSearched;
+                                          _chatSearchList = chatList;
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.search,
+                                        color: Color(0xFF3A3153),
+                                        size: 29.w,
+                                      ),
+                                    ),
                             ],
                           )
                         ],
@@ -198,37 +193,48 @@ class _InboxScreenState extends State<InboxScreen> {
                                                   e.data()))
                                           .toList() ??
                                       [];
-                                  if (_searchlist.isNotEmpty) {
+                                  if (alllist.isNotEmpty) {
                                     return ListView.builder(
-                                        itemCount: _searchlist.length,
+                                        itemCount: _isSearching
+                                            ? _searchlist.length
+                                            : alllist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
-                                            user: _searchlist[index],
+                                            user: _isSearching
+                                                ? _searchlist[index]
+                                                : alllist[index],
                                             isSelected: false,
                                           );
                                         });
-                                  } else if (_searchlist.isEmpty &&
-                                      searchController.text.isNotEmpty) {
-                                    return Center(
-                                      child: Text(
-                                        "No matching results found",
-                                        style: style.copyWith(
-                                            color: mainAppColor,
-                                            fontSize: 20.sp),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
                                   } else {
-                                    return Center(
-                                      child: Text(
-                                        "Start Searching..",
-                                        style: style.copyWith(
-                                            color: mainAppColor,
-                                            fontSize: 20.sp),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                    return const Center(
+                                      child: Text('No Connections Found!',
+                                          style: TextStyle(fontSize: 20)),
                                     );
                                   }
+
+                                //  if (_searchlist.isEmpty &&
+                                //       searchController.text.isNotEmpty) {
+                                //     return Center(
+                                //       child: Text(
+                                //         "No matching results found",
+                                //         style: style.copyWith(
+                                //             color: mainAppColor,
+                                //             fontSize: 20.sp),
+                                //         textAlign: TextAlign.center,
+                                //       ),
+                                //     );
+                                //   } else {
+                                //     return Center(
+                                //       child: Text(
+                                //         "Start Searching..",
+                                //         style: style.copyWith(
+                                //             color: mainAppColor,
+                                //             fontSize: 20.sp),
+                                //         textAlign: TextAlign.center,
+                                //       ),
+                                //     );
+                                //   }
                               }
                             })
                         : !_isLoadingWidget
@@ -258,9 +264,6 @@ class _InboxScreenState extends State<InboxScreen> {
                                                           .fromJson(e.data()))
                                                   .toList() ??
                                               [];
-                                          // print(chatList.length);
-                                          //  print(chatList[0].userId);
-                                          // print(getConversationID(chatList[0].userId!));
                                           if (chatList.isNotEmpty) {
                                             if (_chatSearchList.isEmpty &&
                                                 searchController
@@ -385,9 +388,7 @@ class _InboxScreenState extends State<InboxScreen> {
         print(value);
 
         if (_isSearching) {
-          setState(() {
-            _searchlist.clear();
-          });
+          _searchlist.clear();
 
           for (var i in alllist) {
             if (i.firstName
@@ -403,15 +404,10 @@ class _InboxScreenState extends State<InboxScreen> {
                     .toLowerCase()
                     .contains(value.toLowerCase())) {
               _searchlist.add(i);
-            }
-            if (value == "") {
               setState(() {
-                _searchlist.clear();
+                _searchlist;
               });
             }
-            setState(() {
-              _searchlist;
-            });
           }
         } else {
           setState(() {

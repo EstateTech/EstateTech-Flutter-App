@@ -16,11 +16,10 @@ class Rent extends StatefulWidget {
 }
 
 class _RentState extends State<Rent> {
-  List<bool> isSelectedList =
-      List.generate(bestlocations.length, (index) => false);
+  List<bool> isSelectedList = List.generate(bestlocations.length, (index) => false);
   bool _isExpanded = false;
 
-    List<bool> isBuyOptionSelectedList = [false, false];
+    List<bool> isBuyOptionSelectedList = [true, false];
     List<String> rentOptions = ["Long-term" , "Short-term"];
     String optionSelected = "";
 
@@ -89,7 +88,7 @@ class _RentState extends State<Rent> {
                         children: <Widget>[
                           FilterWidget(
                             isPeriodTimeRequired:  true,
-                            OptionSelected: optionSelected,
+                            OptionSelected: optionSelected == "" ? LONG_TERM : optionSelected,
 
                            
                             
@@ -103,6 +102,7 @@ class _RentState extends State<Rent> {
             ),
             GestureDetector(
               onTap: () {
+                print("searchtapped");
                 filterProvider.updateFilterAppliedField(false);
                 Navigator.pop(context);
               },
@@ -147,6 +147,7 @@ class _RentState extends State<Rent> {
 
 
   List<Widget> _buildContainers() {
+     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
     return rentOptions.asMap().entries.map((entry) {
       final int index = entry.key;
       final String option = entry.value;
@@ -165,6 +166,10 @@ class _RentState extends State<Rent> {
             });
           }
         }
+        print(rentOptions[index]);
+         filterProvider.updateRentalProperties("", RENT, rentOptions[index]);
+
+
       }, option, isBuyOptionSelectedList[index]);
     }).toList();
   }

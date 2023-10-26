@@ -348,6 +348,7 @@ class _ExplorePageState extends State<ExplorePage>
                                       ),
                                     ),
 
+
                                     child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
@@ -444,6 +445,7 @@ class _ExplorePageState extends State<ExplorePage>
                                 : fileProvider.currency == 'Btc'
                                     ? _list[1]['image']
                                     : _list[2]['image'])))
+
               ],
             ),
           ),

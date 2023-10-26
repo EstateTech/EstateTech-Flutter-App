@@ -37,13 +37,18 @@ class _ListViewWidgetState extends State<ListViewWidget> {
   @override
   Widget build(BuildContext context) {
     FilterProvider filterProvider = Provider.of<FilterProvider>(context);
-    queryStream = getQueryStream(filterProvider.propertyType ?? "",
-        filterProvider.bedrooms ?? 0, filterProvider.bathrooms ?? 0);
+    // queryStream = getQueryStream(
+    //   filterProvider.propertyType ?? "",
+    //     filterProvider.bedrooms ?? 0,
+    //     filterProvider.bathrooms ?? 0  ,
+    //     filterProvider.rentalPeriod?? "" ,
+    //     filterProvider.rentalSubtype ?? "" ,
+    //     filterProvider.rentalType ?? ""     );
 
     return Expanded(
       child: filterProvider.isFilterApplied
           ? StreamBuilder<QuerySnapshot>(
-              stream: queryStream,
+              stream: postsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
@@ -62,12 +67,33 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                     snapshot.data!.docs
                         .cast<DocumentSnapshot<Map<String, dynamic>>>();
 
+                List<DocumentSnapshot<Map<String, dynamic>>> filteredDocuments =
+                    documents.where((document) {
+                  PostModel post = PostModel.fromJson(document.data()!);
+
+                  return post.propertyType == filterProvider.propertyType ||
+                          post.bedrooms == filterProvider.bedrooms ||
+                          post.bathrooms == filterProvider.bathrooms ||
+                          post.rentalPeriod == filterProvider.rentalPeriod ||
+                          post.rentalSubtype == filterProvider.rentalSubtype ||
+                          post.rentalType == filterProvider.rentalType
+                      // widget.postFeature == filterProvider.postFeature
+                      ;
+                }).toList();
+
+                print(filteredDocuments.length);
+                if(filteredDocuments.isNotEmpty){
                 return ListView.builder(
-                  itemCount: documents.length,
+                  itemCount: filteredDocuments.length,
                   itemBuilder: (context, index) {
                     // Build your UI with the post data from the document
                     PostModel post =
-                        PostModel.fromJson(documents[index].data()!);
+                        PostModel.fromJson(filteredDocuments[index].data()!);
+
+                    print(
+                        "the id of the post is ${filteredDocuments[index].id}");
+                    print(
+                        " BEDROOMS ===> ${post.bedrooms} BATHROOMS =====> ${post.bathrooms}  RENTAL PERIOD ====> ${post.rentalPeriod}  RENTAL SUB type ${post.rentalSubtype}  RENTAL Type =======> ${post.rentalType} PROPERTY TYPE ====> ${post.propertyType}");
 
                     List<String> likes = [];
                     if (post.likes != null) {
@@ -83,7 +109,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                               MaterialPageRoute(
                                 builder: (context) => postDetailScreen(
                                   postModel: post,
-                                  postId: documents[index].id,
+                                  postId: filteredDocuments[index].id,
                                 ),
                               ),
                             );
@@ -91,12 +117,16 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                           child: Post(
                             postModel: post,
                             userId: post.userid,
-                            id: documents[index].id,
+                            id: filteredDocuments[index].id,
                             likes: likes,
                           )),
                     );
                   },
                 );
+                }else {
+                  return Center(child: Text("No posts found"));
+                }
+              
               },
             )
           : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

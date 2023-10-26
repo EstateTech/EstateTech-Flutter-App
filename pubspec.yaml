@@ -71,6 +71,7 @@ dependencies:
   share_plus: ^7.1.0
   geocode: ^1.0.3
   custom_date_range_picker: ^1.0.10
+  rxdart: ^0.27.0
 
 
 dev_dependencies:

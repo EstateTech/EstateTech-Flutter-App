@@ -72,9 +72,9 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                   propertyFeature: widget.postModel.propertyFeature,
                   datePosted: currentDate,
                   postFeature: trendingPf,
-                  rentSubType: widget.postModel.rentSubType,
+                  rentalSubtype: widget.postModel.rentalSubtype,
                   rentalPeriod: widget.postModel.rentalPeriod,
-                  rentType: widget.postModel.rentType
+                  rentalType: widget.postModel.rentalType
                 ),
                 context)
             .then((value) {
