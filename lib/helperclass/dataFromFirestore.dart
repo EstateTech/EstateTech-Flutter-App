@@ -78,6 +78,15 @@ Stream<QuerySnapshot> getQueryStream(
       
 }
 
+Stream<QuerySnapshot> getAllUsersInInbox() {
+ return FirebaseFirestore.instance
+                                .collection('users')
+                                .where('userId',
+                                    isNotEqualTo:
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                .snapshots();
+}
+
 
 
 

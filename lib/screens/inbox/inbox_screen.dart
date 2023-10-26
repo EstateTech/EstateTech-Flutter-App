@@ -19,7 +19,7 @@ class InboxScreen extends StatefulWidget {
 
 class _InboxScreenState extends State<InboxScreen> {
   List<SignupSavepDataFirebase> alllist = [];
-  final List<SignupSavepDataFirebase> _searchlist = [];
+  List<SignupSavepDataFirebase> _searchlist = [];
   bool _isSearching = false;
   List<SignupSavepDataFirebase> chatList = [];
   List<SignupSavepDataFirebase> _chatSearchList = [];
@@ -28,6 +28,7 @@ class _InboxScreenState extends State<InboxScreen> {
   TextEditingController searchController = TextEditingController();
   String senderId = "";
   bool _isChatListSearched = false;
+  bool istyping = false;
 
   @override
   void initState() {
@@ -127,7 +128,10 @@ class _InboxScreenState extends State<InboxScreen> {
                                       onTap: () {
                                         setState(() {
                                           _isSearching = !_isSearching;
+                                           searchController.text = "";
+                                           istyping = false;
                                         });
+                                       
                                       },
                                       child: Icon(
                                         CupertinoIcons.clear_circled_solid,
@@ -193,48 +197,50 @@ class _InboxScreenState extends State<InboxScreen> {
                                                   e.data()))
                                           .toList() ??
                                       [];
-                                  if (alllist.isNotEmpty) {
-                                    return ListView.builder(
-                                        itemCount: _isSearching
-                                            ? _searchlist.length
-                                            : alllist.length,
+
+                                      if(_searchlist.isEmpty && searchController.text.isNotEmpty){
+                                  return Center(
+                                                child: Text(
+                                                  "No matching results found!!",
+                                                  style: style.copyWith(
+                                                      color: mainAppColor,
+                                                      fontSize: 20.sp),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+
+                                  }
+                                     else if(istyping) {
+                                  
+
+                                     return  
+                                     ListView.builder(
+                                        itemCount: _searchlist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
-                                            user: _isSearching
-                                                ? _searchlist[index]
-                                                : alllist[index],
+                                            user: _searchlist[index],
                                             isSelected: false,
                                           );
                                         });
-                                  } else {
-                                    return const Center(
-                                      child: Text('No Connections Found!',
-                                          style: TextStyle(fontSize: 20)),
-                                    );
-                                  }
 
-                                //  if (_searchlist.isEmpty &&
-                                //       searchController.text.isNotEmpty) {
-                                //     return Center(
-                                //       child: Text(
-                                //         "No matching results found",
-                                //         style: style.copyWith(
-                                //             color: mainAppColor,
-                                //             fontSize: 20.sp),
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                //     );
-                                //   } else {
-                                //     return Center(
-                                //       child: Text(
-                                //         "Start Searching..",
-                                //         style: style.copyWith(
-                                //             color: mainAppColor,
-                                //             fontSize: 20.sp),
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                //     );
-                                //   }
+                                   
+                                  }  
+                                 else if (alllist.isNotEmpty) {
+                                    return  
+                                     ListView.builder(
+                                        itemCount: alllist.length,
+                                        itemBuilder: (context, index) {
+                                          return ChatCard(
+                                            user: alllist[index],
+                                            isSelected: false,
+                                          );
+                                        });
+                                  }  
+                                  
+                                  
+                                  else   {
+                                   return Center(child: Text("No User found"),);
+                                  }
                               }
                             })
                         : !_isLoadingWidget
@@ -270,7 +276,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                                     .text.isNotEmpty) {
                                               return Center(
                                                 child: Text(
-                                                  "No matching results found",
+                                                  "No matching results found!!",
                                                   style: style.copyWith(
                                                       color: mainAppColor,
                                                       fontSize: 20.sp),
@@ -309,18 +315,18 @@ class _InboxScreenState extends State<InboxScreen> {
                                 )))
               ],
             ),
-            floatingActionButton: FloatingActionButton(
+           floatingActionButton:    FloatingActionButton(
               onPressed: () {
                 setState(() {
                   _isSearching = !_isSearching;
                 });
                 if (!_isSearching) {
                   fetchData();
-                }
+                } 
               },
               child: Icon(Icons.message),
               backgroundColor: mainAppColor,
-            ),
+            ) ,
           ),
         ),
       ),
@@ -387,8 +393,14 @@ class _InboxScreenState extends State<InboxScreen> {
       onChanged: (value) {
         print(value);
 
+       
         if (_isSearching) {
+           setState(() {
+          istyping = true;
           _searchlist.clear();
+        });
+
+      
 
           for (var i in alllist) {
             if (i.firstName
