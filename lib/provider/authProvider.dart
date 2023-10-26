@@ -1,3 +1,4 @@
+import 'package:crypto_estate_tech/common/own_methods.dart';
 import 'package:crypto_estate_tech/helperclass/own_firebase_auth.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/otpScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,21 +9,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../common/widgetConstants.dart';
 
 class AuthProvider extends ChangeNotifier {
-   bool _isSignedIn = false;
+  bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
-    bool _isLoading = false;
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
-     bool _isOtpScreenLoading = false;
+  bool _isOtpScreenLoading = false;
   bool get isOtpScreenLoading => _isOtpScreenLoading;
-    String? _uid;
+  String? _uid;
   String get uid => _uid!;
+  List listOfCurrency = ['Eth', 'Btc'];
 
+  double btc = 0;
+  double eth = 0;
 
-    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-
-    AuthProvider() {
+  AuthProvider() {
     checkSign();
+  }
+
+  updateCurrencyRates() {
+    listOfCurrency.forEach((e) {
+      OwnMethods().getRate(e).then((value) {
+        if (e == 'Eth') {
+          eth = value;
+        } else if (e == 'Btc') {
+          btc = value;
+        }
+      });
+    });
+
+    notifyListeners();
   }
 
   void checkSign() async {
@@ -38,9 +55,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
-   // signin
-  Future signInWithPhone(BuildContext context, String phoneNumber,String dialCode) async {
+  // signin
+  Future signInWithPhone(
+      BuildContext context, String phoneNumber, String dialCode) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -49,38 +66,31 @@ class AuthProvider extends ChangeNotifier {
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
             await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-             
           },
           verificationFailed: (error) {
-             _isLoading = false;
-              notifyListeners();
+            _isLoading = false;
+            notifyListeners();
             throw Exception(error.message);
           },
           codeSent: (verificationId, forceResendingToken) {
-              
-              Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => OtpScreen(
-                  verificationId: verificationId,
-                  phoneNumber : phoneNumber,
-                  dialCode : dialCode
-                  
-                  ),
+                    verificationId: verificationId,
+                    phoneNumber: phoneNumber,
+                    dialCode: dialCode),
               ),
-              
             );
-           
-             
           },
           codeAutoRetrievalTimeout: (verificationId) {
-              _isLoading = false;
-              notifyListeners();
+            _isLoading = false;
+            notifyListeners();
           });
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
-        _isLoading = false;
-              notifyListeners();
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -105,8 +115,8 @@ class AuthProvider extends ChangeNotifier {
         _uid = user.uid;
         onSuccess();
       }
-     // _isOtpScreenLoading = false;
-     // notifyListeners();
+      // _isOtpScreenLoading = false;
+      // notifyListeners();
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
       _isOtpScreenLoading = false;
@@ -115,23 +125,15 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future LogOut() async {
-      _isLoading = false;
-      _isOtpScreenLoading = false;
+    _isLoading = false;
+    _isOtpScreenLoading = false;
     notifyListeners();
     await FirebaseAuth.instance.signOut();
-  
-
   }
 
-  void setLoadingFalse () {
+  void setLoadingFalse() {
     _isLoading = false;
-     _isOtpScreenLoading = false;
+    _isOtpScreenLoading = false;
     notifyListeners();
   }
-
-
-
-
-
-
 }

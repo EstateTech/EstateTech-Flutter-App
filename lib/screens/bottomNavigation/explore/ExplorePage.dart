@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto_estate_tech/common/own_methods.dart';
 import 'package:crypto_estate_tech/notification/notification_screen.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,11 +48,40 @@ class _ExplorePageState extends State<ExplorePage>
   }
 
   int currentViewIndex = 0;
+  String? selectedValue;
+
+  final List<Map> _list = [
+    {
+      'id': '1',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/icons8-tether-48.png?alt=media&token=1fa5fc33-523c-4c5e-8ab7-fb0ae97c7c09&_gl=1*1tkq80h*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODIyODkwNS4xMDQuMS4xNjk4MjI5OTE4LjE5LjAuMA..',
+      'name': 'USD'
+    },
+    {
+      'id': '2',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+      'name': 'Btc'
+    },
+    {
+      'id': '3',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+      'name': 'Eth'
+    },
+    {
+      'id': '3',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA..',
+      'name': 'AED'
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProvider>(context, listen: true);
     return SafeArea(
       child: Column(
         children: [
@@ -129,10 +161,12 @@ class _ExplorePageState extends State<ExplorePage>
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NotificationScreen()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => NotificationScreen()));
+
+                    print(authProvider.eth);
                   },
                   child: Container(
                     height: size.width * 0.12,
@@ -276,36 +310,142 @@ class _ExplorePageState extends State<ExplorePage>
                     }),
                 Expanded(child: SizedBox()),
                 GestureDetector(
-                  onTap: () {
-                    fileProvider.updateCurrency(
-                        fileProvider.currency == "USD" ? 'AED' : 'USD');
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r)),
+                          builder: (context) {
+                            return StatefulBuilder(
+                                builder: (context, setstate1) {
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Text(
+                                    'Select Currency Type',
+                                    style: style.copyWith(
+                                        color: const Color(0xff0D2769),
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 22.w),
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width, // Set the width of the dropdown as needed
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Adjust border radius as needed
+                                      border: Border.all(
+                                        color: Colors.black, // Border color
+                                        width: 0.5, // Border width
+                                      ),
+                                    ),
 
-                    fileProvider.updateCurrencySign(
-                        fileProvider.currencySign == "\$" ? "\د.إ." : '\$'
 
-                        //to do here
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: DropdownButtonHideUnderline(
+                                          child: ButtonTheme(
+                                            alignedDropdown: true,
+                                            child: DropdownButton(
+                                              hint:
+                                                  const Text("Select currency"),
+                                              value: selectedValue,
+                                              onChanged: (newValue) {
+                                                fileProvider.updateCurrency(
+                                                    newValue! as String);
 
-                        );
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(7.h),
-                      height: 50.h,
-                      width: 60.h,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: unselectedTabcolor,
-                              blurRadius: 4,
-                              offset: Offset(0, 5), // Shadow position
-                            ),
-                          ],
-                          border: Border.all(color: Shade2purple),
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: fileProvider.currency == 'USD'
-                          ? SvgPicture.asset("assets/images/dollar_icon.svg")
-                          : Image.asset('assets/images/dirham.png')),
-                )
+                                                fileProvider.updateCurrencySign(
+                                                    newValue! as String == 'USD'
+                                                        ? '\$'
+                                                        : newValue! as String ==
+                                                                'AED'
+                                                            ? "\د.إ."
+                                                            : newValue! as String ==
+                                                                    'Eth'
+                                                                ? ''
+                                                                : ''
+                                                    // fileProvider.currencySign ==
+                                                    //         "\$"
+                                                    //     ? "\د.إ."
+                                                    //     : '\$'
+
+                                                    //to do here
+
+                                                    );
+
+                                                print(newValue);
+                                                setstate1(() {
+                                                  selectedValue =
+                                                      newValue! as String?;
+                                                });
+                                              },
+                                              items: _list.map((bankItem) {
+                                                return DropdownMenuItem(
+                                                  value: bankItem['name'],
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      children: [
+                                                        CachedNetworkImage(
+                                                          imageUrl:
+                                                              bankItem['image'],
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 10),
+                                                          child: Text(
+                                                              bankItem['name']),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              );
+                            });
+                          });
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(7.h),
+                        height: 50.h,
+                        width: 60.h,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: unselectedTabcolor,
+                                blurRadius: 4,
+                                offset: Offset(0, 5), // Shadow position
+                              ),
+                            ],
+                            border: Border.all(color: Shade2purple),
+                            borderRadius: BorderRadius.circular(10.r)),
+                        child: Image.network(fileProvider.currency == 'USD'
+                            ? _list[0]['image']
+                            : fileProvider.currency == 'AED'
+                                ? _list[3]['image']
+                                : fileProvider.currency == 'Btc'
+                                    ? _list[1]['image']
+                                    : _list[2]['image'])))
+
               ],
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,6 +56,7 @@ class _GridPostState extends State<GridPost> {
   Widget build(BuildContext context) {
     final filterProvider =
         Provider.of<PostLikesProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProvider>(context, listen: true);
 
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
@@ -62,7 +64,7 @@ class _GridPostState extends State<GridPost> {
 
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
-      height: 330.h ,
+      height: 330.h,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
       decoration: const BoxDecoration(
@@ -192,11 +194,15 @@ class _GridPostState extends State<GridPost> {
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600),
                         children: <TextSpan>[
-                    
-                     TextSpan(text: Utils.convertCurrency("300000", fileProvider.currency)),
-                     //  TextSpan( text: "300 "),
-                       
-                       // TextSpan(text: "${fileProvider.currency}"),
+                      TextSpan(
+                          text: Utils.convertCurrency(
+                              "300000",
+                              fileProvider.currency,
+                              authProvider.eth,
+                              authProvider.btc)),
+                      //  TextSpan( text: "300 "),
+
+                      // TextSpan(text: "${fileProvider.currency}"),
                       TextSpan(
                         text: ' / year',
                         style: style2.copyWith(
