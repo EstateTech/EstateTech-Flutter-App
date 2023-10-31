@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
@@ -7,12 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../model/postModel.dart';
 
 class OfferedSpaceScreen extends StatefulWidget {
-  const OfferedSpaceScreen({super.key, required this.postModel});
+  const OfferedSpaceScreen({super.key, required this.postModel
+  , required this.isEdited
+  });
   final PostModel postModel;
+ 
+  final bool isEdited;
+
 
   @override
   State<OfferedSpaceScreen> createState() => _OfferedSpaceScreenState();
@@ -42,7 +49,18 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
 
   String selectedTile = '';
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.isEdited) {
+       selectedTile =  widget.postModel.propertyPortion!;
+
+    }
+     
+  }
+  @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
@@ -92,11 +110,20 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
                   if (selectedTile.isNotEmpty) {
+                    print(selectedTile);
+                    widget.postModel.propertyPortion = selectedTile;
+
+                    print(widget.postModel.toJson());
+
+                    
+
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PropertyMappedScreen(
                                   postModel: widget.postModel,
+                                isEdited: widget.isEdited  ,
                                 )));
                   } else {
                     Fluttertoast.showToast(msg: 'Please select the space');

@@ -470,7 +470,7 @@ class _ExplorePageState extends State<ExplorePage>
                     postFeature: latestPf, currentViewIndex: currentViewIndex),
 
                 BestOffers(
-                    postFeature: offPlan, currentViewIndex: currentViewIndex),
+                    postFeature: offPlanPf, currentViewIndex: currentViewIndex),
               ],
             ),
           ),

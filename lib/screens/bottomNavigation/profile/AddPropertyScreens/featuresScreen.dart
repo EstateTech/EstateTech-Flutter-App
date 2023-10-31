@@ -9,6 +9,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyS
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pinput/pinput.dart';
 
 class CounterItem {
   String title;
@@ -18,9 +19,11 @@ class CounterItem {
 }
 
 class FeatureScreen extends StatefulWidget {
-  const FeatureScreen({super.key, required this.postModel});
+  const FeatureScreen(
+      {super.key, required this.postModel, required this.isEdited});
 
   final PostModel postModel;
+  final bool isEdited;
 
   @override
   State<FeatureScreen> createState() => _FeatureScreenState();
@@ -44,26 +47,41 @@ class _FeatureScreenState extends State<FeatureScreen> {
       textControllers.add(TextEditingController());
       textControllers[i].text = counterItems[i].counter.toString();
     }
+    print(widget.postModel.guest);
+
+    if (widget.isEdited) {
+      textControllers[0].text = widget.postModel.guest!.toString();
+      textControllers[1].text = widget.postModel.bedrooms!.toString();
+      textControllers[2].text = widget.postModel.bathrooms!.toString();
+
+      textControllers[3].text = widget.postModel.propertyArea!.toString();
+
+      textControllers[4].text = widget.postModel.propertyBuildArea!.toString();
+      textControllers[5].text = widget.postModel.propertyPlotArea!.toString();
+    }
   }
 
-  void _incrementCounter(int index) {
-    setState(() {
+  void _incrementCounter(int index , int i) {
+   
       setState(() {
-        counterItems[index].counter++;
+        index ++;
+        textControllers[i].setText(index.toString());
       });
-    });
+ 
   }
 
-  void _decrementCounter(int index) {
-    if (counterItems[index].counter > 0) {
-      if (counterItems[index].counter > 120) {
+  void _decrementCounter(int index , int i) {
+    if (index > 0) {
+      if (index > 120) {
         setState(() {
-          counterItems[index].counter--;
+         index--;
+          textControllers[i].setText(index.toString());
         });
       } else {
-        if (counterItems[index].counter != 120) {
+        if (index != 120) {
           setState(() {
-            counterItems[index].counter--;
+            index--;
+             textControllers[i].setText(index.toString());
           });
         }
       }
@@ -131,10 +149,14 @@ class _FeatureScreenState extends State<FeatureScreen> {
                                 ;
                               },
                               onIcreament: () {
-                                _incrementCounter(counterItems.indexOf(item));
+                                print("heelo");
+                                print(counterItems.indexOf(item));
+                                _incrementCounter(int.parse(textControllers[index].text) , index);
+
                               },
                               onDecreament: () {
-                                _decrementCounter(counterItems.indexOf(item));
+                                print("bye");
+                                _decrementCounter(int.parse(textControllers[index].text) , index);
                               },
                               title: item.title,
                               counter: item.counter,
@@ -161,6 +183,8 @@ class _FeatureScreenState extends State<FeatureScreen> {
                           widget.postModel.propertyPlotArea =
                               counterItems[5].counter;
 
+                              print(widget.postModel.toJson());
+
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
@@ -172,7 +196,10 @@ class _FeatureScreenState extends State<FeatureScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RentalTypeScreen(postModel: widget.postModel,)));
+                                  builder: (context) => RentalTypeScreen(
+                                        postModel: widget.postModel,
+                                        isEdited : widget.isEdited
+                                      )));
                         },
                         OnPressedbackButton: () {
                           print(widget.postModel.toJson());

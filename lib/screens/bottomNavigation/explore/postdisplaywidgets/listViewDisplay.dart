@@ -119,6 +119,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                             userId: post.userid,
                             id: filteredDocuments[index].id,
                             likes: likes,
+                            onDeleteTap: (){},
                           )),
                     );
                   },
@@ -170,6 +171,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
                           userId: post.userid,
                           id: documents[index].id,
                           likes: likes,
+                          onDeleteTap: (){},
                         ),
                       );
                     },

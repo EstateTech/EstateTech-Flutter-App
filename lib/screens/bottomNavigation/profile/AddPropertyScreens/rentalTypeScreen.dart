@@ -4,7 +4,6 @@ import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
-import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughStep3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,7 +11,8 @@ import '../../../../common/widgetConstants.dart';
 
 class RentalTypeScreen extends StatefulWidget {
   final PostModel postModel;
-  const RentalTypeScreen({super.key, required this.postModel});
+  final  bool isEdited ;
+  const RentalTypeScreen({super.key, required this.postModel, required this.isEdited});
 
   @override
   State<RentalTypeScreen> createState() => _RentalTypeScreenState();
@@ -39,6 +39,24 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
     end: DateTime.now().add(const Duration(days: 30)),
     start: DateTime.now().subtract(const Duration(days: 30)),
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.isEdited) {
+      selectedMainOption = widget.postModel.rentalType!;
+      selectedSubOption = widget.postModel.rentalSubtype!;
+      if(widget.postModel.rentalPeriod == "Montly"){
+        selectedItem = 0;
+      }else if(widget.postModel.rentalPeriod == "Yearly"){
+        selectedItem = 1;
+      }else if(widget.postModel.rentalPeriod == "Weekly"){
+        selectedItem = 2;
+      }
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,6 +221,7 @@ class _RentalTypeScreenState extends State<RentalTypeScreen> {
                             builder: (context) => WalkThroughScreenPost2(
                                   isStep2: true,
                                   postmodel: widget.postModel,
+                                  isEdited :widget.isEdited
                                 )));
                   },
                   OnPressedbackButton: () {

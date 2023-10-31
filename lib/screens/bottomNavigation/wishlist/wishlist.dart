@@ -81,6 +81,7 @@ class _WishlistPageState extends State<WishlistPage> {
                           userId: post.userid,
                           id: snapshot.data!.docs[index].id,
                           likes: likes,
+                          onDeleteTap: (){},
                         ),
                       );
                     },

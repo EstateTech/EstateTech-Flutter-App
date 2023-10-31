@@ -7,6 +7,7 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/provider/firebaseStorageProvider.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/postUpdatedScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +15,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AdditionalInfoScreen extends StatefulWidget {
-  const AdditionalInfoScreen({super.key, required this.postModel});
+  const AdditionalInfoScreen(
+      {super.key, required this.postModel, required this.isEdited});
 
   final PostModel postModel;
+  final bool isEdited;
 
   @override
   State<AdditionalInfoScreen> createState() => _AdditionalInfoScreenState();
@@ -25,6 +28,16 @@ class AdditionalInfoScreen extends StatefulWidget {
 class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
   TextEditingController additionaltextEditingController =
       TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.isEdited) {
+      additionaltextEditingController.text = widget.postModel.additionalInfo!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final xFileProvider = Provider.of<XFileProvider>(context);
@@ -45,37 +58,36 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
         firebaseStorageprovider
             .createPost(
                 PostModel(
-                  propertyType: widget.postModel.propertyType,
-                  propertyPortion: widget.postModel.propertyPortion,
-                  latLong: widget.postModel.latLong,
-                  propertyOwnerNumber: widget.postModel.propertyOwnerNumber,
-                  propertyAddressLine1: widget.postModel.propertyAddressLine1,
-                  propertyAddressLine2: widget.postModel.propertyAddressLine2,
-                  city: widget.postModel.city,
-                  state: widget.postModel.state,
-                  postalCode: widget.postModel.postalCode,
-                  guest: widget.postModel.guest,
-                  bedrooms: widget.postModel.bedrooms,
-                  bathrooms: widget.postModel.bathrooms,
-                  propertyArea: widget.postModel.propertyArea,
-                  propertyBuildArea: widget.postModel.propertyBuildArea,
-                  propertyPlotArea: widget.postModel.propertyPlotArea,
-                  utilities: widget.postModel.utilities,
-                  propertyPhotos: value,
-                  propertyDescription: widget.postModel.propertyDescription,
-                  preferedCurrency: widget.postModel.preferedCurrency,
-                  amount: widget.postModel.amount,
-                  propertyListingType: widget.postModel.propertyListingType,
-                  additionalInfo: widget.postModel.additionalInfo,
-                  userid: FirebaseAuth.instance.currentUser!.uid,
-                  likes: widget.postModel.likes,
-                  propertyFeature: widget.postModel.propertyFeature,
-                  datePosted: currentDate,
-                  postFeature: trendingPf,
-                  rentalSubtype: widget.postModel.rentalSubtype,
-                  rentalPeriod: widget.postModel.rentalPeriod,
-                  rentalType: widget.postModel.rentalType
-                ),
+                    propertyType: widget.postModel.propertyType,
+                    propertyPortion: widget.postModel.propertyPortion,
+                    latLong: widget.postModel.latLong,
+                    propertyOwnerNumber: widget.postModel.propertyOwnerNumber,
+                    propertyAddressLine1: widget.postModel.propertyAddressLine1,
+                    propertyAddressLine2: widget.postModel.propertyAddressLine2,
+                    city: widget.postModel.city,
+                    state: widget.postModel.state,
+                    postalCode: widget.postModel.postalCode,
+                    guest: widget.postModel.guest,
+                    bedrooms: widget.postModel.bedrooms,
+                    bathrooms: widget.postModel.bathrooms,
+                    propertyArea: widget.postModel.propertyArea,
+                    propertyBuildArea: widget.postModel.propertyBuildArea,
+                    propertyPlotArea: widget.postModel.propertyPlotArea,
+                    utilities: widget.postModel.utilities,
+                    propertyPhotos: value,
+                    propertyDescription: widget.postModel.propertyDescription,
+                    preferedCurrency: widget.postModel.preferedCurrency,
+                    amount: widget.postModel.amount,
+                    propertyListingType: widget.postModel.propertyListingType,
+                    additionalInfo: widget.postModel.additionalInfo,
+                    userid: FirebaseAuth.instance.currentUser!.uid,
+                    likes: widget.postModel.likes,
+                    propertyFeature: widget.postModel.propertyFeature,
+                    datePosted: currentDate,
+                    postFeature: offPlanPf,
+                    rentalSubtype: widget.postModel.rentalSubtype,
+                    rentalPeriod: widget.postModel.rentalPeriod,
+                    rentalType: widget.postModel.rentalType),
                 context)
             .then((value) {
           storageProvider.setisUploading(false);
@@ -149,7 +161,7 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                                     hintText: 'Additional info',
                                     border: InputBorder.none,
                                   ),
-                                  onSubmitted: (value){},
+                                  onSubmitted: (value) {},
                                 ),
                               ),
                             ],
@@ -166,11 +178,37 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
                                   widget.postModel.additionalInfo =
                                       additionaltextEditingController.text;
                                 });
-                                uploadImages().then((value) {
-                                  Navigator.pushNamed(
-                                      context, postCompletedCongratulationsScreen);
-                                });
-                                print(widget.postModel.toJson());
+                                if (widget.isEdited) {
+                                   storageProvider.setisUploading(true);
+                                  firebaseStorageprovider
+                                      .uploadImages(xFiles, context)
+                                      .then((value) {
+
+                                    firebaseStorageprovider.updatedPost(
+                                        widget.postModel,
+                                        context,
+                                        xFileProvider.postid,
+                                        value! + xFileProvider.networkImages);
+                                  }).then((value) {
+                                     storageProvider.setisUploading(false);
+                                  });
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        // Create the new screen widget here
+                                        return PostUpdatedScreen();
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  uploadImages().then((value) {
+                                    Navigator.pushNamed(context,
+                                        postCompletedCongratulationsScreen);
+                                  });
+                                  print(widget.postModel.toJson());
+                                }
                               },
                               OnPressedbackButton: () {
                                 Navigator.pop(context);

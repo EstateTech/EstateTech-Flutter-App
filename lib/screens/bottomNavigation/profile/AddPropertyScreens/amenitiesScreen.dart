@@ -12,9 +12,10 @@ import '../../../../components/grid_item_widet.dart';
 import '../../../../model/postModel.dart';
 
 class AmenitiesScreen extends StatefulWidget {
-  const AmenitiesScreen({super.key, required this.postmodel});
+  const AmenitiesScreen({super.key, required this.postmodel, required this.isEdited});
 
   final PostModel postmodel;
+  final bool isEdited;
 
   @override
   State<AmenitiesScreen> createState() => _AmenitiesScreenState();
@@ -22,6 +23,19 @@ class AmenitiesScreen extends StatefulWidget {
 
 class _AmenitiesScreenState extends State<AmenitiesScreen> {
   List<String> utilities = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.isEdited){
+      utilities = widget.postmodel.utilities!;
+    }
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,6 +130,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
                           MaterialPageRoute(
                               builder: (context) => AddPhotoScreen(
                                     postModel: widget.postmodel,
+                                    isEdited : widget.isEdited
                                   )));
                     } else {
                       Fluttertoast.showToast(

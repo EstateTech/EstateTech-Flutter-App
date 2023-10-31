@@ -54,7 +54,7 @@ const String searchScreen = "/searchScreen";
 const String bestofferPf = "BestOffer";
 const String trendingPf = "Trending";
 const String latestPf = "Latest";
-const String offPlan = "OffPlan";
+const String offPlanPf = "OffPlan";
 
 List bitcoinCurrency = [
   {

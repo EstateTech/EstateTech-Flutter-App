@@ -15,9 +15,14 @@ import '../../../../components/grid_item_widet.dart';
 
 class PropertyTypeScreen extends StatefulWidget {
   final bool isMorePropertyScreen;
+  final bool  isEdited;
+  final PostModel postModel;
   const PropertyTypeScreen({
     Key? key,
     this.isMorePropertyScreen = false,
+
+    this.isEdited = false, required this.postModel
+    
   }) : super(key: key);
 
   @override
@@ -25,12 +30,21 @@ class PropertyTypeScreen extends StatefulWidget {
 }
 
 class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
-  String propertyType = '';
+ String  propertyType = '';
 
-  PostModel postModel = PostModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.isEdited) {
+      propertyType = widget.postModel.propertyType!;
+    }
+   
+  }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
@@ -66,19 +80,20 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+                        
+                       
                         setState(() {
                           propertyType = selectPropertyTypeMap.keys
                               .elementAt(index)
                               .toString();
 
-                          postModel.propertyType = selectPropertyTypeMap.keys
+                         widget. postModel.propertyType = selectPropertyTypeMap.keys
                               .elementAt(index)
                               .toString();
 
-                          // print(selectPropertyTypeMap.values
-                          //     .elementAt(index)
-                          //     .toString());
+                         
                         });
+                        print(propertyType);
                       },
                       child: GridItemWidget(
                           selectedText: propertyType ==
@@ -96,18 +111,28 @@ class _PropertyTypeScreenState extends State<PropertyTypeScreen> {
                 child: customPostCreateBottomWidget(
                   OnPressedNextButton: () {
                     if (propertyType.isNotEmpty) {
+
+                      widget.postModel.propertyType = propertyType;
+
+                      print(widget.postModel.toJson());
+
+
+
                       widget.isMorePropertyScreen
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddPhotoScreen(
-                                        postModel: postModel,
+                                        postModel: widget.postModel,
+                                        isEdited:  widget.isEdited,
                                       )))
                           : Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => OfferedSpaceScreen(
-                                        postModel: postModel,
+                                        postModel:  widget. postModel,
+                                      
+                                        isEdited: widget.isEdited,
                                       )));
                     } else {
                       Fluttertoast.showToast(

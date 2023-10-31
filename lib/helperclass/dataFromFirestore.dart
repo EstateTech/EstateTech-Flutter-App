@@ -23,7 +23,7 @@ String Convertdate(Timestamp? timestamp) {
 // Formatting the DateTime to the desired format
   String formattedDate = DateFormat('yy/dd MMM').format(dateTime);
 
-  print(formattedDate); // Output: 24/05 May
+ // print(formattedDate); // Output: 24/05 May
 
   return formattedDate;
 }
@@ -51,6 +51,23 @@ Future<String> getMemberType(String userId) async {
   } catch (e) {
     print('Error getting member type: $e');
     return 'Error';
+  }
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> getPostsForCurrentUser(String currentUserId) {
+  return FirebaseFirestore.instance
+      .collection('posts')
+      .where('userid', isEqualTo: currentUserId)
+      .snapshots();
+}
+
+Future<void> deletePost(String postId) async {
+  try {
+    // Assuming you're using Firebase Firestore.
+    await FirebaseFirestore.instance.collection('posts').doc(postId).delete();
+  } catch (e) {
+    print("Error deleting post: $e");
+    // Handle any errors that occur during deletion.
   }
 }
 

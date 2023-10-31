@@ -2,22 +2,29 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
-import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/explore/postdisplaywidgets/postListWidget.dart';
+
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyConfirmMapScreen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../../model/postModel.dart';
+
 class PropertyTextAddressScreen extends StatefulWidget {
   const PropertyTextAddressScreen({
     required this.postModel,
-
-    super.key, required this.latLng,
+    super.key,
+    required this.latLng,
+    required this.isEdited,
+    required this.Addressline1,
   });
 
   final PostModel postModel;
   final LatLng latLng;
+  final bool isEdited;
+  final String Addressline1;
 
   @override
   State<PropertyTextAddressScreen> createState() =>
@@ -39,19 +46,30 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
     6,
     (index) => TextEditingController(),
   );
+  PostModel postModel = PostModel();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controllers[1].text = widget.postModel.propertyAddressLine2!;
-    });
+    controllers[1].text = widget.Addressline1;
+    postModel = widget.postModel;
+
+    if (widget.isEdited) {
+      controllers[0].text = postModel.propertyAddressLine1!;
+
+      controllers[3].text = postModel.city!;
+      controllers[4].text = postModel.state!;
+      controllers[5].text = postModel.postalCode!;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+   
+   print("the initially asigned modeled is  ${postModel.toJson().toString()}");
     return GestureDetector(
       onTap: (() {
         FocusScope.of(context).unfocus();
@@ -101,19 +119,23 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
                       child: customPostCreateBottomWidget(
                         OnPressedNextButton: () {
                           if (_key.currentState!.validate()) {
-                            widget.postModel.propertyAddressLine1 =
+                          postModel.propertyAddressLine1 =
                                 controllers[0].text;
-                            widget.postModel.propertyAddressLine2 =
+                            postModel.propertyAddressLine2 =
                                 controllers[1].text;
-                            widget.postModel.city = controllers[3].text;
-                            widget.postModel.state = controllers[4].text;
-                            widget.postModel.postalCode = controllers[5].text;
+                             postModel.city = controllers[3].text;
+                            postModel.state = controllers[4].text;
+                          postModel.postalCode = controllers[5].text;
+
+                            print(postModel.toJson());
 
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PropertyConfirmedMappedScreen(
-                                          postModel: widget.postModel,
+                                    builder: (context) =>
+                                        PropertyConfirmedMappedScreen(
+                                          isEdited: widget.isEdited,
+                                          postModel: postModel,
                                           latLng: widget.latLng,
                                         )));
                           }

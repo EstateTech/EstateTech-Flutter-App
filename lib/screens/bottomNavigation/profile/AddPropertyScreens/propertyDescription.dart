@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PropertyDescriptionScreen extends StatefulWidget {
-  const PropertyDescriptionScreen({super.key, required this.postModel});
+  const PropertyDescriptionScreen({super.key, required this.postModel, required this.isEdited});
 
   final PostModel postModel;
+  final bool isEdited;
 
   @override
   State<PropertyDescriptionScreen> createState() =>
@@ -21,6 +22,19 @@ class PropertyDescriptionScreen extends StatefulWidget {
 class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
   TextEditingController descriptionController = TextEditingController();
   Set<String> selectedItems = Set<String>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.isEdited) {
+      descriptionController.text = widget.postModel.propertyDescription!;
+    }
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -28,12 +42,6 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     print(widget.postModel.toJson());
-        //   },
-        // ),
-
         body: Container(
           padding: EdgeInsets.only(left: 20.h, right: 20.h),
           width: MediaQuery.of(context).size.width,
@@ -135,6 +143,7 @@ class _PropertyDescriptionScreenState extends State<PropertyDescriptionScreen> {
                               MaterialPageRoute(
                                   builder: (context) => WalkthroughStep3(
                                         postModel: widget.postModel,
+                                        isEdited : widget.isEdited
                                       )));
                         },
                         OnPressedbackButton: () {

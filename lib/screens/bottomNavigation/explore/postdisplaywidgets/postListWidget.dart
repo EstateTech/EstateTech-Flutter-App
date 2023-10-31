@@ -20,13 +20,15 @@ class Post extends StatefulWidget {
   final userId;
   final String id;
   final List<String> likes;
+  final bool isMyProperty;
+  final VoidCallback onDeleteTap;
 
   const Post({
     Key? key,
     required this.postModel,
     this.userId,
     required this.id,
-    required this.likes,
+    required this.likes,  this.isMyProperty = false,  required this.onDeleteTap,
   }) : super(key: key);
 
   @override
@@ -161,6 +163,31 @@ class _PostState extends State<Post> {
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold),
                             ))),
+            widget.isMyProperty ?    Positioned(
+                  right: 10.h,
+                  bottom: 5.h,
+                  child: GestureDetector(
+                    onTap: widget.onDeleteTap
+                      
+                    ,
+                    child: Container(
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r)),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Delete",
+                              style: style.copyWith(
+                                  color: const Color(0xff0D2769),
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Icon(Icons.close)
+                          ],
+                        )),
+                  )) : SizedBox.shrink(),
             ],
           ),
           SizedBox(

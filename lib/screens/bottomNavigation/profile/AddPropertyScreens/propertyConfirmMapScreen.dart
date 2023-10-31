@@ -12,7 +12,7 @@ import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
 import 'package:crypto_estate_tech/common/custom_post_create_bottom.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/featuresScreen.dart';
-import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/propertyTextAdressScreen.dart';
+
 
 import '../../../../common/widgetConstants.dart';
 import '../../../../model/postModel.dart';
@@ -24,7 +24,8 @@ class PropertyConfirmedMappedScreen extends StatefulWidget {
 
   final PostModel postModel;
   final LatLng latLng;
-  const PropertyConfirmedMappedScreen({super.key, required this.postModel , required this.latLng});
+  final bool isEdited;
+  const PropertyConfirmedMappedScreen({super.key, required this.postModel , required this.latLng, required this.isEdited});
 
   @override
   State<PropertyConfirmedMappedScreen> createState() => _PropertyConfirmedMappedScreenState();
@@ -400,6 +401,7 @@ class _PropertyConfirmedMappedScreenState extends State<PropertyConfirmedMappedS
                                   MaterialPageRoute(
                                       builder: (context) => FeatureScreen(
                                             postModel: widget.postModel,
+                                            isEdited : widget.isEdited
                                           )));
                              
                         } else {

@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WalkthroughStep3 extends StatefulWidget {
-  const WalkthroughStep3({super.key, required this.postModel});
+  const WalkthroughStep3({super.key, required this.postModel, required this.isEdited});
 
   final PostModel postModel;
+  final bool isEdited;
 
   @override
   State<WalkthroughStep3> createState() => _WalkthroughStep3State();
@@ -92,7 +93,12 @@ class _WalkthroughStep3State extends State<WalkthroughStep3> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AdditionalInfoScreen(
-                                        postModel: widget.postModel)));
+                                        postModel: widget.postModel, 
+                                        isEdited: widget.isEdited,
+                                        
+                                        
+                                        
+                                        )));
                           },
                           OnPressedbackButton: () {
                             Navigator.pop(context);

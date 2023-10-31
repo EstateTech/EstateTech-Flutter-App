@@ -40,8 +40,7 @@ class Router {
         // case walkThroughPostScreenRoute2:
         //   return WalkThroughScreenPost2();
 
-        case propertyTypeScreen:
-          return const PropertyTypeScreen();
+      
 
         // case offeredSpaceScreen:
         //   return OfferedSpaceScreen(
@@ -68,10 +67,7 @@ class Router {
         case searchScreen:
           return const SearchScreen();
 
-        case MorePropertyScreen:
-          return const PropertyTypeScreen(
-            isMorePropertyScreen: true,
-          );
+      
 
         case postCompletedCongratulationsScreen:
           return const PostCompleteCongratulationScreen();

@@ -9,6 +9,7 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainS
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/loginSecurityScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/payments_payouts.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainScreen/profileButton.dart';
+import 'package:crypto_estate_tech/screens/bottomNavigation/profile/myPropertyScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/swap_page_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -322,7 +323,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => WalkThroughScreenPost2(
-                                postmodel: PostModel())));
+                                postmodel: PostModel(),
+                                isEdited: false,
+                                
+                                )));
                   },
                   imagePath: "assets/images/profileSet1.png",
                   text: "Advertise your Property",
@@ -348,6 +352,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(
                   height: 10.h,
+                ),
+                 ListTileProfileOptions(
+                  text: "My Property",
+                  imagepath: 'assets/images/single_room_icon.svg',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyPropertyScreen()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Personal Information",

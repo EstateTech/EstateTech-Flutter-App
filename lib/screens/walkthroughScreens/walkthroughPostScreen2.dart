@@ -12,8 +12,9 @@ import '../bottomNavigation/profile/AddPropertyScreens/amenitiesScreen.dart';
 class WalkThroughScreenPost2 extends StatefulWidget {
   final bool isStep2;
   final PostModel postmodel;
+  final  bool  isEdited ;
   const WalkThroughScreenPost2(
-      {super.key, this.isStep2 = false, required this.postmodel});
+      {super.key, this.isStep2 = false, required this.postmodel, required this.isEdited});
 
   @override
   State<WalkThroughScreenPost2> createState() => _WalkThroughScreenPost2State();
@@ -96,12 +97,17 @@ class _WalkThroughScreenPost2State extends State<WalkThroughScreenPost2> {
                               MaterialPageRoute(
                                   builder: (context) => AmenitiesScreen(
                                         postmodel: widget.postmodel,
+                                        isEdited : widget.isEdited
                                       )))
                           : Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const PropertyTypeScreen()));
+                                       PropertyTypeScreen(
+                                        postModel:  PostModel(),
+
+
+                                       )));
                     },
                     OnPressedbackButton: () {
                       Navigator.pop(context);

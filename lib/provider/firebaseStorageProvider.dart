@@ -129,4 +129,71 @@ class FirebaseStorageProvider extends ChangeNotifier {
       showSnackBar(context, "Error Occurred: ${error.toString()}");
     }
   }
+
+
+
+  Future<void> updatedPost(PostModel post, BuildContext context , String postUid , List<String?> photos) async {
+    try {
+      // Generate a unique UID for the post collection
+      _isUploading = true;
+      notifyListeners();
+
+    
+      await _firestore.collection('posts').doc(postUid).update({
+        "propertyType": post.propertyType,
+        "propertyPortion": post.propertyPortion,
+        "latLong": post.latLong,
+        "propertyOwnerNumber": post.propertyOwnerNumber,
+        "propertyAddressLine1": post.propertyAddressLine1,
+        "propertyAddressLine2": post.propertyAddressLine2,
+        "city": post.city,
+        "state": post.state,
+        "postalCode": post.postalCode,
+        "guest": post.guest, //int?
+        "bedrooms": post.bedrooms, // int?
+        "bathrooms": post.bathrooms, //  int?
+        "propertyArea": post.propertyArea, // int?
+        "propertyBuildArea": post.propertyBuildArea, //  int?
+        "propertyPlotArea": post.propertyPlotArea, //int?
+        "utilities": post.utilities,
+        "propertyPhotos": photos,
+        "propertyDescription": post.propertyDescription,
+        "preferedCurrency": post.preferedCurrency,
+        "amount": post.amount,
+        "propertyListingType": post.propertyListingType,
+        "additionalInfo": post.additionalInfo,
+        "userid": post.userid,
+        "likes": post.likes,
+
+        "propertyFeature": post.propertyFeature,
+        "datePosted": post.datePosted,
+        "postFeature": post.postFeature,
+        "rentalType" : post.rentalType,
+        "rentalSubtype" : post.rentalSubtype,
+        "rentalPeriod" : post.rentalPeriod
+      });
+      print('Post updated successfully!');
+
+      _isUploading = false;
+      notifyListeners();
+
+      showSnackBar(context, "Successfully Updated");
+    } catch (error) {
+      _isUploading = false;
+      notifyListeners();
+
+      print('Error creating post: $error');
+      showSnackBar(context, "Error Occurred: ${error.toString()}");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 }

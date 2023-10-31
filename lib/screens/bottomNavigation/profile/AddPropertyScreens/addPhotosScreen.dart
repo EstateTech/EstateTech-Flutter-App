@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/custom_button_widget.dart';
 import 'package:crypto_estate_tech/common/custom_create_post_header.dart';
@@ -13,12 +13,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class AddPhotoScreen extends StatefulWidget {
-  const AddPhotoScreen({super.key, required this.postModel});
+  const AddPhotoScreen(
+      {super.key, required this.postModel, required this.isEdited});
 
   final PostModel postModel;
+  final bool isEdited;
 
   @override
   State<AddPhotoScreen> createState() => _AddPhotoScreenState();
@@ -26,6 +29,7 @@ class AddPhotoScreen extends StatefulWidget {
 
 class _AddPhotoScreenState extends State<AddPhotoScreen> {
   final List<XFile>? _selectedImages = [];
+  List<String?> networkImages = []; // For network images
   ImageSource? globalImageSource;
 
   Future<void> _getImage(ImageSource source) async {
@@ -40,10 +44,19 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.isEdited) {
+      // Assuming postModel.propertyPhotos is a List<String> of network image URLs
+      networkImages = widget.postModel.propertyPhotos!;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final xFileProvider = Provider.of<XFileProvider>(context);
     return Scaffold(
-     
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
         width: MediaQuery.of(context).size.width,
@@ -77,7 +90,7 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
 
             Column(
               children: [
-                _selectedImages!.isEmpty
+                _selectedImages!.isEmpty && networkImages.isEmpty
                     ? UploadImageContainer()
                     : Container(
                         height: 300.h,
@@ -90,15 +103,30 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                             crossAxisCount: 2,
                             childAspectRatio: 1.4,
                           ),
-                          itemCount: _selectedImages!.length,
+                          itemCount:
+                              networkImages.length + _selectedImages!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return PostImageWidget(
-                                ValueKey(_selectedImages![index]),
-                                File(_selectedImages![index].path), () {
-                              setState(() {
-                                _selectedImages!.removeAt(index);
+                            if (index < networkImages.length) {
+                              // Display network images
+                              return NetworkImagePost(networkImages[index]!,
+                                  () {
+                                setState(() {
+                                  networkImages.removeAt(index);
+                                });
                               });
-                            });
+                            } else {
+                              // Display local images
+                              final localImageIndex =
+                                  index - networkImages.length;
+                              return PostImageWidget(
+                                  ValueKey(_selectedImages![localImageIndex]),
+                                  File(_selectedImages![localImageIndex].path),
+                                  () {
+                                setState(() {
+                                  _selectedImages!.removeAt(localImageIndex);
+                                });
+                              });
+                            }
                           },
                         ),
                       ),
@@ -127,22 +155,24 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
               padding: EdgeInsets.only(right: 12.h, left: 12.h, bottom: 30.h),
               child: customPostCreateBottomWidget(
                 OnPressedNextButton: () {
-                  // List<XFile?> nullableImageFiles =
-                  //     widget.postModel.propertyPhotos!;
-                  // List<XFile> imageFiles =
-                  //     nullableImageFiles.whereType<XFile>().toList();
-                  if (_selectedImages!.isNotEmpty) {
-                    setState(() {
-                      xFileProvider.setXFiles(_selectedImages!);
-                    });
+                  if (_selectedImages!.isNotEmpty || networkImages.isNotEmpty) {
+                    if (widget.isEdited) {
+                      xFileProvider.updateImages(
+                          _selectedImages!, networkImages as List<String>);
+                    } else {
+                      setState(() {
+                        xFileProvider.setXFiles(_selectedImages!);
+                      });
+                    }
+
                     // Your updated list
 
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PropertyDescriptionScreen(
-                                  postModel: widget.postModel,
-                                )));
+                                postModel: widget.postModel,
+                                isEdited: widget.isEdited)));
                   } else {
                     Fluttertoast.showToast(
                         msg: 'Please select at least one image');
@@ -179,8 +209,8 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
                   fontWeight: FontWeight.w700),
             ),
             GestureDetector(
-              onTap: (){
-                  _getImage(ImageSource.gallery);
+              onTap: () {
+                _getImage(ImageSource.gallery);
               },
               child: Text(
                 "Upload from your device",
@@ -212,6 +242,49 @@ class _AddPhotoScreenState extends State<AddPhotoScreen> {
               width: double.infinity,
               height: 120,
               fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5.h, right: 2.h),
+            child: GestureDetector(
+              onTap: OnTap,
+              child: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 20.h,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget NetworkImagePost(String path, VoidCallback OnTap) {
+    return Container(
+      height: 100.h,
+      margin: EdgeInsets.all(10.h),
+
+      // margin: EdgeInsets.only(left: 10.h),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15.r),
+            child: CachedNetworkImage(
+              key: UniqueKey(),
+              imageUrl: path,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 120,
+              placeholder: (context, url) => Container(
+                child: Lottie.asset(
+                  'assets/images/loading_animation.json', // Replace with your animation file path
+                  width: double.infinity,
+                  height: 120,
+                  // Other properties you can customize
+                ),
+              ),
             ),
           ),
           Padding(

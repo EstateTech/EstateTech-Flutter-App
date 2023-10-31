@@ -20,13 +20,14 @@ import '../../../../model/postModel.dart';
 
 class PropertyMappedScreen extends StatefulWidget {
   final PostModel postModel;
+  final bool isEdited;
   
 
   const PropertyMappedScreen({
     Key? key,
 
 
-    required this.postModel,
+    required this.postModel,  required this.isEdited, 
   }) : super(key: key);
 
   @override
@@ -65,6 +66,8 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
   @override
   void initState() {
     super.initState();
+      
+        
   
         _getCurrentPosition();
 
@@ -114,7 +117,16 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
       print("1--${position.latitude}");
 
       setState(() {
-        _latLng = LatLng(position.latitude, position.longitude);
+
+        if(widget.isEdited){
+          print("it is edited post");
+          _latLng = LatLng(widget.postModel.latLong!.latitude, widget.postModel.latLong!.longitude);
+
+        }else {
+          print("its is new post");
+  _latLng = LatLng(position.latitude, position.longitude);
+        }
+      
         _kGooglePlex = CameraPosition(target: _latLng, zoom: 14.4746);
         // postMdl.getCurrentWeather(position.latitude, position.longitude);
         // postMdl.setUserPostion(position);
@@ -360,15 +372,16 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                             widget.postModel.latLong =
                                 GeoPoint(_latLng.latitude, _latLng.longitude);
 
-                            widget.postModel.city =
-                                addressController.text.split(',').first;
+                            // widget.postModel.city =
+                            //     addressController.text.split(',').first;
 
-                            widget.postModel.propertyAddressLine2 =
-                                addressController.text;
+                            // widget.postModel.propertyAddressLine2 =
+                            //     addressController.text;
 
-                            widget.postModel.country =
-                                addressController.text.split(',').last;
+                            // widget.postModel.country =
+                            //     addressController.text.split(',').last;
                           });
+                          print(widget.postModel.toJson());
 
                            Navigator.push(
                                   context,
@@ -377,6 +390,10 @@ class _PropertyMappedScreenState extends State<PropertyMappedScreen> {
                                           PropertyTextAddressScreen(
                                             postModel: widget.postModel,
                                             latLng: _latLng,
+                                            isEdited: widget.isEdited,
+                                            Addressline1: addressController.text,
+
+                                           
                                           )));
                         } else {
                           Fluttertoast.showToast(
