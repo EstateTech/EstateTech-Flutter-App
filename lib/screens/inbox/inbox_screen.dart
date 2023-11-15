@@ -103,6 +103,7 @@ class _InboxScreenState extends State<InboxScreen> {
                         ],
                       )
                     : Row(
+                      //row here
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
