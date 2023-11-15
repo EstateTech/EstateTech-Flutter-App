@@ -1,11 +1,47 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/Dialogs/dialogProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
-class profileContainer extends StatelessWidget {
-  const profileContainer({super.key});
+class profileContainer extends StatefulWidget {
+  final PostModel postModel;
+  const profileContainer({super.key, required this.postModel});
+
+  @override
+  State<profileContainer> createState() => _profileContainerState();
+}
+
+class _profileContainerState extends State<profileContainer> {
+  SignupSavepDataFirebase userPost = SignupSavepDataFirebase();
+
+  Future<void> fetchUserData() async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(widget.postModel.userid)
+              .get();
+
+      if (userSnapshot.exists) {
+        userPost = SignupSavepDataFirebase.fromJson(userSnapshot.data()!);
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +60,23 @@ class profileContainer extends StatelessWidget {
               Container(
                 height: 100.h,
                 width: 100.h,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
-                        ),
-                        fit: BoxFit.cover)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50.r),
+                  child: CachedNetworkImage(
+                    key: UniqueKey(),
+                    imageUrl: userPost.photoUrl ??
+                        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=2187&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      child: Lottie.asset(
+                        'assets/images/loading_animation.json', // Replace with your animation file path
+                        width: 200,
+                        height: 200,
+                        // Other properties you can customize
+                      ),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 width: 20.h,
@@ -40,7 +85,7 @@ class profileContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Andera Biscotti",
+                    userPost.firstName ?? "Andera",
                     style: style.copyWith(
                       fontFamily: "Circular Std",
                       fontSize: 22,
@@ -55,7 +100,8 @@ class profileContainer extends StatelessWidget {
                       alignment: WrapAlignment.start,
                       children: [
                         Text(
-                          "Area Manager at White & Co Real Estate",
+                          userPost.about ??
+                              "Area Manager at White & Co Real Estate",
                           style: style.copyWith(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w300,
@@ -153,7 +199,7 @@ class profileContainer extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return const CustomDialog(); // Your custom dialog content
+                  return  CustomDialog(userdata: userPost,); // Your custom dialog content
                 },
               );
             },

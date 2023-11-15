@@ -358,7 +358,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     socialLogin: true,
                     currentSubscription: 'Basic',
                     profileCompleted: false,
-                    loggedInStatus: 'Google'),
+                    loggedInStatus: 'Google',
+                    followers: [],
+                    following: []
+                    
+                    
+                    ),
               );
 
               Navigator.push(

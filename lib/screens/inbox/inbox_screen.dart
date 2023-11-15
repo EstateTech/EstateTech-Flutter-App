@@ -29,6 +29,7 @@ class _InboxScreenState extends State<InboxScreen> {
   String senderId = "";
   bool _isChatListSearched = false;
   bool istyping = false;
+  String selectedOption = 'Member';
 
   @override
   void initState() {
@@ -98,10 +99,11 @@ class _InboxScreenState extends State<InboxScreen> {
                               Icons.close,
                               color: Colors.purple,
                             ),
-                          )
+                          ),
                         ],
                       )
                     : Row(
+                      //row here
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
@@ -123,36 +125,61 @@ class _InboxScreenState extends State<InboxScreen> {
                           ),
                           Row(
                             children: [
-                              _isSearching
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _isSearching = !_isSearching;
-                                           searchController.text = "";
-                                           istyping = false;
-                                        });
-                                       
-                                      },
-                                      child: Icon(
-                                        CupertinoIcons.clear_circled_solid,
-                                        color: Color(0xFF3A3153),
-                                        size: 29.w,
-                                      ),
-                                    )
-                                  : GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _isChatListSearched =
-                                              !_isChatListSearched;
-                                          _chatSearchList = chatList;
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.search,
-                                        color: Color(0xFF3A3153),
-                                        size: 29.w,
-                                      ),
-                                    ),
+                            _isSearching ?  Row(
+                                children: [
+                                  DropdownButton<String>(
+                                    value: selectedOption,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedOption = newValue!;
+                                        _searchlist.clear();
+                                        istyping = false;
+                                        searchController.text = "";
+                                     
+                                      });
+                                     
+                                    },
+                                    items: <String>[
+                                      'Member',
+                                      'Developer',
+                                      'Agency'
+                                    ].map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                   GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isSearching = !_isSearching;
+                                    searchController.text = "";
+                                    istyping = false;
+                                  });
+                                },
+                                child: Icon(
+                                  CupertinoIcons.clear_circled_solid,
+                                  color: Color(0xFF3A3153),
+                                  size: 29.w,
+                                ),
+                              ),
+                                ],
+                              ):
+                             
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isChatListSearched = !_isChatListSearched;
+                                    _chatSearchList = chatList;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF3A3153),
+                                  size: 29.w,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -176,9 +203,9 @@ class _InboxScreenState extends State<InboxScreen> {
                         ? StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('users')
-                                .where('userId',
-                                    isNotEqualTo:
-                                        FirebaseAuth.instance.currentUser!.uid)
+                                .where('memberType',
+                                    isEqualTo:
+                                        selectedOption)
                                 .snapshots(),
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
@@ -198,23 +225,19 @@ class _InboxScreenState extends State<InboxScreen> {
                                           .toList() ??
                                       [];
 
-                                      if(_searchlist.isEmpty && searchController.text.isNotEmpty){
-                                  return Center(
-                                                child: Text(
-                                                  "No matching results found!!",
-                                                  style: style.copyWith(
-                                                      color: mainAppColor,
-                                                      fontSize: 20.sp),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-
-                                  }
-                                     else if(istyping) {
-                                  
-
-                                     return  
-                                     ListView.builder(
+                                  if (_searchlist.isEmpty &&
+                                      searchController.text.isNotEmpty) {
+                                    return Center(
+                                      child: Text(
+                                        "No matching results found!!",
+                                        style: style.copyWith(
+                                            color: mainAppColor,
+                                            fontSize: 20.sp),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                  } else if (istyping) {
+                                    return ListView.builder(
                                         itemCount: _searchlist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
@@ -222,12 +245,8 @@ class _InboxScreenState extends State<InboxScreen> {
                                             isSelected: false,
                                           );
                                         });
-
-                                   
-                                  }  
-                                 else if (alllist.isNotEmpty) {
-                                    return  
-                                     ListView.builder(
+                                  } else if (alllist.isNotEmpty) {
+                                    return ListView.builder(
                                         itemCount: alllist.length,
                                         itemBuilder: (context, index) {
                                           return ChatCard(
@@ -235,11 +254,10 @@ class _InboxScreenState extends State<InboxScreen> {
                                             isSelected: false,
                                           );
                                         });
-                                  }  
-                                  
-                                  
-                                  else   {
-                                   return Center(child: Text("No User found"),);
+                                  } else {
+                                    return Center(
+                                      child: Text("No User found"),
+                                    );
                                   }
                               }
                             })
@@ -315,18 +333,18 @@ class _InboxScreenState extends State<InboxScreen> {
                                 )))
               ],
             ),
-           floatingActionButton:    FloatingActionButton(
+            floatingActionButton: FloatingActionButton(
               onPressed: () {
                 setState(() {
                   _isSearching = !_isSearching;
                 });
                 if (!_isSearching) {
                   fetchData();
-                } 
+                }
               },
               child: Icon(Icons.message),
               backgroundColor: mainAppColor,
-            ) ,
+            ),
           ),
         ),
       ),
@@ -393,14 +411,11 @@ class _InboxScreenState extends State<InboxScreen> {
       onChanged: (value) {
         print(value);
 
-       
         if (_isSearching) {
-           setState(() {
-          istyping = true;
-          _searchlist.clear();
-        });
-
-      
+          setState(() {
+            istyping = true;
+            _searchlist.clear();
+          });
 
           for (var i in alllist) {
             if (i.firstName
