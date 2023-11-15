@@ -17,6 +17,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:walletconnect_dart/walletconnect_dart.dart';
+import 'package:web3modal_flutter/services/w3m_service/w3m_service.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 import '../../helperclass/own_firebase_auth.dart';
 import '../../components/divider_padding.dart';
@@ -52,9 +56,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   //   );
   // }
 
+  final _w3mService = W3MService(
+    projectId: '05f19cd99265785b09f7157803a3095d',
+    metadata: const PairingMetadata(
+      name: 'Web3Modal Flutter Example',
+      description: 'Web3Modal Flutter Example',
+      url: 'https://www.walletconnect.com/',
+      icons: ['https://walletconnect.com/walletconnect-logo.png'],
+      redirect: Redirect(
+        native: 'flutterdapp://',
+        universal: 'https://www.walletconnect.com',
+      ),
+    ),
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _w3mService.init();
+  }
+
   @override
   Widget build(BuildContext context) {
     _isloading = Provider.of<AuthProvider>(context, listen: true).isLoading;
+
+    String addr;
 
     return Scaffold(
       backgroundColor: mainAppColor,
@@ -251,8 +278,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    CustomButton1(
-                        boxShadowContainer: true, title: 'Connect your wallet')
+                    GestureDetector(
+                      onTap: () async {
+                        W3MAccountButton(service: _w3mService);
+                      },
+                      child: CustomButton1(
+                          boxShadowContainer: true,
+                          title: 'Connect your wallet'),
+                    )
                   ],
                 ),
               ),
