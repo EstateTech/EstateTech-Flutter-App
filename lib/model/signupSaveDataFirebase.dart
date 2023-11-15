@@ -18,6 +18,9 @@ class SignupSavepDataFirebase {
   String? about;
   bool? isOnline;
   String? pushToken;
+  List<String>? followers;
+  List<String>? following;
+
 
 
   SignupSavepDataFirebase(
@@ -39,12 +42,15 @@ class SignupSavepDataFirebase {
       this.currentSubscription,
       this.about,
       this.isOnline,
-      this.pushToken
+      this.pushToken,
+      this.followers,
+      this.following
+
+     
       
       
       
-      
-      });
+      } );
 
   SignupSavepDataFirebase.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
@@ -66,6 +72,10 @@ class SignupSavepDataFirebase {
     about = json['about'];
     pushToken=json['push_token'];
     isOnline = json['isOnline'];
+    followers = json['followers' ].cast<String>();
+    following = json['following' ].cast<String>();
+    
+   
      
 
   }
@@ -92,6 +102,10 @@ class SignupSavepDataFirebase {
     data['about']=this.about;
     data['push_token']=this.pushToken;
     data['isOnline'] = this.isOnline;
-    return data;
+    data['followers'] = this.followers;
+    data['following'] = this.following;
+
+
+  return data;
   }
 }

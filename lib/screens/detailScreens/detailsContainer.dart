@@ -7,6 +7,7 @@ import 'package:crypto_estate_tech/screens/detailScreens/AnimetiesContainer.dart
 import 'package:crypto_estate_tech/screens/detailScreens/insightsContainer.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/mapContainer.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/profileContainer.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/recomendationsContainer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -344,14 +345,14 @@ class DetailsContainer extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  profileContainer(),
+                  profileContainer(postModel : postModel),
                   SizedBox(
                     height: 60.h,
                   ),
-                  // DividerContainer(context),
-                  // SizedBox(
-                  //   height: 10.h,
-                  // ),
+                  DividerContainer(context),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   // RecomendationContainer(
                   //   postModel: postModel,
                   // )

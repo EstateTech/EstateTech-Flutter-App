@@ -258,6 +258,89 @@ Future<void> updatePost(String postId, String rentalPeriod, String rentalSubtype
   }
 }
 
+// // follower part 
+
+// Future<void> followUser(String currentUserId, String profileUserId) async {
+//   // Update the profile user's followers list
+//   await FirebaseFirestore.instance.collection('users').doc(profileUserId).update({
+//     'followers': FieldValue.arrayUnion([currentUserId]),
+//   });
+
+//   // Update the current user's following list
+//   await FirebaseFirestore.instance.collection('users').doc(currentUserId).update({
+//     'following': FieldValue.arrayUnion([profileUserId]),
+//   });
+// }
+
+
+
+// Future<void> unfollowUser(String currentUserId, String profileUserId) async {
+//   // Update the profile user's followers list
+//   await FirebaseFirestore.instance.collection('users').doc(profileUserId).update({
+//     'followers': FieldValue.arrayRemove([currentUserId]),
+//   });
+
+//   // Update the current user's following list
+//   await FirebaseFirestore.instance.collection('users').doc(currentUserId).update({
+//     'following': FieldValue.arrayRemove([profileUserId]),
+//   });
+// }
+
+// Future<int> getFollowersCount(String userId) async {
+//   try {
+//     DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore
+//         .instance
+//         .collection('users')
+//         .doc(userId)
+//         .get();
+
+//     // Get the followers list from the user document
+//     List<dynamic>? followersList = userSnapshot.data()?['followers'];
+
+//     // Return the count of followers
+//     return followersList?.length ?? 0;
+//   } catch (e) {
+//     print('Error counting followers: $e');
+//     return 0; // Return 0 in case of an error
+//   }
+// }
+
+// Future<int> getFollowingCount(String userId) async {
+//   try {
+//     // You can implement a similar logic for 'following'
+//     // Adjust the field name based on your actual structure
+//     DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore
+//         .instance
+//         .collection('users')
+//         .doc(userId)
+//         .get();
+
+//     // Get the following list from the user document
+//     List <dynamic>? followingList = userSnapshot.data()?['following'];
+
+//     // Return the count of following
+//     return followingList?.length ?? 0;
+//   } catch (e) {
+//     print('Error counting following: $e');
+//     return 0; // Return 0 in case of an error
+//   }
+// }
+
+Future<int> getPostCountForUser(String userId) async {
+  try {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('userid', isEqualTo: userId)
+        .get();
+        print("in the post count method ${snapshot.size}" );
+
+    return snapshot.size;
+  } catch (e) {
+    print('Error getting post count: $e');
+    return 0; // Return 0 in case of an error
+  }
+}
+
 
 
 

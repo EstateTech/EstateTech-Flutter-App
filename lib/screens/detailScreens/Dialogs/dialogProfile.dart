@@ -1,12 +1,23 @@
-import 'package:crypto_estate_tech/common/widgetConstants.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/userProfileDetailedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:crypto_estate_tech/common/widgetConstants.dart';
+import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
+import 'package:lottie/lottie.dart';
+
 import '../../../common/ColorConstants.dart';
 
 class CustomDialog extends StatefulWidget {
-  const CustomDialog({super.key});
+  final SignupSavepDataFirebase userdata;
+  const CustomDialog({
+    Key? key,
+    required this.userdata,
+  }) : super(key: key);
 
   @override
   State<CustomDialog> createState() => _CustomDialogState();
@@ -86,14 +97,25 @@ class _CustomDialogState extends State<CustomDialog> {
                   Container(
                     height: 80.h,
                     width: 80.h,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black,
-                        image: DecorationImage(
-                            image: NetworkImage(
-                              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
-                            ),
-                            fit: BoxFit.cover)),
+
+                    child:  ClipRRect(
+                      borderRadius: BorderRadius.circular(50.r),
+                      child: CachedNetworkImage(
+                      key: UniqueKey(),
+                      imageUrl: widget.userdata.photoUrl ??
+                          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=2187&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        child: Lottie.asset(
+                          'assets/images/loading_animation.json', // Replace with your animation file path
+                          width: 200,
+                          height: 200,
+                          // Other properties you can customize
+                        ),
+                      ),
+                                      ),
+                    ),
+                  
                   ),
                   SizedBox(
                     width: 10.h,
@@ -102,7 +124,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Andera Biscotti",
+                       widget.userdata.firstName ??  "Andera Biscotti",
                         style: style.copyWith(
                           fontFamily: "Circular Std",
                           fontSize: 20,
@@ -118,7 +140,7 @@ class _CustomDialogState extends State<CustomDialog> {
                           alignment: WrapAlignment.start,
                           children: [
                             Text(
-                              "Area Manager at White & Co Real Estate",
+                            widget.userdata.about ??"Area Manager at White & Co Real Estate",
                               style: style.copyWith(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w300,
@@ -128,7 +150,8 @@ class _CustomDialogState extends State<CustomDialog> {
                             ),
                           ],
                         ),
-                      )
+                      ),
+                   
                     ],
                   ),
                 ],
@@ -203,26 +226,26 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
               ),
               SizedBox(
-                height: 10.h,
+                height: 50.h,
               ),
-              Text(
-                "Bio:",
-                style: style.copyWith(color: Colors.white, fontSize: 15.sp),
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Wrap(
-                children: [
-                  Text(
-                    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-                    style: style.copyWith(color: Colors.white),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 35.h,
-              ),
+              // Text(
+              //   "Bio:",
+              //   style: style.copyWith(color: Colors.white, fontSize: 15.sp),
+              // ),
+              // SizedBox(
+              //   height: 5.h,
+              // ),
+              // Wrap(
+              //   children: [
+              //     Text(
+              //       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+              //       style: style.copyWith(color: Colors.white),
+              //     )
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 35.h,
+              // ),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -288,7 +311,47 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                   onRatingUpdate: (double value) {},
                 ),
+              ),
+              SizedBox(height: 70.h,),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){
+
+                    // full profile page
+                
+                    
+
+                     Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfileDetailedScreen(
+                userdata: widget.userdata,
+              )),
+            );
+                   
+                    
+              
+                  },
+                  child: Container(
+                    height: 45.h,
+                    width: 180.w,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.r),
+                      color: Colors.white
+                    ),
+                    child: Text(
+                      "View Full Profile",
+                      style: style.copyWith(
+                        fontSize: 18.sp,
+                        color: Shade2purple
+                      ),
+                    ),
+                  ),
+                ),
               )
+
+             
             ],
           ),
         ),
