@@ -8,6 +8,7 @@ import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'common/routing.dart' as route;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,28 +53,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(builder: (context, child) {
-      return ScreenUtilInit(
-        designSize: const Size(360, 800),
-        minTextAdapt: true,
-       rebuildFactor: RebuildFactors.all,
-        splitScreenMode: true,
-        builder: (context, child) => MaterialApp(
-          builder: (context, child) {
-            return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: child!);
-          },
+    return ResponsiveApp(
+      builder: (context) {
+        return ScreenUtilInit(builder: (context, child) {
+          return ScreenUtilInit(
+            designSize: const Size(360, 800),
+            minTextAdapt: true,
+           rebuildFactor: RebuildFactors.all,
+            splitScreenMode: true,
+            builder: (context, child) => MaterialApp(
+              builder: (context, child) {
+                return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    child: child!);
+              },
 
-          debugShowCheckedModeBanner: false,
-          title: 'Crypto Estate Tech',
+              debugShowCheckedModeBanner: false,
+              title: 'Crypto Estate Tech',
 
-          //home: WelcomeScreen(),
-          // darkTheme: ThemeData.dark(),
-          onGenerateRoute: route.Router.generateRoute,
-          initialRoute: splashScreenRoute,
-        ),
-      );
-    });
+              //home: WelcomeScreen(),
+              // darkTheme: ThemeData.dark(),
+              onGenerateRoute: route.Router.generateRoute,
+              initialRoute: splashScreenRoute,
+            ),
+          );
+        });
+      }
+    );
   }
 }

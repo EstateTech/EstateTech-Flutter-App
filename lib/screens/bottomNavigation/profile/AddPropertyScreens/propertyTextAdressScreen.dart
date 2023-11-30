@@ -210,6 +210,7 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
           borderRadius: BorderRadius.circular(15.r),
         ),
         child: TextFormField(
+          style: style.copyWith(fontSize: 15.sp,color: Colors.black),
           controller: controller,
           validator: (v) {
             if (v!.isEmpty) {
@@ -218,6 +219,7 @@ class _PropertyTextAddressScreenState extends State<PropertyTextAddressScreen> {
             return null;
           },
           decoration: InputDecoration(
+           
             hintText: hintText,
             hintStyle: style.copyWith(color: textwalktrough, fontSize: 14.sp),
             border: InputBorder.none,

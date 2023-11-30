@@ -42,12 +42,12 @@ class _ChatCardState extends State<ChatCard> {
         
       
         child: ListTile(
-          
-            contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 0),
+               
             leading: Container(
               clipBehavior: Clip.hardEdge,
-              width: 90.w,
-              height: 90.h,
+             
+              height: 100.h,
+             
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),

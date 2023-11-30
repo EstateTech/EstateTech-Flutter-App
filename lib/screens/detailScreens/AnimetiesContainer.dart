@@ -3,6 +3,7 @@ import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AnimetiesContainer extends StatelessWidget {
   final PostModel postModel;
@@ -52,7 +53,7 @@ class AnimetiesContainer extends StatelessWidget {
 
   Widget getWidgetByKey(String key) {
     if (selectPropertyFeaturesMap.containsKey(key)) {
-      return selectPropertyFeaturesMap[key]!;
+      return  SvgPicture.asset(selectPropertyFeaturesMap[key]!);
     } else {
       // Return a default widget or handle the missing key case
       return Container();

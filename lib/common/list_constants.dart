@@ -1,26 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-Map<String, Widget> selectPropertyTypeMap = {
-  'House': SvgPicture.asset("assets/images/house_icon.svg"),
-  'Appartment': SvgPicture.asset("assets/images/appartment_icon.svg"),
-  'Villa': SvgPicture.asset("assets/images/villa_icon.svg"),
-  'Flat': SvgPicture.asset("assets/images/flat_icon.svg"),
-  'Town House': SvgPicture.asset("assets/images/palace_icon.svg"),
+Map<String, String> selectPropertyTypeMap = {
+  'House':"assets/images/house_icon.svg" ,
+  'Appartment': "assets/images/appartment_icon.svg",
+  'Villa': "assets/images/villa_icon.svg",
+  'Flat': "assets/images/flat_icon.svg",
+  'Town House': "assets/images/palace_icon.svg",
 
   // Add more key-value pairs as needed
 };
 
-Map<String, Widget> selectPropertyFeaturesMap = {
-  'Wifi': SvgPicture.asset("assets/images/wifi_icon.svg"),
-  'Television': SvgPicture.asset("assets/images/tv_icon.svg"),
-  'Kitchen': SvgPicture.asset("assets/images/kitchen_icon.svg"),
-  'Washer': SvgPicture.asset("assets/images/washer_icon.svg"),
-  'Free parking': SvgPicture.asset("assets/images/car_icon.svg"),
-  'Paying parking': SvgPicture.asset("assets/images/paying_parking_icon.svg"),
-  'Air conditioning': SvgPicture.asset("assets/images/ac_icon.svg"),
-  'Workspace': SvgPicture.asset("assets/images/workspace_icon.svg"),
+Map<String, String> selectPropertyFeaturesMap = {
+  'Wifi': "assets/images/wifi_icon.svg",
+  'Television': "assets/images/tv_icon.svg",
+  'Kitchen': "assets/images/kitchen_icon.svg",
+  'Washer': "assets/images/washer_icon.svg",
+  'Free parking': "assets/images/car_icon.svg",
+  'Paying parking': "assets/images/paying_parking_icon.svg",
+  'Air conditioning': "assets/images/ac_icon.svg",
+  'Workspace': "assets/images/workspace_icon.svg",
 
   // Add more key-value pairs as needed
 };

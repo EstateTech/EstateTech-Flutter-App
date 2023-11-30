@@ -10,6 +10,7 @@ import 'package:crypto_estate_tech/screens/detailScreens/postDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class GridViewWidget extends StatefulWidget {
   const GridViewWidget({
@@ -26,9 +27,12 @@ class GridViewWidget extends StatefulWidget {
 class _GridViewWidgetState extends State<GridViewWidget> {
   late Stream<QuerySnapshot<Map<String, dynamic>>> postsStream;
   late Stream<QuerySnapshot> queryStream;
+  var childaspectRatio = 0;
+  
 
   @override
   void initState() {
+  
     // TODO: implement initState
     super.initState();
     postsStream = getPostsStream(widget.postFeature);
@@ -37,6 +41,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
   @override
   Widget build(BuildContext context) {
     final filterProvider = Provider.of<FilterProvider>(context, listen: true);
+      DeviceScreenType deviceType = getDeviceType(MediaQuery.of(context).size);
     return Expanded(
       child: filterProvider.isFilterApplied
           ? StreamBuilder<QuerySnapshot>(
@@ -86,11 +91,11 @@ class _GridViewWidgetState extends State<GridViewWidget> {
                  if(filteredDocuments.isNotEmpty){
                 return GridView.builder(
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                         SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 25.0,
                             crossAxisSpacing: 2.0,
-                            childAspectRatio: 0.8),
+                         childAspectRatio:  deviceType == DeviceScreenType.tablet ? 1.1 : 0.8),
                     physics: ScrollPhysics(),
                     itemCount: filteredDocuments.length,
                     itemBuilder: (context, index) {
@@ -141,11 +146,11 @@ print(" BEDROOMS ===> ${post.bedrooms} BATHROOMS =====> ${post.bathrooms}  RENTA
 
                   return GridView.builder(
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                           SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               mainAxisSpacing: 25.0,
                               crossAxisSpacing: 2.0,
-                              childAspectRatio: 0.7),
+                             childAspectRatio:  deviceType == DeviceScreenType.tablet ? 1.1 : 0.8),
                       itemCount: postCount,
                       physics: ScrollPhysics(),
                       itemBuilder: (context, index) {

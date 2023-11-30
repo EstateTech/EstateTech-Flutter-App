@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../../model/postModel.dart';
 
@@ -60,6 +61,7 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
   }
   @override
   Widget build(BuildContext context) {
+     
   
     return Scaffold(
       body: Container(
@@ -142,9 +144,12 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
 
   Widget buildItem(
       int index, String title, String description, String selectedTile) {
+
+        DeviceScreenType deviceType = getDeviceType(MediaQuery.of(context).size);
     return Container(
+      alignment: Alignment.center,
       padding: EdgeInsets.all(8.h),
-      height: 100.0,
+      height: 100.h ,
       width: double.infinity,
       margin: EdgeInsets.all(10.h),
       decoration: BoxDecoration(
@@ -158,6 +163,7 @@ class _OfferedSpaceScreenState extends State<OfferedSpaceScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   title,

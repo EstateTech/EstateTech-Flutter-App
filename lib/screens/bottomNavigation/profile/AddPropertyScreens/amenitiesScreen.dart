@@ -2,7 +2,9 @@ import 'package:crypto_estate_tech/common/list_constants.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/AddPropertyScreens/addPhotosScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../../common/ColorConstants.dart';
 import '../../../../common/custom_create_post_header.dart';
@@ -38,6 +40,7 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
+     DeviceScreenType deviceType = getDeviceType(MediaQuery.of(context).size);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left: 20.h, right: 20.h),
@@ -109,7 +112,11 @@ class _AmenitiesScreenState extends State<AmenitiesScreen> {
                               ? true
                               : false,
                           icon:
-                              selectPropertyFeaturesMap.values.elementAt(index),
+                              SvgPicture.asset(selectPropertyFeaturesMap.values.elementAt(index),
+                                height:  deviceType == DeviceScreenType.tablet ? 50.h : 30.h,
+                           width: deviceType == DeviceScreenType.tablet ? 50.h : 30.h ,
+                              
+                              ),
                           text:
                               selectPropertyFeaturesMap.keys.elementAt(index)),
                     );
