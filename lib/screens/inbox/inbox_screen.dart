@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InboxScreen extends StatefulWidget {
   InboxScreen({super.key});
@@ -103,7 +102,7 @@ class _InboxScreenState extends State<InboxScreen> {
                         ],
                       )
                     : Row(
-                      //row here
+                        //row here
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
@@ -116,7 +115,7 @@ class _InboxScreenState extends State<InboxScreen> {
                                     )
                                   : Text(
                                       'Inbox',
-                                      style: GoogleFonts.dmSans(
+                                      style: TextStyle(
                                           color: Color(0xFF3A3153),
                                           fontSize: 22.sp,
                                           fontWeight: FontWeight.w700),
@@ -125,61 +124,61 @@ class _InboxScreenState extends State<InboxScreen> {
                           ),
                           Row(
                             children: [
-                            _isSearching ?  Row(
-                                children: [
-                                  DropdownButton<String>(
-                                    value: selectedOption,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedOption = newValue!;
-                                        _searchlist.clear();
-                                        istyping = false;
-                                        searchController.text = "";
-                                     
-                                      });
-                                     
-                                    },
-                                    items: <String>[
-                                      'Member',
-                                      'Developer',
-                                      'Agency'
-                                    ].map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                  ),
-                                   GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isSearching = !_isSearching;
-                                    searchController.text = "";
-                                    istyping = false;
-                                  });
-                                },
-                                child: Icon(
-                                  CupertinoIcons.clear_circled_solid,
-                                  color: Color(0xFF3A3153),
-                                  size: 29.w,
-                                ),
-                              ),
-                                ],
-                              ):
-                             
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isChatListSearched = !_isChatListSearched;
-                                    _chatSearchList = chatList;
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.search,
-                                  color: Color(0xFF3A3153),
-                                  size: 29.w,
-                                ),
-                              ),
+                              _isSearching
+                                  ? Row(
+                                      children: [
+                                        DropdownButton<String>(
+                                          value: selectedOption,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              selectedOption = newValue!;
+                                              _searchlist.clear();
+                                              istyping = false;
+                                              searchController.text = "";
+                                            });
+                                          },
+                                          items: <String>[
+                                            'Member',
+                                            'Developer',
+                                            'Agency'
+                                          ].map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isSearching = !_isSearching;
+                                              searchController.text = "";
+                                              istyping = false;
+                                            });
+                                          },
+                                          child: Icon(
+                                            CupertinoIcons.clear_circled_solid,
+                                            color: Color(0xFF3A3153),
+                                            size: 29.w,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _isChatListSearched =
+                                              !_isChatListSearched;
+                                          _chatSearchList = chatList;
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.search,
+                                        color: Color(0xFF3A3153),
+                                        size: 29.w,
+                                      ),
+                                    ),
                             ],
                           )
                         ],
@@ -203,9 +202,7 @@ class _InboxScreenState extends State<InboxScreen> {
                         ? StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('users')
-                                .where('memberType',
-                                    isEqualTo:
-                                        selectedOption)
+                                .where('memberType', isEqualTo: selectedOption)
                                 .snapshots(),
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {

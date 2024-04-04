@@ -14,7 +14,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -147,7 +146,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   children: [
                                     Text(
                                       countryCode?.name ?? "",
-                                      style: GoogleFonts.dmSans(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14.sp,
                                           color: Colors.black),
@@ -157,7 +156,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     ),
                                     Text(
                                       "(${countryCode?.dialCode})" ?? "",
-                                      style: GoogleFonts.dmSans(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14.sp,
                                           color: Colors.black),
@@ -360,10 +359,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     profileCompleted: false,
                     loggedInStatus: 'Google',
                     followers: [],
-                    following: []
-                    
-                    
-                    ),
+                    following: []),
               );
 
               Navigator.push(

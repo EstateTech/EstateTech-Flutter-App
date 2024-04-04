@@ -3,7 +3,6 @@ import 'package:crypto_estate_tech/common/custom_button_widget.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SwapPageScreen extends StatefulWidget {
   SwapPageScreen({super.key});

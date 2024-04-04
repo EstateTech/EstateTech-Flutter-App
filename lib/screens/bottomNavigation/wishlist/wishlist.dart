@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -25,7 +24,7 @@ class _WishlistPageState extends State<WishlistPage> {
           backgroundColor: Colors.white,
           title: Text(
             'WishList',
-            style: GoogleFonts.cousine(
+            style: TextStyle(
                 color: Colors.black,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700),
@@ -81,7 +80,7 @@ class _WishlistPageState extends State<WishlistPage> {
                           userId: post.userid,
                           id: snapshot.data!.docs[index].id,
                           likes: likes,
-                          onDeleteTap: (){},
+                          onDeleteTap: () {},
                         ),
                       );
                     },

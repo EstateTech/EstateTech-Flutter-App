@@ -6,7 +6,6 @@ import 'package:crypto_estate_tech/model/signupSaveDataFirebase.dart';
 import 'package:crypto_estate_tech/screens/inbox/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class ChatCard extends StatefulWidget {
@@ -32,22 +31,13 @@ class _ChatCardState extends State<ChatCard> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.w),
-       
-                decoration: BoxDecoration(
-          color: Colors.white,
-          
-          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5))),
-
-
-        
-      
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5))),
         child: ListTile(
-               
             leading: Container(
               clipBehavior: Clip.hardEdge,
-             
               height: 100.h,
-             
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
@@ -75,7 +65,7 @@ class _ChatCardState extends State<ChatCard> {
             title: Text(
               '${widget.user.firstName ?? "NO Name"}',
               textAlign: TextAlign.left,
-              style: GoogleFonts.dmSans(
+              style: TextStyle(
                   color: Color(
                     0xFF3A3153,
                   ),
@@ -85,7 +75,7 @@ class _ChatCardState extends State<ChatCard> {
             subtitle: Text(
               widget.user.about.toString(),
               maxLines: 1,
-              style: GoogleFonts.dmSans(
+              style: TextStyle(
                   color: Color(
                     0xFF3A3153,
                   ),
@@ -100,4 +90,3 @@ class _ChatCardState extends State<ChatCard> {
     );
   }
 }
-

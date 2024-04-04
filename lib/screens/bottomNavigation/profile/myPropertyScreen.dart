@@ -12,7 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MyPropertyScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class _MyPropertyScreenState extends State<MyPropertyScreen> {
                               Center(
                                 child: Text(
                                   'You haven\'t publish any profile yet!',
-                                  style: GoogleFonts.dmSans(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16.sp,
                                       color: Colors.black),
@@ -109,7 +108,7 @@ class _MyPropertyScreenState extends State<MyPropertyScreen> {
                                   ),
                                   child: Text(
                                     'Advertise your property',
-                                    style: GoogleFonts.dmSans(
+                                    style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16.sp,
                                         color: Colors.white),
