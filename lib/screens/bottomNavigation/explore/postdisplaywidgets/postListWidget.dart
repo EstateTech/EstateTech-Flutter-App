@@ -28,7 +28,9 @@ class Post extends StatefulWidget {
     required this.postModel,
     this.userId,
     required this.id,
-    required this.likes,  this.isMyProperty = false,  required this.onDeleteTap,
+    required this.likes,
+    this.isMyProperty = false,
+    required this.onDeleteTap,
   }) : super(key: key);
 
   @override
@@ -71,7 +73,7 @@ class _PostState extends State<Post> {
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
 
     return Container(
       height: 330.h,
@@ -163,31 +165,31 @@ class _PostState extends State<Post> {
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold),
                             ))),
-            widget.isMyProperty ?    Positioned(
-                  right: 10.h,
-                  bottom: 5.h,
-                  child: GestureDetector(
-                    onTap: widget.onDeleteTap
-                      
-                    ,
-                    child: Container(
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12.r)),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Delete",
-                              style: style.copyWith(
-                                  color: const Color(0xff0D2769),
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Icon(Icons.close)
-                          ],
-                        )),
-                  )) : SizedBox.shrink(),
+              widget.isMyProperty
+                  ? Positioned(
+                      right: 10.h,
+                      bottom: 5.h,
+                      child: GestureDetector(
+                        onTap: widget.onDeleteTap,
+                        child: Container(
+                            padding: EdgeInsets.all(10.w),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r)),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Delete",
+                                  style: style.copyWith(
+                                      color: const Color(0xff0D2769),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Icon(Icons.close)
+                              ],
+                            )),
+                      ))
+                  : SizedBox.shrink(),
             ],
           ),
           SizedBox(

@@ -56,7 +56,7 @@ class _GridPostState extends State<GridPost> {
   Widget build(BuildContext context) {
     final filterProvider =
         Provider.of<PostLikesProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
 
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
@@ -67,16 +67,13 @@ class _GridPostState extends State<GridPost> {
       height: 330.h,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
       width: 150.w,
-      decoration: const BoxDecoration(
-      
-      ),
+      decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
               Container(
-              
                   height: 150.h,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
@@ -144,7 +141,6 @@ class _GridPostState extends State<GridPost> {
                   ))),
             ],
           ),
-         
           Text(
             Utils.getFirstThreeWords(widget.postModel.propertyDescription!),
             // "${widget.postModel}",

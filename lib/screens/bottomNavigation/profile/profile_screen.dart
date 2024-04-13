@@ -323,9 +323,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => WalkThroughScreenPost2(
-                                postmodel: PostModel(),
-                                isEdited: false,
-                                
+                                  postmodel: PostModel(),
+                                  isEdited: false,
                                 )));
                   },
                   imagePath: "assets/images/profileSet1.png",
@@ -353,7 +352,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                 ListTileProfileOptions(
+                ListTileProfileOptions(
                   text: "My Property",
                   imagepath: 'assets/images/single_room_icon.svg',
                   onTap: () {
@@ -418,7 +417,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   imagepath: 'assets/images/logout_icon.svg',
                   onTap: () {
                     final ap =
-                        Provider.of<AuthProvider>(context, listen: false);
+                        Provider.of<AuthProviderr>(context, listen: false);
                     ap.LogOut();
                     Navigator.pushNamed(context, welcomeScreenRoute);
                   },

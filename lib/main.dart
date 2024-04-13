@@ -23,8 +23,8 @@ void main() async {
         ChangeNotifierProvider<FirebaseStorageProvider>(
           create: (context) => FirebaseStorageProvider(),
         ),
-        ChangeNotifierProvider<AuthProvider>(
-          create: (context) => AuthProvider(),
+        ChangeNotifierProvider<AuthProviderr>(
+          create: (context) => AuthProviderr(),
         ),
 
         ChangeNotifierProvider(
@@ -39,7 +39,7 @@ void main() async {
           create: (context) => PostLikesProvider(),
         ),
         // Add more providers if needed
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => ChatProvider(),
         ),
       ],
@@ -53,32 +53,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveApp(
-      builder: (context) {
-        return ScreenUtilInit(builder: (context, child) {
-          return ScreenUtilInit(
-            designSize: const Size(360, 800),
-            minTextAdapt: true,
-           rebuildFactor: RebuildFactors.all,
-            splitScreenMode: true,
-            builder: (context, child) => MaterialApp(
-              builder: (context, child) {
-                return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                    child: child!);
-              },
+    return ResponsiveApp(builder: (context) {
+      return ScreenUtilInit(builder: (context, child) {
+        return ScreenUtilInit(
+          designSize: const Size(360, 800),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) => MaterialApp(
+            builder: (context, child) {
+              return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  child: child!);
+            },
 
-              debugShowCheckedModeBanner: false,
-              title: 'Crypto Estate Tech',
+            debugShowCheckedModeBanner: false,
+            title: 'Crypto Estate Tech',
 
-              //home: WelcomeScreen(),
-              // darkTheme: ThemeData.dark(),
-              onGenerateRoute: route.Router.generateRoute,
-              initialRoute: splashScreenRoute,
-            ),
-          );
-        });
-      }
-    );
+            //home: WelcomeScreen(),
+            // darkTheme: ThemeData.dark(),
+            onGenerateRoute: route.Router.generateRoute,
+            initialRoute: splashScreenRoute,
+          ),
+        );
+      });
+    });
   }
 }

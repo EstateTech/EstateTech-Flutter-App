@@ -81,7 +81,7 @@ class _ExplorePageState extends State<ExplorePage>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
     return SafeArea(
       child: Column(
         children: [
@@ -348,7 +348,6 @@ class _ExplorePageState extends State<ExplorePage>
                                       ),
                                     ),
 
-
                                     child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
@@ -445,7 +444,6 @@ class _ExplorePageState extends State<ExplorePage>
                                 : fileProvider.currency == 'Btc'
                                     ? _list[1]['image']
                                     : _list[2]['image'])))
-
               ],
             ),
           ),
