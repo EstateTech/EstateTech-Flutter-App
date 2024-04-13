@@ -10,14 +10,14 @@ Widget buildImage(String urlImage, int index, BuildContext context) {
     child: CachedNetworkImage(
       key: UniqueKey(),
       imageUrl: urlImage,
-      fit: BoxFit.fill,
+      fit: BoxFit.cover,
       placeholder: (context, url) => Container(
         child: Lottie.asset(
-          'assets/images/loading_animation.json', // Replace with your animation file path
-          width: 200,
-          height: 200,
-          // Other properties you can customize
-        ),
+            'assets/images/loading_animation.json', // Replace with your animation file path
+
+            fit: BoxFit.contain
+            // Other properties you can customize
+            ),
       ),
     ),
   );

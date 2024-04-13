@@ -6,10 +6,12 @@ class XFileProvider with ChangeNotifier {
   String currencySign = "\$";
   String _postid = "";
 
+  String currency1 = 'Btc';
+
+  String currencySign1 = "";
   String get postid => _postid;
 
-  
-  void setEditedpostId (String postId) {
+  void setEditedpostId(String postId) {
     this._postid = postId;
     notifyListeners();
   }
@@ -17,7 +19,6 @@ class XFileProvider with ChangeNotifier {
   List<XFile> _xFiles = [];
 
   List<XFile> get xFiles => _xFiles;
-
 
   List<String> _networkImages = [];
 
@@ -36,19 +37,21 @@ class XFileProvider with ChangeNotifier {
   updateCurrencySign(String sign) {
     currencySign = sign;
     notifyListeners();
-  
-}
+  }
 
+  updateCurrency1(String newCurrency) {
+    currency1 = newCurrency;
+    notifyListeners();
+  }
 
-void updateImages(List<XFile> newImages, List<String> newNetworkImages) {
+  updateCurrencySign1(String sign) {
+    currencySign1 = sign;
+    notifyListeners();
+  }
+
+  void updateImages(List<XFile> newImages, List<String> newNetworkImages) {
     _xFiles.addAll(newImages);
     _networkImages.addAll(newNetworkImages);
     notifyListeners();
   }
-
-
-
-
 }
-
-
