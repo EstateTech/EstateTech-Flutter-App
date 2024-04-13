@@ -6,6 +6,7 @@ import 'package:crypto_estate_tech/components/custom_white_box.dart';
 import 'package:crypto_estate_tech/common/fixedvalues.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
+
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
 
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
@@ -56,9 +57,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   // }
 
   final _w3mService = W3MService(
-    projectId: '05f19cd99265785b09f7157803a3095d',
+    projectId: '6b565c806169b0e3b4ca294f14f326db',
     metadata: const PairingMetadata(
-      name: 'Web3Modal Flutter Example',
+      name: 'crytoestateapp',
       description: 'Web3Modal Flutter Example',
       url: 'https://www.walletconnect.com/',
       icons: ['https://walletconnect.com/walletconnect-logo.png'],
@@ -73,6 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     _w3mService.init();
   }
 
@@ -123,6 +125,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
+
+                    //CustomW3MNetworkSelectButton(service: _w3mService),
+
+                    // W3MNetworkSelectButton(service: _w3mService,),
                     Container(
                       height: 60.h,
                       decoration: BoxDecoration(
