@@ -85,7 +85,7 @@ class _ExplorePageState extends State<ExplorePage>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
     return SafeArea(
       child: Column(
         children: [
@@ -444,6 +444,7 @@ class _ExplorePageState extends State<ExplorePage>
                         child: Image.network(fileProvider.currency == 'USD'
                             ? _list[0]['image']
                             : fileProvider.currency == 'AED'
+
                                 ? _list[0]['image']
                                 : ''))),
                 SizedBox(
@@ -582,6 +583,7 @@ class _ExplorePageState extends State<ExplorePage>
                         child: Image.network(fileProvider.currency1 == 'Btc'
                             ? list1[0]['image']
                             : list1[1]['image'])))
+
               ],
             ),
           ),

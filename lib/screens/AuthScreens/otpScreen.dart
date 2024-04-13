@@ -40,7 +40,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     _isloading =
-        Provider.of<AuthProvider>(context, listen: true).isOtpScreenLoading;
+        Provider.of<AuthProviderr>(context, listen: true).isOtpScreenLoading;
 
     return Scaffold(
       backgroundColor: mainAppColor,
@@ -49,7 +49,8 @@ class _OtpScreenState extends State<OtpScreen> {
         elevation: 0.0,
         leading: GestureDetector(
           onTap: () {
-            Provider.of<AuthProvider>(context, listen: false).setLoadingFalse();
+            Provider.of<AuthProviderr>(context, listen: false)
+                .setLoadingFalse();
             Navigator.of(context).pop();
           },
           child: const Icon(Icons.arrow_back),
@@ -182,7 +183,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   // verify otp
   void verifyOtp(BuildContext context, String userOtp) {
-    final ap = Provider.of<AuthProvider>(context, listen: false);
+    final ap = Provider.of<AuthProviderr>(context, listen: false);
     ap.verifyOtp(
       context: context,
       verificationId: widget.verificationId,

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/widgetConstants.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthProviderr extends ChangeNotifier {
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
   bool _isLoading = false;
@@ -24,7 +24,7 @@ class AuthProvider extends ChangeNotifier {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  AuthProvider() {
+  AuthProviderr() {
     checkSign();
   }
 

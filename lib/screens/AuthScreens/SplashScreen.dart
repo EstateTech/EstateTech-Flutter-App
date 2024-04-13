@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    authProvider = Provider.of<AuthProvider>(context, listen: true);
+    authProvider = Provider.of<AuthProviderr>(context, listen: true);
     return Scaffold(
       backgroundColor: mainAppColor,
       body: Center(

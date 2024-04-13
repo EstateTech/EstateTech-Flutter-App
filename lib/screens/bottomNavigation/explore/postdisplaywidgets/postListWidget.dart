@@ -73,7 +73,7 @@ class _PostState extends State<Post> {
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
 
     return Container(
       height: 330.h,

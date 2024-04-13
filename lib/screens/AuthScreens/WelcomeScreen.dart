@@ -80,7 +80,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _isloading = Provider.of<AuthProvider>(context, listen: true).isLoading;
+    _isloading = Provider.of<AuthProviderr>(context, listen: true).isLoading;
 
     String addr;
 
@@ -299,7 +299,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void sendPhoneNumber() {
-    final ap = Provider.of<AuthProvider>(context, listen: false);
+    final ap = Provider.of<AuthProviderr>(context, listen: false);
 
     if (phoneController.text.isEmpty) {
       showSnackBar(

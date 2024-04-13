@@ -57,7 +57,7 @@ class _GridPostState extends State<GridPost> {
   Widget build(BuildContext context) {
     final filterProvider =
         Provider.of<PostLikesProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
 
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
@@ -67,7 +67,9 @@ class _GridPostState extends State<GridPost> {
     return Container(
       height: 330.h,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
+
       // width: 150.w,
+
       decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,10 +77,12 @@ class _GridPostState extends State<GridPost> {
           Stack(
             children: [
               Container(
+
                   width: double.infinity,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
                   height: 130.h,
+
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: CachedNetworkImage(
