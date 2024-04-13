@@ -37,11 +37,11 @@ class Utils {
     } else if (currency == 'Eth') {
       double result = amountValue / eth;
       int roundedResult = result.toInt();
-      return roundedResult.toString() + " Eth";
+      return roundedResult.toStringAsFixed(2) + " Eth";
     } else if (currency == 'Btc') {
       double result = amountValue / btc;
-      int roundedResult = result.toInt();
-      return roundedResult.toString() + " Btc";
+      // int roundedResult = result.toInt();
+      return result.toStringAsFixed(2) + " Btc";
     } else {
       return "Unsupported currency: $currency";
     }

@@ -8,6 +8,8 @@ import 'package:crypto_estate_tech/screens/inbox/inbox_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:web3modal_flutter/services/w3m_service/w3m_service.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isInsightsScreen;

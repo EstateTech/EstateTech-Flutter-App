@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/helperclass/dataFromFirestore.dart';
@@ -66,7 +67,9 @@ class _GridPostState extends State<GridPost> {
     return Container(
       height: 330.h,
       margin: EdgeInsets.symmetric(horizontal: 10.h),
-      width: 150.w,
+
+      // width: 150.w,
+
       decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,18 +77,24 @@ class _GridPostState extends State<GridPost> {
           Stack(
             children: [
               Container(
-                  height: 150.h,
+
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.transparent)),
+                  height: 130.h,
+
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: CachedNetworkImage(
                       key: UniqueKey(),
                       imageUrl: widget.postModel.propertyPhotos![0]!,
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fill,
                       placeholder: (context, url) => Container(
                         child: Lottie.asset(
-                          'assets/images/loading_animation.json', // Replace with your animation file path
-                          width: 200,
-                          height: 200,
+                          'assets/images/loading_animation.json',
+                          fit: BoxFit
+                              .fill, // Replace with your animation file path
+
                           // Other properties you can customize
                         ),
                       ),
@@ -123,7 +132,7 @@ class _GridPostState extends State<GridPost> {
                           ),
                   )),
               Positioned(
-                  right: 4.h,
+                  right: 10.w,
                   child: IconButton(onPressed: () {
                     filterProvider.toggleLike(widget.id, currentUserId);
                   }, icon: Consumer<PostLikesProvider>(
@@ -135,7 +144,7 @@ class _GridPostState extends State<GridPost> {
                         color: provider.likedPostIds.contains(widget.id)
                             ? Colors.red
                             : Colors.white,
-                        size: 30.0,
+                        size: 30.h,
                       );
                     },
                   ))),
@@ -192,7 +201,9 @@ class _GridPostState extends State<GridPost> {
                         children: <TextSpan>[
                       TextSpan(
                           text: Utils.convertCurrency(
-                              "300000",
+                              widget.postModel.amount == null
+                                  ? "300000"
+                                  : widget.postModel.amount.toString(),
                               fileProvider.currency,
                               authProvider.eth,
                               authProvider.btc)),
@@ -200,7 +211,9 @@ class _GridPostState extends State<GridPost> {
 
                       // TextSpan(text: "${fileProvider.currency}"),
                       TextSpan(
-                        text: ' / year',
+                        text: widget.postModel.rentalType == 'Rent'
+                            ? ""
+                            : " / year",
                         style: style2.copyWith(
                             color: Colors.black,
                             fontSize: 14.sp,
@@ -209,7 +222,50 @@ class _GridPostState extends State<GridPost> {
                     ])),
               ),
             ],
-          )
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  style: style.copyWith(
+                    color: greyShadeColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  children: [
+                    TextSpan(
+                        text: Utils.convertCurrency(
+                            "${widget.postModel.amount}",
+                            fileProvider.currency1,
+                            authProvider.eth,
+                            authProvider.btc)),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 5.w,
+              ),
+              Image.network(
+                fileProvider.currency1 == 'Eth'
+                    ? "https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe"
+                    : 'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+                width: 25.w,
+                height: 25.h,
+              ),
+              Text(
+                widget.postModel.rentalType == 'Rent' ? "" : " / year",
+                style: style.copyWith(
+                    fontSize: 14.sp,
+                    color: Shade2purple,
+                    fontWeight: FontWeight
+                        .normal // Specify your desired color for "/ year"
+                    ),
+              ),
+            ],
+          ),
         ],
       ),
     );

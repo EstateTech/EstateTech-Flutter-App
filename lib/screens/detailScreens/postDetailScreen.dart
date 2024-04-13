@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crypto_estate_tech/common/ColorConstants.dart';
 import 'package:crypto_estate_tech/common/own_methods.dart';
+import 'package:crypto_estate_tech/common/rangeUtils.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/model/postModel.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/provider/likesProvider.dart';
 import 'package:crypto_estate_tech/provider/XfileProvider.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
@@ -39,6 +41,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -184,15 +187,14 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
-                            width: 120.h,
+                            width: 120.w,
                             height: 60.h,
                             decoration: const BoxDecoration(
-                             // color: Colors.amber
-                            ),
+                                // color: Colors.amber
+                                ),
                             child: Column(
                               children: [
                                 Container(
-                                  
                                   height: 25.h,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -205,13 +207,14 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                         color: Colors.black, fontSize: 12.sp),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10.0,
+                                SizedBox(
+                                  height: 10.h,
                                 ),
                                 Container(
-                                 // width: 60.h,
+                                  // width: 60.h,
                                   height: 25.h,
-                                  margin: EdgeInsets.only(left: 25.w,right: 15.w),
+                                  margin:
+                                      EdgeInsets.only(left: 25.w, right: 15.w),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
@@ -265,10 +268,15 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         color: const Color(0xff3A3153),
                         fontWeight: FontWeight.bold),
                     children: <TextSpan>[
-                      const TextSpan(text: '300,0000 '),
                       TextSpan(
-                        text: '${fileProvider.currency}',
-                      ),
+                          text: Utils.convertCurrency(
+                              "${widget.postModel.amount}",
+                              fileProvider.currency,
+                              authProvider.eth,
+                              authProvider.btc)),
+                      // TextSpan(
+                      //   text: '${fileProvider.currency}',
+                      // ),
                       TextSpan(
                         text: ' / year',
                         style: style2.copyWith(
@@ -384,7 +392,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                         child: Icon(
                                           Icons.email_outlined,
                                           color: Colors.white,
-                                          size: 32.w,
+                                          size: 32.h,
                                         )),
                                     SizedBox(
                                       width: 20.w,
@@ -434,7 +442,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                         child: Icon(
                                           Icons.phone,
                                           color: Colors.white,
-                                          size: 32.w,
+                                          size: 32.h,
                                         )),
                                     SizedBox(
                                       width: 20.w,
@@ -486,7 +494,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                         child: Icon(
                                           Icons.edit_calendar_outlined,
                                           color: Colors.white,
-                                          size: 32.w,
+                                          size: 32.h,
                                         )),
                                     SizedBox(
                                       width: 20.w,
@@ -532,7 +540,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                       child: Icon(
                                         Icons.person_outline,
                                         color: Colors.white,
-                                        size: 32.w,
+                                        size: 32.h,
                                       )),
                                   SizedBox(
                                     width: 20.w,

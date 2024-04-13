@@ -91,7 +91,7 @@ class _PostState extends State<Post> {
               CarouselSlider.builder(
                 carouselController: carouselController,
                 options: CarouselOptions(
-                    height: 170.h,
+                    height: 180.h,
                     // aspectRatio: MediaQuery.of(context).size.width / 380,
                     padEnds: false,
                     viewportFraction: 1,
@@ -132,7 +132,7 @@ class _PostState extends State<Post> {
                       currentIndex, widget.postModel.propertyPhotos!.length)),
               Positioned(
                   top: 1.h,
-                  right: 5.h,
+                  right: 10.w,
                   child: IconButton(onPressed: () {
                     filterProvider.toggleLike(widget.id, currentUserId);
                   }, icon: Consumer<PostLikesProvider>(
@@ -144,7 +144,7 @@ class _PostState extends State<Post> {
                         color: provider.likedPostIds.contains(widget.id)
                             ? Colors.red
                             : Colors.white,
-                        size: 30.0,
+                        size: 30.h,
                       );
                     },
                   ))),
@@ -352,7 +352,7 @@ class _PostState extends State<Post> {
                               children: <TextSpan>[
                             TextSpan(
                                 text: Utils.convertCurrency(
-                                    "300000",
+                                    "${widget.postModel.amount}",
                                     fileProvider.currency,
                                     authProvider.eth,
                                     authProvider.btc)),
@@ -360,7 +360,9 @@ class _PostState extends State<Post> {
 
                             // TextSpan(text: "${fileProvider.currency}"),
                             TextSpan(
-                              text: ' / year',
+                              text: widget.postModel.rentalType == 'Rent'
+                                  ? ""
+                                  : " / year",
                               style: style2.copyWith(
                                   color: Colors.black,
                                   fontSize: 14.sp,
@@ -369,7 +371,50 @@ class _PostState extends State<Post> {
                           ])),
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Row(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: style.copyWith(
+                          color: greyShadeColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: Utils.convertCurrency(
+                                  "${widget.postModel.amount}",
+                                  fileProvider.currency1,
+                                  authProvider.eth,
+                                  authProvider.btc)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Image.network(
+                      fileProvider.currency1 == 'Eth'
+                          ? "https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe"
+                          : 'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+                      width: 25.w,
+                      height: 25.h,
+                    ),
+                    Text(
+                      widget.postModel.rentalType == 'Rent' ? "" : " / year",
+                      style: style.copyWith(
+                          fontSize: 14.sp,
+                          color: Shade2purple,
+                          fontWeight: FontWeight
+                              .normal // Specify your desired color for "/ year"
+                          ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
