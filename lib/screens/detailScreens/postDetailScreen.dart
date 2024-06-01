@@ -268,12 +268,12 @@ class _postDetailScreenState extends State<postDetailScreen> {
                         color: const Color(0xff3A3153),
                         fontWeight: FontWeight.bold),
                     children: <TextSpan>[
-                      TextSpan(
-                          text: Utils.convertCurrency(
-                              "${widget.postModel.amount}",
-                              fileProvider.currency,
-                              authProvider.eth,
-                              authProvider.btc)),
+                      // TextSpan(
+                      //     text: Utils.convertCurrency(
+                      //         "${widget.postModel.amount}",
+                      //         fileProvider.currency,
+                      //         authProvider.eth,
+                      //         authProvider.btc)),
                       // TextSpan(
                       //   text: '${fileProvider.currency}',
                       // ),

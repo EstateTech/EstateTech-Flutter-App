@@ -56,17 +56,29 @@ class _ExplorePageState extends State<ExplorePage>
       'id': '1',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/icons8-tether-48.png?alt=media&token=1fa5fc33-523c-4c5e-8ab7-fb0ae97c7c09&_gl=1*1tkq80h*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODIyODkwNS4xMDQuMS4xNjk4MjI5OTE4LjE5LjAuMA..',
-      'name': 'USD'
+      'name': 'EUR'
+    },
+    {
+      'id': '2',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA..',
+      'name': 'AED'
     },
     {
       'id': '3',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA..',
-      'name': 'AED'
+      'name': 'REBL'
     },
   ];
 
   final List<Map> list1 = [
+    {
+      'id': '1',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+      'name': 'Guds'
+    },
     {
       'id': '2',
       'image':
@@ -78,6 +90,12 @@ class _ExplorePageState extends State<ExplorePage>
       'image':
           'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
       'name': 'Eth'
+    },
+    {
+      'id': '3',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+      'name': 'Usdc'
     },
   ];
 
@@ -375,7 +393,11 @@ class _ExplorePageState extends State<ExplorePage>
                                                             : newValue! as String ==
                                                                     'Eth'
                                                                 ? ''
-                                                                : ''
+                                                                : newValue! as String ==
+                                                                        'GUDS'
+                                                                    ? ''
+                                                                    : ''
+
                                                     // fileProvider.currencySign ==
                                                     //         "\$"
                                                     //     ? "\د.إ."
@@ -444,9 +466,12 @@ class _ExplorePageState extends State<ExplorePage>
                         child: Image.network(fileProvider.currency == 'USD'
                             ? _list[0]['image']
                             : fileProvider.currency == 'AED'
-
                                 ? _list[0]['image']
-                                : ''))),
+                                : fileProvider.currency == 'EUR'
+                                    ? _list[0]['image']
+                                    : fileProvider.currency == 'RUBL'
+                                        ? _list[0]['image']
+                                        : ''))),
                 SizedBox(
                   width: 5.w,
                 ),
@@ -583,7 +608,6 @@ class _ExplorePageState extends State<ExplorePage>
                         child: Image.network(fileProvider.currency1 == 'Btc'
                             ? list1[0]['image']
                             : list1[1]['image'])))
-
               ],
             ),
           ),
