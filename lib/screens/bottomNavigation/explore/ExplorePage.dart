@@ -186,7 +186,7 @@ class _ExplorePageState extends State<ExplorePage>
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
-                    //         builder: (context) => NotificationScreen()));
+                    //         builder: (context) => NotificationScreen()))
 
                     print(authProvider.eth);
                   },
