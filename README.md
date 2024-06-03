@@ -72,7 +72,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Dart Documentation](https://dart.dev/guides)
 - [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Flutter Cookbook](https://docs.flutter.dev/cookbook)
-
 ---
 
 Thank you for using Crypto Estate Tech! If you have any questions or suggestions, feel free to reach out or open an issue.
