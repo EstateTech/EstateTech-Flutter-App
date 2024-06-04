@@ -304,6 +304,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     GestureDetector(
                       onTap: () async {
                         try {
+                          // _w3mService.ConnectWallet();
                           W3MConnectWalletButton(service: _w3mService);
                           print("Hello from function");
                         } catch (e) {
@@ -317,10 +318,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        W3MNetworkSelectButton(service: _w3mService),
-                        W3MConnectWalletButton(service: _w3mService),
-                      ],
+                      children: !_w3mService.isConnected
+                          ? [
+                              W3MNetworkSelectButton(service: _w3mService),
+                              W3MConnectWalletButton(service: _w3mService),
+                            ]
+                          : [
+                              W3MAccountButton(service: _w3mService),
+                            ],
                     ),
                   ],
                 ),
