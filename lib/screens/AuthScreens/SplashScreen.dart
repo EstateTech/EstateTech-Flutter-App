@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await authProvider.updateCurrencyRates();
     } else {
       await authProvider.updateCurrencyRates();
-      Navigator.pushNamed(context, homeScreenRoute);
+      Navigator.pushNamed(context, welcomeScreenRoute);
     }
   }
 }

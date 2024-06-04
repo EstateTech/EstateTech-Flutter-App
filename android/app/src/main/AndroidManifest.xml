@@ -9,6 +9,7 @@
 
 
      <queries>
+        <package android:name="org.toshi"/>
         <package android:name="io.metamask"/>
         <package android:name="com.wallet.crypto.trustapp"/>
         <package android:name="io.gnosis.safe"/>
@@ -39,6 +40,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="flutterdapp" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

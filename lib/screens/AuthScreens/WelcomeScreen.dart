@@ -42,7 +42,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String selectedCountrycode = '+971';
   String lastpickedSelection = "+971";
   TextEditingController phoneController = TextEditingController();
-
+  late W3MService _w3mService;
   // void _openCountryCodePickerDialog() async {
   //   showDialog(
   //     context: context,
@@ -56,26 +56,44 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   //   );
   // }
 
-  final _w3mService = W3MService(
-    projectId: '6b565c806169b0e3b4ca294f14f326db',
-    metadata: const PairingMetadata(
-      name: 'crytoestateapp',
-      description: 'Web3Modal Flutter Example',
-      url: 'https://www.walletconnect.com/',
-      icons: ['https://walletconnect.com/walletconnect-logo.png'],
-      redirect: Redirect(
-        native: 'flutterdapp://',
-        universal: 'https://www.walletconnect.com',
-      ),
-    ),
-  );
+  // final _w3mService = W3MService(
+  //   projectId: '1f1120e2db474a07ab3fba9087471cb1',
+  //   metadata: const PairingMetadata(
+  //     name: 'crytoestateapp',
+  //     description: 'Web3Modal Flutter Example',
+  //     url: 'https://www.walletconnect.com/',
+  //     icons: ['https://walletconnect.com/walletconnect-logo.png'],
+  //     redirect: Redirect(
+  //       native: 'flutterdapp://',
+  //       universal: 'https://www.walletconnect.com',
+  //     ),
+  //   ),
+  // );
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initializeState();
+  }
 
-    _w3mService.init();
+  void initializeState() async {
+    // _initW3MService();
+    _w3mService = W3MService(
+      projectId: '1f1120e2db474a07ab3fba9087471cb1',
+      metadata: const PairingMetadata(
+        name: 'crytoestateapp',
+        description: 'Web3Modal Flutter Example',
+        url: 'https://www.walletconnect.com/',
+        icons: ['https://walletconnect.com/walletconnect-logo.png'],
+        redirect: Redirect(
+          native: 'w3m://',
+          universal: 'https://www.walletconnect.com',
+        ),
+      ),
+    );
+
+    await _w3mService.init();
   }
 
   @override
@@ -285,12 +303,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        W3MAccountButton(service: _w3mService);
+                        try {
+                          W3MConnectWalletButton(service: _w3mService);
+                          print("Hello from function");
+                        } catch (e) {
+                          // Handle any errors that occur during the connection process
+                          print("Error connecting to wallet: $e");
+                        }
                       },
                       child: CustomButton1(
                           boxShadowContainer: true,
                           title: 'Connect your wallet'),
-                    )
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        W3MNetworkSelectButton(service: _w3mService),
+                        W3MConnectWalletButton(service: _w3mService),
+                      ],
+                    ),
                   ],
                 ),
               ),
