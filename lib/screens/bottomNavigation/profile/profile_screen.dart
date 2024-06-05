@@ -18,7 +18,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
+import 'package:crypto_estate_tech/provider/walletProvider.dart';
 import '../../../common/widgetConstants.dart';
 import '../../../model/postModel.dart';
 import '../../../model/signupSaveDataFirebase.dart';
@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final w3mServiceProvider = Provider.of<W3MServiceProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -246,7 +247,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(
                                 width: 10.h,
                               ),
-                              const Text("0x22d5f1d...25d"),
+                              Text(
+                                w3mServiceProvider.address ?? 'Default Address',
+                              ),
                             ],
                           )
                         ],

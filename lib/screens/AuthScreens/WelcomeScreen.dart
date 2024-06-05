@@ -6,7 +6,7 @@ import 'package:crypto_estate_tech/components/custom_white_box.dart';
 import 'package:crypto_estate_tech/common/fixedvalues.dart';
 import 'package:crypto_estate_tech/common/widgetConstants.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
-
+import 'package:crypto_estate_tech/provider/walletProvider.dart';
 import 'package:crypto_estate_tech/screens/AuthScreens/user_info_developer.dart';
 
 import 'package:crypto_estate_tech/screens/homeScreen/home_screen.dart';
@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+// import 'provider/walletProvider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:web3modal_flutter/services/w3m_service/w3m_service.dart';
@@ -43,6 +44,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String lastpickedSelection = "+971";
   TextEditingController phoneController = TextEditingController();
   late W3MService _w3mService;
+
+  bool isConnected = false;
   // void _openCountryCodePickerDialog() async {
   //   showDialog(
   //     context: context,
@@ -99,7 +102,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     _isloading = Provider.of<AuthProviderr>(context, listen: true).isLoading;
-
+    final w3mServiceProvider = Provider.of<W3MServiceProvider>(context);
     String addr;
 
     return Scaffold(
@@ -304,29 +307,43 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     GestureDetector(
                       onTap: () async {
                         try {
-                          // _w3mService.ConnectWallet();
-                          W3MConnectWalletButton(service: _w3mService);
-                          print("Hello from function");
+                          if (w3mServiceProvider.isConnected) {
+                            await w3mServiceProvider.disconnect();
+                          } else {
+                            await w3mServiceProvider.connect(context);
+                          }
                         } catch (e) {
-                          // Handle any errors that occur during the connection process
                           print("Error connecting to wallet: $e");
                         }
                       },
                       child: CustomButton1(
                           boxShadowContainer: true,
-                          title: 'Connect your wallet'),
+                          title: w3mServiceProvider.isConnected
+                              ? "Disconnect Wallet"
+                              : "Connect Wallet"),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: !_w3mService.isConnected
-                          ? [
-                              W3MNetworkSelectButton(service: _w3mService),
-                              W3MConnectWalletButton(service: _w3mService),
-                            ]
-                          : [
-                              W3MAccountButton(service: _w3mService),
-                            ],
-                    ),
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Center(
+                    //       child: FractionallySizedBox(
+                    //         widthFactor: 0.95, // Set the width factor to 90%
+
+                    //         child: Container(
+                    //           height: 60, // Set the desired height
+                    //           decoration: BoxDecoration(
+                    //             // color: Colors
+                    //             //     .white, // Set background color to white
+                    //             borderRadius: BorderRadius.circular(
+                    //                 15), // Set border radius
+                    //           ),
+                    //           child:
+                    //               W3MConnectWalletButton(service: _w3mService),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

@@ -490,7 +490,7 @@ class _ExplorePageState extends State<ExplorePage>
                                     height: 20.h,
                                   ),
                                   Text(
-                                    'Select Currency Type',
+                                    'Select Crypto Currency Type',
                                     style: style.copyWith(
                                         color: const Color(0xff0D2769),
                                         fontSize: 24.sp,
@@ -521,8 +521,8 @@ class _ExplorePageState extends State<ExplorePage>
                                           child: ButtonTheme(
                                             alignedDropdown: true,
                                             child: DropdownButton(
-                                              hint:
-                                                  const Text("Select currency"),
+                                              hint: const Text(
+                                                  "Select crypto currency"),
                                               value: selectedValue1,
                                               onChanged: (newValue) {
                                                 fileProvider.updateCurrency1(

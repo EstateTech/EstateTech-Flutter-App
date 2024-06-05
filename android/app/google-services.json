@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "997330411506",
-    "project_id": "crypto-estate-tech---app",
-    "storage_bucket": "crypto-estate-tech---app.appspot.com"
+    "project_number": "957590577841",
+    "project_id": "estatetech",
+    "storage_bucket": "estatetech.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:997330411506:android:e797e7b8adb3ac2fde556b",
+        "mobilesdk_app_id": "1:957590577841:android:e13f6c33ac69feb1b9f890",
         "android_client_info": {
-          "package_name": "com.kumarsatesh.crypto_estate_tech"
+          "package_name": "com.flutter.estate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "997330411506-o7oshlcv1mu8h93ge183pq3mbubk9431.apps.googleusercontent.com",
+          "client_id": "957590577841-6pna8j9r31nhk20vgn9mt10nt1gvnpfn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutter.estate",
+            "certificate_hash": "93788b827849fb477203584df1c283f658e9117e"
+          }
+        },
+        {
+          "client_id": "957590577841-em5hbr563l88je0e74943lv43l1v87nj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAnlk0MaLqBBVhCDAWGgOc7TuKnYdbwVs4"
+          "current_key": "AIzaSyCUHLbtQy-Ber5A6DjJsQ137P5KAQtiIEg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "997330411506-o7oshlcv1mu8h93ge183pq3mbubk9431.apps.googleusercontent.com",
+              "client_id": "957590577841-em5hbr563l88je0e74943lv43l1v87nj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

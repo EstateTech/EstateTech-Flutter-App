@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'common/routing.dart' as route;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:crypto_estate_tech/provider/walletProvider.dart'; // Import the WalletProvider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,9 @@ void main() async {
 
         ChangeNotifierProvider(
           create: (context) => XFileProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => W3MServiceProvider(),
         ),
 
         ChangeNotifierProvider(

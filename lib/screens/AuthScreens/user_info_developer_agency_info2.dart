@@ -310,24 +310,10 @@ class _DeveloperAgencyInfo2State extends State<DeveloperAgencyInfo2> {
                                                   loading = true;
                                                 });
 
-                                                // await uploadIdCard(
-                                                //     context,
-                                                //     widget.userId,
-                                                //     widget.cnicImage!);
-
                                                 await uploadPic(
                                                     context,
                                                     widget.userId,
                                                     profileImage!);
-
-                                                print(widget.firstName);
-                                                print(widget.lastName);
-                                                print(widget.email);
-                                                print(profilePicUrl);
-                                                print(idCardImage);
-                                                print(widget.userId);
-                                                print(widget.idCarddNumber);
-                                                print(widget.cnicImage);
 
                                                 await FirebaseFirestore.instance
                                                     .collection('users')
@@ -378,13 +364,17 @@ class _DeveloperAgencyInfo2State extends State<DeveloperAgencyInfo2> {
                                       height: 10.h,
                                     ),
                                     CustomButton(
+                                      onPressed: () {
+                                        // Navigate away when "Skip for later" is pressed
+                                        Navigator.pop(context);
+                                      },
                                       textStyle: style.copyWith(
                                         color: Colors.grey,
                                         fontSize: 19.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       borderColor: Colors.black,
-                                      text: 'Decline',
+                                      text: 'Skip for later',
                                       fillColor: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
@@ -416,6 +406,10 @@ class _DeveloperAgencyInfo2State extends State<DeveloperAgencyInfo2> {
                 height: 11.h,
               ),
               CustomButton(
+                onPressed: () {
+                  // Navigate away when "Skip for later" is pressed
+                  Navigator.pop(context);
+                },
                 textStyle: style.copyWith(
                   color: Colors.grey,
                   fontSize: 19.sp,
