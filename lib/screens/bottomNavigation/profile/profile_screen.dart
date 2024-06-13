@@ -12,7 +12,10 @@ import 'package:crypto_estate_tech/screens/bottomNavigation/profile/ProfileMainS
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/myPropertyScreen.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/profile/swap_page_screen.dart';
 import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScreen2.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/services.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/policies.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:crypto_estate_tech/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,6 +26,8 @@ import '../../../common/widgetConstants.dart';
 import '../../../model/postModel.dart';
 import '../../../model/signupSaveDataFirebase.dart';
 import '../../../provider/authProvider.dart';
+import 'package:web3modal_flutter/services/w3m_service/w3m_service.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -32,7 +37,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // final PostModel postModel;
+  String shortenAddress(String address,
+      {int startLength = 6, int endLength = 4}) {
+    if (address.length <= startLength + endLength) {
+      return address;
+    }
+    final start = address.substring(0, startLength);
+    final end = address.substring(address.length - endLength, address.length);
+    return '$start...$end';
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -103,10 +117,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Container(
                                     child: Lottie.asset(
-                                      'assets/images/loading_animation.json', // Replace with your animation file path
+                                      'assets/images/loading_animation.json',
                                       width: 70.h,
                                       height: 70.h,
-                                      // Other properties you can customize
                                     ),
                                   ),
                                 ),
@@ -215,10 +228,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Color(0xff959595),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black, // Color of the shadow
-                        blurRadius: 5.0, // Spread of the shadow
-                        offset: Offset(0,
-                            0), // Offset of the shadow (positive Y value creates a bottom shadow)
+                        color: Colors.black,
+                        blurRadius: 5.0,
+                        offset: Offset(0, 0),
                       ),
                     ],
                   ),
@@ -248,7 +260,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 10.h,
                               ),
                               Text(
-                                w3mServiceProvider.address ?? 'Default Address',
+                                shortenAddress(w3mServiceProvider.address ??
+                                    'Wallet is not connected'),
                               ),
                             ],
                           )
@@ -258,7 +271,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Column(
                       children: [
                         Text(
-                          "125K",
+                          w3mServiceProvider.balance != null
+                              ? '${w3mServiceProvider.balance}'
+                              : '0',
                           style: numberStyle.copyWith(
                             color: Shade2purple,
                             fontSize: 25.sp,
@@ -280,6 +295,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(
                   height: 30.h,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      if (w3mServiceProvider.isConnected) {
+                        await w3mServiceProvider.disconnect();
+                      } else {
+                        await w3mServiceProvider.connect(context);
+                      }
+                    } catch (e) {
+                      print("Error connecting to wallet: $e");
+                    }
+                  },
+                  child: CustomButton1(
+                      boxShadowContainer: true,
+                      title: w3mServiceProvider.isConnected
+                          ? "Disconnect Wallet"
+                          : "Connect Wallet"),
+                ),
+                SizedBox(
+                  height: 40.h,
                 ),
                 ProfileImageButtons(
                   onTap: () {
@@ -412,6 +448,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTileProfileOptions(
                   text: "Legal",
+                  imagepath: 'assets/images/legal_icon.svg',
+                  onTap: () {},
+                ),
+                ListTileProfileOptions(
+                  text: "Services",
+                  imagepath: 'assets/images/legal_icon.svg',
+                  onTap: () {},
+                ),
+                ListTileProfileOptions(
+                  text: "Policies",
                   imagepath: 'assets/images/legal_icon.svg',
                   onTap: () {},
                 ),

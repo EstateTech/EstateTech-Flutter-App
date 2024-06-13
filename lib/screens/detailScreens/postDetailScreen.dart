@@ -18,6 +18,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:crypto_estate_tech/provider/authProvider.dart';
 
 class postDetailScreen extends StatefulWidget {
   final PostModel postModel;
@@ -41,7 +42,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -405,6 +406,54 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                                 color: Colors.transparent)),
                                         child: Text(
                                           "Connect via Email",
+                                          style: style2.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [mainAppColor, Colors.black]),
+                                    borderRadius: BorderRadius.circular(15.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: 30.w,
+                                        height: 30.h,
+                                        child: Icon(
+                                          Icons.phone,
+                                          color: Colors.white,
+                                          size: 32.h,
+                                        )),
+                                    SizedBox(
+                                      width: 20.w,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        //  width: 175.w,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.transparent)),
+                                        child: Text(
+                                          "Contact",
                                           style: style2.copyWith(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,

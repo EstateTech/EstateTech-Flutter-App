@@ -37,9 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: mainAppColor,
       body: Center(
-        child: Text(
-          'CRYPTO TECH AGENCY',
-          style: style,
+        child: Image.asset(
+          'assets/images/logo.png',
+          width: 200,
+          height: 200,
         ),
       ),
     );

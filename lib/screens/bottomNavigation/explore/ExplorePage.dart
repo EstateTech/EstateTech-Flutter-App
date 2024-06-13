@@ -55,13 +55,13 @@ class _ExplorePageState extends State<ExplorePage>
     {
       'id': '1',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/icons8-tether-48.png?alt=media&token=1fa5fc33-523c-4c5e-8ab7-fb0ae97c7c09&_gl=1*1tkq80h*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODIyODkwNS4xMDQuMS4xNjk4MjI5OTE4LjE5LjAuMA..',
+          'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/euro-currency-symbol-for-graphic-and-web-design-vector-removebg-preview.png?alt=media&token=293d2c88-d832-488f-97ae-64c159cb59a8',
       'name': 'EUR'
     },
     {
       'id': '2',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA..',
+          'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/united-arab-emirates-dirham-coins-icon-uae-money-currency-clipart-vector-money-free-download-business-finance-web-site-254733725.webp?alt=media&token=b633c13e-d884-46f1-b1d0-0508dca7bef1',
       'name': 'AED'
     },
     {
@@ -76,7 +76,7 @@ class _ExplorePageState extends State<ExplorePage>
     {
       'id': '1',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+          'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/imgonline-com-ua-shape-RxSZsO60yN.png?alt=media&token=d2e74534-636e-46b2-9411-4fb94bd5e197',
       'name': 'Guds'
     },
     {
@@ -92,9 +92,9 @@ class _ExplorePageState extends State<ExplorePage>
       'name': 'Eth'
     },
     {
-      'id': '3',
+      'id': '4',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+          'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/usd-coin-usdc-logo.png?alt=media&token=0869ea89-b23b-46c5-80e2-0af59d49b9eb',
       'name': 'Usdc'
     },
   ];
@@ -384,28 +384,28 @@ class _ExplorePageState extends State<ExplorePage>
                                                 fileProvider.updateCurrency(
                                                     newValue! as String);
 
-                                                fileProvider.updateCurrencySign(
-                                                    newValue! as String == 'USD'
-                                                        ? '\$'
-                                                        : newValue! as String ==
-                                                                'AED'
-                                                            ? "\د.إ."
-                                                            : newValue! as String ==
+                                                fileProvider.updateCurrencySign(fileProvider
+                                                            .currency ==
+                                                        'USD'
+                                                    ? _list[0]['image']
+                                                    : fileProvider.currency ==
+                                                            'Guds'
+                                                        ? _list[0]['image']
+                                                        : fileProvider
+                                                                    .currency ==
+                                                                'Btc'
+                                                            ? _list[1]['image']
+                                                            : fileProvider
+                                                                        .currency ==
                                                                     'Eth'
-                                                                ? ''
-                                                                : newValue! as String ==
-                                                                        'GUDS'
-                                                                    ? ''
-                                                                    : ''
-
-                                                    // fileProvider.currencySign ==
-                                                    //         "\$"
-                                                    //     ? "\د.إ."
-                                                    //     : '\$'
-
-                                                    //to do here
-
-                                                    );
+                                                                ? _list[2]
+                                                                    ['image']
+                                                                : fileProvider
+                                                                            .currency ==
+                                                                        'Usdc'
+                                                                    ? _list[3][
+                                                                        'image']
+                                                                    : '');
 
                                                 print(newValue);
                                                 setstate1(() {
@@ -466,11 +466,11 @@ class _ExplorePageState extends State<ExplorePage>
                         child: Image.network(fileProvider.currency == 'USD'
                             ? _list[0]['image']
                             : fileProvider.currency == 'AED'
-                                ? _list[0]['image']
+                                ? _list[1]['image']
                                 : fileProvider.currency == 'EUR'
-                                    ? _list[0]['image']
+                                    ? _list[2]['image']
                                     : fileProvider.currency == 'RUBL'
-                                        ? _list[0]['image']
+                                        ? _list[3]['image']
                                         : ''))),
                 SizedBox(
                   width: 5.w,
@@ -532,12 +532,16 @@ class _ExplorePageState extends State<ExplorePage>
                                                     newValue! as String == 'USD'
                                                         ? '\$'
                                                         : newValue! as String ==
-                                                                'AED'
+                                                                'Usdc'
                                                             ? "\د.إ."
-                                                            : newValue! as String ==
-                                                                    'Eth'
-                                                                ? ''
-                                                                : ''
+                                                            : ""
+                                                    // : newValue! as String ==
+                                                    //         'Eth'
+                                                    //     ? ''
+                                                    //     : newValue! as String ==
+                                                    //             'Guds'
+                                                    //         ? ''
+                                                    //         : ''
                                                     // fileProvider.currencySign ==
                                                     //         "\$"
                                                     //     ? "\د.إ."
