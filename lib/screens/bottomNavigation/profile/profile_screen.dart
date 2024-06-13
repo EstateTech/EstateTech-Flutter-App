@@ -454,12 +454,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTileProfileOptions(
                   text: "Services",
                   imagepath: 'assets/images/legal_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ServicePage()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Policies",
                   imagepath: 'assets/images/legal_icon.svg',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PoliciesPage()));
+                  },
                 ),
                 ListTileProfileOptions(
                   text: "Logout",
