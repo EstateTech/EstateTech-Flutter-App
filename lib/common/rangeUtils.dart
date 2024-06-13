@@ -43,7 +43,7 @@ class Utils {
       // int roundedResult = result.toInt();
       return result.toStringAsFixed(2) + " Btc";
     } else if (currency == 'Guds') {
-      double result = amountValue / guds;
+      double result = 1000 / guds;
       // int roundedResult = result.toInt();
       return result.toStringAsFixed(2) + " Guds";
     } else if (currency == 'Usdc') {
