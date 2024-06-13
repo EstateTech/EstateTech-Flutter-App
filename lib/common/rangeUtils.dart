@@ -18,55 +18,46 @@ class Utils {
     return TimeOfDay.fromDateTime(date).format(context);
   }
 
- static String convertCurrency(String amount, String currency, double eth,
+  static String convertCurrency(String amount, String currency, double eth,
       double btc, double guds, double usdc, double usdt) {
     // Define the exchange rate between USD and AED
     double exchangeRate = 3.67; // Replace with the actual exchange rate
-    double? amountValue = double.tryParse(amount);
-
-    if (amountValue == null) {
-      return "Invalid amount: $amount";
-    }
-
-    print("Amount: $amount");
-    print("Currency: $currency");
-    print("Parsed Amount Value: $amountValue");
+    double amountValue = double.tryParse(amount) ?? 0.0;
 
     if (currency == "USD") {
       // Convert USD to AED
-      double result = amountValue * exchangeRate;
-      print("Conversion Result: $result AED");
-      return result.toStringAsFixed(2) + " AED";
+
+      return amount.toString() + " USDT";
     } else if (currency == "AED") {
       // Convert AED to USD
-      double result = amountValue / exchangeRate;
-      print("Conversion Result: $result USD");
-      return result.toStringAsFixed(2) + " USD";
+      double result = amountValue * exchangeRate;
+      int roundedResult = result.toInt();
+      //  return formatLargeNumber(roundedResult);
+      return roundedResult.toString() + " AED";
     } else if (currency == 'Eth') {
-      double result = amountValue / eth;
-      print("Conversion Result: $result Eth");
-      return result.toStringAsFixed(6) + " Eth";
+      double result = 1000 / eth;
+      int roundedResult = result.toInt();
+      return roundedResult.toStringAsFixed(2) + " Eth";
     } else if (currency == 'Btc') {
-      double result = amountValue / btc;
-      print("Conversion Result: $result Btc");
-      return result.toStringAsFixed(8) + " Btc";
+      double result = 1000 / btc;
+      // int roundedResult = result.toInt();
+      return result.toStringAsFixed(2) + " Btc";
     } else if (currency == 'Guds') {
       double result = amountValue / guds;
-      print("Conversion Result: $result Guds");
+      // int roundedResult = result.toInt();
       return result.toStringAsFixed(2) + " Guds";
     } else if (currency == 'Usdc') {
-      double result = amountValue / usdc;
-      print("Conversion Result: $result Usdc");
+      double result = 1000 / usdc;
+      // int roundedResult = result.toInt();
       return result.toStringAsFixed(2) + " Usdc";
     } else if (currency == 'Usdt') {
-      double result = amountValue / usdt;
-      print("Conversion Result: $result Usdt");
+      double result = 1000 / usdt;
+      // int roundedResult = result.toInt();
       return result.toStringAsFixed(2) + " Usdt";
     } else {
       return "Unsupported currency: $currency";
     }
   }
-
 
   static String getFirstThreeWords(String sentence) {
     // Split the sentence into individual words
