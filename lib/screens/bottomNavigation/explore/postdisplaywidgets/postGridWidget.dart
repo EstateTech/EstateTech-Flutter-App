@@ -34,6 +34,7 @@ class GridPost extends StatefulWidget {
 }
 
 class _GridPostState extends State<GridPost> {
+  @override
   String memberType = 'Loading';
 
   void fetchMemberType() async {
@@ -61,7 +62,7 @@ class _GridPostState extends State<GridPost> {
     final filterProvider =
         Provider.of<PostLikesProvider>(context, listen: true);
     final authProvider = Provider.of<AuthProviderr>(context, listen: true);
-
+    final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
     String currentUserId =
         FirebaseAuth.instance.currentUser!.uid; // Replace with actual user ID
     filterProvider.initializeLikedPostIds(currentUserId);
@@ -206,8 +207,11 @@ class _GridPostState extends State<GridPost> {
                                   ? "300000"
                                   : widget.postModel.amount.toString(),
                               fileProvider.currency,
-                              authProvider.eth,
-                              authProvider.btc)),
+                              cryptoProvider.ethPrice,
+                              authProvider.btc,
+                              1,
+                              1,
+                              1)),
                       //  TextSpan( text: "300 "),
 
                       // TextSpan(text: "${fileProvider.currency}"),
@@ -241,8 +245,11 @@ class _GridPostState extends State<GridPost> {
                         text: Utils.convertCurrency(
                             "${widget.postModel.amount}",
                             fileProvider.currency1,
-                            authProvider.eth,
-                            authProvider.btc)),
+                            cryptoProvider.ethPrice,
+                            authProvider.btc,
+                            1,
+                            1,
+                            1)),
                   ],
                 ),
               ),
@@ -252,7 +259,13 @@ class _GridPostState extends State<GridPost> {
               Image.network(
                 fileProvider.currency1 == 'Eth'
                     ? "https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Feth.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe"
-                    : 'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe',
+                    : fileProvider.currency1 == 'Btc'
+                        ? 'https://firebasestorage.googleapis.com/v0/b/grocers-c9010.appspot.com/o/cryptocoins%2Fbtc.png?alt=media&token=2f5df3fc-48ae-476c-89ec-90afecd907fe'
+                        : fileProvider.currency1 == 'Guds'
+                            ? 'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/imgonline-com-ua-shape-RxSZsO60yN.png?alt=media&token=d2e74534-636e-46b2-9411-4fb94bd5e197'
+                            : fileProvider.currency1 == 'Usdc'
+                                ? 'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/usd-coin-usdc-logo.png?alt=media&token=0869ea89-b23b-46c5-80e2-0af59d49b9eb'
+                                : "",
                 width: 25.w,
                 height: 25.h,
               ),
