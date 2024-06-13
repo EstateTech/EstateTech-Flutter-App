@@ -22,6 +22,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:crypto_estate_tech/provider/walletProvider.dart';
+import 'package:crypto_estate_tech/provider/cryptoProvider.dart';
 import '../../../common/widgetConstants.dart';
 import '../../../model/postModel.dart';
 import '../../../model/signupSaveDataFirebase.dart';
@@ -37,6 +38,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the coin markets and ETH price when the widget is initialized
+    final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
+
+    cryptoProvider.fetchEthPrice();
+  }
+
   String shortenAddress(String address,
       {int startLength = 6, int endLength = 4}) {
     if (address.length <= startLength + endLength) {
@@ -51,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final w3mServiceProvider = Provider.of<W3MServiceProvider>(context);
+    final cryptoProvider = Provider.of<CryptoProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -285,7 +296,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Shade2purple,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold),
-                        )
+                        ),
+                        Text('ETH Price: \$${cryptoProvider.ethPrice}'),
                       ],
                     ),
                     SizedBox(

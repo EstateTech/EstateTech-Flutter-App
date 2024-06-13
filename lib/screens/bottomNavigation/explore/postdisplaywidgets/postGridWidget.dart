@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
+import 'package:crypto_estate_tech/provider/cryptoProvider.dart';
 import '../../../../provider/likesProvider.dart';
 
 class GridPost extends StatefulWidget {
@@ -51,6 +51,9 @@ class _GridPostState extends State<GridPost> {
     // TODO: implement initState
     super.initState();
     fetchMemberType();
+    final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
+
+    cryptoProvider.fetchEthPrice();
   }
 
   @override
@@ -77,12 +80,10 @@ class _GridPostState extends State<GridPost> {
           Stack(
             children: [
               Container(
-
                   width: double.infinity,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
                   height: 130.h,
-
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: CachedNetworkImage(

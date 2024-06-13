@@ -33,6 +33,8 @@ class _ExplorePageState extends State<ExplorePage>
         length: 4, vsync: this); // Change the length to 4 if you want four tabs
 
     _tabController!.addListener(_handleTabChange);
+
+
   }
 
   @override
@@ -67,7 +69,7 @@ class _ExplorePageState extends State<ExplorePage>
     {
       'id': '3',
       'image':
-          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA..',
+          'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA',
       'name': 'REBL'
     },
   ];
@@ -384,11 +386,9 @@ class _ExplorePageState extends State<ExplorePage>
                                                 fileProvider.updateCurrency(
                                                     newValue! as String);
 
-                                                fileProvider.updateCurrencySign(fileProvider
-                                                            .currency ==
-                                                        'USD'
-                                                    ? _list[0]['image']
-                                                    : fileProvider.currency ==
+                                                fileProvider.updateCurrencySign(
+                                                    fileProvider
+                                                                .currency ==
                                                             'Guds'
                                                         ? _list[0]['image']
                                                         : fileProvider
@@ -463,15 +463,13 @@ class _ExplorePageState extends State<ExplorePage>
                             ],
                             border: Border.all(color: Shade2purple),
                             borderRadius: BorderRadius.circular(10.r)),
-                        child: Image.network(fileProvider.currency == 'USD'
-                            ? _list[0]['image']
-                            : fileProvider.currency == 'AED'
-                                ? _list[1]['image']
-                                : fileProvider.currency == 'EUR'
+                        child: Image.network(fileProvider.currency == 'AED'
+                            ? _list[1]['image']
+                            : fileProvider.currency == 'EUR'
+                                ? _list[0]['image']
+                                : fileProvider.currency == 'RUBL'
                                     ? _list[2]['image']
-                                    : fileProvider.currency == 'RUBL'
-                                        ? _list[3]['image']
-                                        : ''))),
+                                    : ''))),
                 SizedBox(
                   width: 5.w,
                 ),
@@ -610,8 +608,14 @@ class _ExplorePageState extends State<ExplorePage>
                             border: Border.all(color: Shade2purple),
                             borderRadius: BorderRadius.circular(10.r)),
                         child: Image.network(fileProvider.currency1 == 'Btc'
-                            ? list1[0]['image']
-                            : list1[1]['image'])))
+                            ? list1[1]['image']
+                            : fileProvider.currency1 == 'Eth'
+                                ? list1[2]['image']
+                                : fileProvider.currency1 == 'Guds'
+                                    ? list1[0]['image']
+                                    : fileProvider.currency1 == 'Usdc'
+                                        ? list1[3]['image']
+                                        : "")))
               ],
             ),
           ),
