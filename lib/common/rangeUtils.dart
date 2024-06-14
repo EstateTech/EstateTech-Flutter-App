@@ -27,13 +27,25 @@ class Utils {
     if (currency == "USD") {
       // Convert USD to AED
 
-      return amount.toString() + " USDT";
+      return amount.toString() + " USD";
     } else if (currency == "AED") {
       // Convert AED to USD
       double result = amountValue * exchangeRate;
       int roundedResult = result.toInt();
       //  return formatLargeNumber(roundedResult);
       return roundedResult.toString() + " AED";
+    } else if (currency == "EUR") {
+      // Convert AED to USD
+      double result = amountValue * exchangeRate;
+      int roundedResult = result.toInt();
+      //  return formatLargeNumber(roundedResult);
+      return roundedResult.toString() + " EUR";
+    } else if (currency == "REBL") {
+      // Convert AED to USD
+      double result = amountValue * exchangeRate;
+      int roundedResult = result.toInt();
+      //  return formatLargeNumber(roundedResult);
+      return roundedResult.toString() + " REBL";
     } else if (currency == 'Eth') {
       double result = 1000 / eth;
       int roundedResult = result.toInt();
