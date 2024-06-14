@@ -33,8 +33,6 @@ class _ExplorePageState extends State<ExplorePage>
         length: 4, vsync: this); // Change the length to 4 if you want four tabs
 
     _tabController!.addListener(_handleTabChange);
-
-
   }
 
   @override
@@ -71,6 +69,12 @@ class _ExplorePageState extends State<ExplorePage>
       'image':
           'https://firebasestorage.googleapis.com/v0/b/crypto-estate-tech---app.appspot.com/o/dirham%20(1).png?alt=media&token=bc107daf-79ae-438f-bb38-b5dcf25feb5f&_gl=1*1c13du2*_ga*MzQ5NzczNzQxLjE2OTUzMTUzOTU.*_ga_CW55HF8NVT*MTY5ODMyMDA1OS4xMDUuMS4xNjk4MzIwMDk0LjI1LjAuMA',
       'name': 'REBL'
+    },
+    {
+      'id': '4',
+      'image':
+          'https://firebasestorage.googleapis.com/v0/b/estatetech.appspot.com/o/USD-Coin-Logo-PNG-Photo.png?alt=media&token=0cbfd71d-0699-46bd-b0ed-4448ea7718f8',
+      'name': 'USD'
     },
   ];
 
@@ -387,25 +391,38 @@ class _ExplorePageState extends State<ExplorePage>
                                                     newValue! as String);
 
                                                 fileProvider.updateCurrencySign(
-                                                    fileProvider
-                                                                .currency ==
-                                                            'Guds'
-                                                        ? _list[0]['image']
-                                                        : fileProvider
-                                                                    .currency ==
-                                                                'Btc'
-                                                            ? _list[1]['image']
-                                                            : fileProvider
-                                                                        .currency ==
-                                                                    'Eth'
-                                                                ? _list[2]
-                                                                    ['image']
-                                                                : fileProvider
-                                                                            .currency ==
-                                                                        'Usdc'
-                                                                    ? _list[3][
-                                                                        'image']
-                                                                    : '');
+                                                    newValue! as String == 'USD'
+                                                        ? '\$'
+                                                        : newValue! as String ==
+                                                                'EUR'
+                                                            ? '\E'
+                                                            : newValue! as String ==
+                                                                    'REBL'
+                                                                ? '\د.إ.'
+                                                                : newValue! as String ==
+                                                                        'AED'
+                                                                    ? '\د.إ.'
+                                                                    : ""
+                                                    // fileProvider
+                                                    //             .currency ==
+                                                    //         'EUR'
+                                                    //     ? _list[0]['image']
+                                                    //     : fileProvider
+                                                    //                 .currency ==
+                                                    //             'REBL'
+                                                    //         ? _list[2]['image']
+                                                    //         : fileProvider
+                                                    //                     .currency ==
+                                                    //                 'AED'
+                                                    //             ? _list[1]
+                                                    //                 ['image']
+                                                    //             : fileProvider
+                                                    //                         .currency ==
+                                                    //                     'USD'
+                                                    //                 ? _list[3][
+                                                    //                     'image']
+                                                    //                 : ''
+                                                    );
 
                                                 print(newValue);
                                                 setstate1(() {
@@ -463,13 +480,15 @@ class _ExplorePageState extends State<ExplorePage>
                             ],
                             border: Border.all(color: Shade2purple),
                             borderRadius: BorderRadius.circular(10.r)),
-                        child: Image.network(fileProvider.currency == 'AED'
-                            ? _list[1]['image']
-                            : fileProvider.currency == 'EUR'
-                                ? _list[0]['image']
-                                : fileProvider.currency == 'RUBL'
-                                    ? _list[2]['image']
-                                    : ''))),
+                        child: Image.network(fileProvider.currency == 'USD'
+                            ? _list[3]['image']
+                            : fileProvider.currency == 'AED'
+                                ? _list[1]['image']
+                                : fileProvider.currency == 'EUR'
+                                    ? _list[0]['image']
+                                    : fileProvider.currency == 'REBL'
+                                        ? _list[2]['image']
+                                        : ''))),
                 SizedBox(
                   width: 5.w,
                 ),
@@ -527,12 +546,19 @@ class _ExplorePageState extends State<ExplorePage>
                                                     newValue! as String);
 
                                                 fileProvider.updateCurrencySign1(
-                                                    newValue! as String == 'USD'
-                                                        ? '\$'
+                                                    newValue! as String ==
+                                                            'Usdt'
+                                                        ? 'USDT'
                                                         : newValue! as String ==
                                                                 'Usdc'
-                                                            ? "\د.إ."
-                                                            : ""
+                                                            ? "USDC"
+                                                            : newValue! as String ==
+                                                                    'Eth'
+                                                                ? "ETH"
+                                                                : newValue! as String ==
+                                                                        'Btc'
+                                                                    ? "BTC"
+                                                                    : ""
                                                     // : newValue! as String ==
                                                     //         'Eth'
                                                     //     ? ''

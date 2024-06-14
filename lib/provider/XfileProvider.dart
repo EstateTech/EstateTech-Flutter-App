@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class XFileProvider with ChangeNotifier {
-  String currency = 'AED';
+  String currency = 'USD';
   String currencySign = "\$";
   String _postid = "";
 
