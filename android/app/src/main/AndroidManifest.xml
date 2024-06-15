@@ -18,7 +18,7 @@
     </queries>
 
    <application
-        android:label="crypto_estate_tech"
+        android:label="Makanifi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
