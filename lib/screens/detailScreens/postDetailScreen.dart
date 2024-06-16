@@ -551,7 +551,6 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                 ),
                               ),
                             ),
-                        
                             SizedBox(
                               height: 20.h,
                             ),
