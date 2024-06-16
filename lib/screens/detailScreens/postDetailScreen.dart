@@ -34,6 +34,180 @@ class _postDetailScreenState extends State<postDetailScreen> {
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
 
+  void _showSecondModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              Center(
+                child: Container(
+                  width: 50.w,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFD9D9D9),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              GestureDetector(
+                onTap: () {
+                  try {
+                    launchUrlString(
+                        'whatsapp://send?phone=+11111&text=${Uri.encodeFull('testApp')}');
+                  } catch (e) {
+                    print('Error Launching WhatsApp');
+                  }
+                },
+                child: Container(
+                  height: 50.h,
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [mainAppColor, Colors.black],
+                    ),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30.w,
+                        height: 30.h,
+                        child: Image.asset('assets/images/whatsapp.png'),
+                      ),
+                      SizedBox(width: 20.w),
+                      Expanded(
+                        child: Text(
+                          "Contact via Whatsapp",
+                          style: style2.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              GestureDetector(
+                onTap: () {
+                  OwnMethods().openMail('test@gmail.com');
+                },
+                child: Container(
+                  height: 50.h,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [mainAppColor, Colors.black],
+                    ),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30.w,
+                        height: 30.h,
+                        child: Icon(
+                          Icons.email_outlined,
+                          color: Colors.white,
+                          size: 32.h,
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.transparent),
+                          ),
+                          child: Text(
+                            "Connect via Email",
+                            style: style2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              GestureDetector(
+                onTap: () {
+                  OwnMethods().makePhoneCall('+1111111');
+                },
+                child: Container(
+                  height: 50.h,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [mainAppColor, Colors.black],
+                    ),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30.w,
+                        height: 30.h,
+                        child: Icon(
+                          Icons.phone,
+                          color: Colors.white,
+                          size: 32.h,
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.transparent),
+                          ),
+                          child: Text(
+                            "Make a Phone Call",
+                            style: style2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final filterProvider =
@@ -324,104 +498,16 @@ class _postDetailScreenState extends State<postDetailScreen> {
                             SizedBox(
                               height: 20.h,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                try {
-                                  launchUrlString(
-                                      'whatsapp://send?phone=+11111&text=${Uri.encodeFull('testApp')}');
-                                } catch (e) {
-                                  print('Error Launching WhatsApp');
-                                }
-                              },
-                              child: Container(
-                                height: 50.h,
-                                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [mainAppColor, Colors.black]),
-                                    borderRadius: BorderRadius.circular(15.r)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        width: 30.w,
-                                        height: 30.h,
-                                        child: Image.asset(
-                                            'assets/images/whatsapp.png')),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Contact via Whatsapp",
-                                        style: style2.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 16.sp),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            SizedBox(
+                              height: 20.h,
                             ),
                             SizedBox(
                               height: 20.h,
                             ),
                             GestureDetector(
                               onTap: () {
-                                OwnMethods().openMail('test@gmail.com');
+                                _showSecondModalBottomSheet(context);
                               },
-                              child: Container(
-                                height: 50.h,
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [mainAppColor, Colors.black]),
-                                    borderRadius: BorderRadius.circular(15.r)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        width: 30.w,
-                                        height: 30.h,
-                                        child: Icon(
-                                          Icons.email_outlined,
-                                          color: Colors.white,
-                                          size: 32.h,
-                                        )),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        //  width: 175.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.transparent)),
-                                        child: Text(
-                                          "Connect via Email",
-                                          style: style2.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 16.sp),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
                               child: Container(
                                 height: 50.h,
                                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -465,56 +551,7 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                OwnMethods().makePhoneCall('+1111111');
-                              },
-                              child: Container(
-                                height: 50.h,
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [mainAppColor, Colors.black]),
-                                    borderRadius: BorderRadius.circular(15.r)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        width: 30.w,
-                                        height: 30.h,
-                                        child: Icon(
-                                          Icons.phone,
-                                          color: Colors.white,
-                                          size: 32.h,
-                                        )),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        //  width: 175.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.transparent)),
-                                        child: Text(
-                                          "Make a phone call",
-                                          style: style2.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 16.sp),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                        
                             SizedBox(
                               height: 20.h,
                             ),
