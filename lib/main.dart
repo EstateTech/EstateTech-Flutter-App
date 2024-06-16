@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
             },
 
             debugShowCheckedModeBanner: false,
-            title: 'Crypto Estate Tech',
+            title: 'Makanifi',
 
             //home: WelcomeScreen(),
             // darkTheme: ThemeData.dark(),
