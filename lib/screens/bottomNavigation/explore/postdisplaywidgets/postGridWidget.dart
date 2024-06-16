@@ -55,6 +55,7 @@ class _GridPostState extends State<GridPost> {
     final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
 
     cryptoProvider.fetchEthPrice();
+    cryptoProvider.fetchBtcPrice();
   }
 
   @override
@@ -208,10 +209,10 @@ class _GridPostState extends State<GridPost> {
                                   : widget.postModel.amount.toString(),
                               fileProvider.currency,
                               cryptoProvider.ethPrice,
-                              authProvider.btc,
-                              1,
-                              1,
-                              1)),
+                              cryptoProvider.btcPrice,
+                              1.00,
+                              1.00,
+                              1.00)),
                       //  TextSpan( text: "300 "),
 
                       // TextSpan(text: "${fileProvider.currency}"),
@@ -243,13 +244,15 @@ class _GridPostState extends State<GridPost> {
                   children: [
                     TextSpan(
                         text: Utils.convertCurrency(
-                            "${widget.postModel.amount}",
+                            widget.postModel.amount == null
+                                ? "300000"
+                                : widget.postModel.amount.toString(),
                             fileProvider.currency1,
                             cryptoProvider.ethPrice,
-                            authProvider.btc,
-                            1,
-                            1,
-                            1)),
+                            cryptoProvider.btcPrice,
+                            1.00,
+                            1.00,
+                            1.00)),
                   ],
                 ),
               ),

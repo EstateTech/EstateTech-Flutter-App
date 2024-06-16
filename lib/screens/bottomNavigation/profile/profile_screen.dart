@@ -45,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
 
     cryptoProvider.fetchEthPrice();
+    cryptoProvider.fetchBtcPrice();
   }
 
   String shortenAddress(String address,
@@ -298,6 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text('ETH Price: \$${cryptoProvider.ethPrice}'),
+                        Text('BTC Price: \$${cryptoProvider.btcPrice}'),
                       ],
                     ),
                     SizedBox(

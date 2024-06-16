@@ -26,45 +26,33 @@ class Utils {
 
     if (currency == "USD") {
       // Convert USD to AED
-
-      return amount.toString() + " USD";
+      return amount + " USD";
     } else if (currency == "AED") {
       // Convert AED to USD
       double result = amountValue * exchangeRate;
-      int roundedResult = result.toInt();
-      //  return formatLargeNumber(roundedResult);
-      return roundedResult.toString() + " AED";
+      return result.toStringAsFixed(2) + " AED";
     } else if (currency == "EUR") {
       // Convert AED to USD
       double result = amountValue * exchangeRate;
-      int roundedResult = result.toInt();
-      //  return formatLargeNumber(roundedResult);
-      return roundedResult.toString() + " EUR";
+      return result.toStringAsFixed(2) + " EUR";
     } else if (currency == "REBL") {
       // Convert AED to USD
       double result = amountValue * exchangeRate;
-      int roundedResult = result.toInt();
-      //  return formatLargeNumber(roundedResult);
-      return roundedResult.toString() + " REBL";
+      return result.toStringAsFixed(2) + " REBL";
     } else if (currency == 'Eth') {
-      double result = 1000 / eth;
-      int roundedResult = result.toInt();
-      return roundedResult.toStringAsFixed(2) + " Eth";
+      double result = amountValue / eth;
+      return result.toStringAsFixed(2) + " Eth";
     } else if (currency == 'Btc') {
-      double result = 1000 / btc;
-      // int roundedResult = result.toInt();
+      double result = amountValue / btc;
       return result.toStringAsFixed(2) + " Btc";
     } else if (currency == 'Guds') {
-      double result = 1000 / guds;
-      // int roundedResult = result.toInt();
+      double result = amountValue * guds;
       return result.toStringAsFixed(2) + " Guds";
     } else if (currency == 'Usdc') {
-      double result = 1000 / usdc;
-      // int roundedResult = result.toInt();
+      double result = amountValue * usdc;
       return result.toStringAsFixed(2) + " Usdc";
     } else if (currency == 'Usdt') {
-      double result = 1000 / usdt;
-      // int roundedResult = result.toInt();
+      double result = amountValue * usdt;
       return result.toStringAsFixed(2) + " Usdt";
     } else {
       return "Unsupported currency: $currency";

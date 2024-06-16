@@ -14,6 +14,7 @@ import 'package:crypto_estate_tech/model/postModel.dart';
 import 'package:crypto_estate_tech/screens/bottomNavigation/explore/demy.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:crypto_estate_tech/provider/cryptoProvider.dart';
 
 class Post extends StatefulWidget {
   final PostModel postModel;
@@ -58,6 +59,10 @@ class _PostState extends State<Post> {
     // TODO: implement initState
     super.initState();
     fetchMemberType();
+    final cryptoProvider = Provider.of<CryptoProvider>(context, listen: false);
+
+    cryptoProvider.fetchEthPrice();
+    cryptoProvider.fetchBtcPrice();
   }
 
   final CarouselController carouselController = CarouselController();
@@ -65,6 +70,7 @@ class _PostState extends State<Post> {
 
   @override
   Widget build(BuildContext context) {
+    final cryptoProvider = Provider.of<CryptoProvider>(context, listen: true);
     final filterProvider =
         Provider.of<PostLikesProvider>(context, listen: true);
 
@@ -352,13 +358,15 @@ class _PostState extends State<Post> {
                               children: <TextSpan>[
                             TextSpan(
                                 text: Utils.convertCurrency(
-                                    "${widget.postModel.amount}",
+                                    widget.postModel.amount == null
+                                        ? "300000"
+                                        : widget.postModel.amount.toString(),
                                     fileProvider.currency,
-                                    authProvider.eth,
-                                    authProvider.btc,
-                                    1,
-                                    1,
-                                    1)),
+                                    cryptoProvider.ethPrice,
+                                    cryptoProvider.btcPrice,
+                                    1.00,
+                                    1.00,
+                                    1.00)),
                             //  TextSpan( text: "300 "),
 
                             // TextSpan(text: "${fileProvider.currency}"),
@@ -390,13 +398,15 @@ class _PostState extends State<Post> {
                         children: [
                           TextSpan(
                               text: Utils.convertCurrency(
-                                  "${widget.postModel.amount}",
+                                  widget.postModel.amount == null
+                                      ? "300000"
+                                      : widget.postModel.amount.toString(),
                                   fileProvider.currency1,
-                                  authProvider.eth,
-                                  authProvider.btc,
-                                  1,
-                                  1,
-                                  1)),
+                                  cryptoProvider.ethPrice,
+                                  cryptoProvider.btcPrice,
+                                  1.00,
+                                  1.00,
+                                  1.00)),
                         ],
                       ),
                     ),
