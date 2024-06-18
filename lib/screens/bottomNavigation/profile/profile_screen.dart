@@ -310,8 +310,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.bold),
                             ),
-                            Text('ETH Price: \$${cryptoProvider.ethPrice}'),
-                            Text('BTC Price: \$${cryptoProvider.btcPrice}'),
+                            // Text('ETH Price: \$${cryptoProvider.ethPrice}'),
+                            // Text('BTC Price: \$${cryptoProvider.btcPrice}'),
                           ],
                         ),
                         SizedBox(
