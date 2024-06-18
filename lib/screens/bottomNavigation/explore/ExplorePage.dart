@@ -106,574 +106,607 @@ class _ExplorePageState extends State<ExplorePage>
   ];
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final fileProvider = Provider.of<XFileProvider>(context, listen: true);
-    final authProvider = Provider.of<AuthProviderr>(context, listen: true);
-    return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 10.h,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10.w, right: 20.w),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, searchScreen);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10.w, right: 20.h),
-                      height: size.height * 0.08,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Shade2purple),
-                          borderRadius: BorderRadius.circular(30.r)),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                print("moving to search page");
-                                Navigator.pushNamed(context, searchScreen);
-                              },
-                              child: SvgPicture.asset(
-                                "assets/images/search_icon.svg",
-                                height: 25.h,
-                                width: 25.h,
-                                color: unselectedBoNaBColor,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "I'm looking for",
-                                    style: style.copyWith(
-                                        color: Shade2purple,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15.sp),
+  Widget build(BuildContext context) =>
+      OrientationBuilder(builder: (context, orientation) {
+        final size = MediaQuery.of(context).size;
+        final fileProvider = Provider.of<XFileProvider>(context, listen: true);
+        final authProvider = Provider.of<AuthProviderr>(context, listen: true);
+        return SafeArea(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10.w, right: 20.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, searchScreen);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 10.w, right: 20.h),
+                          height: MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? size.height * 0.08
+                              : size.height * 0.18,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Shade2purple),
+                              borderRadius: BorderRadius.circular(30.r)),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    print("moving to search page");
+                                    Navigator.pushNamed(context, searchScreen);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/images/search_icon.svg",
+                                    height:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? 25.h
+                                            : 15.h,
+                                    width: MediaQuery.of(context).orientation ==
+                                            Orientation.portrait
+                                        ? 25.h
+                                        : 15.h,
+                                    color: unselectedBoNaBColor,
                                   ),
-                                  Text(
-                                    "Appartment,Studio,Office",
-                                    style: style.copyWith(
-                                        color: Shade2purple.withOpacity(0.7),
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 12.sp),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SvgPicture.asset(
-                              "assets/images/menu_icon.svg",
-                              color: Shade2purple,
-                              height: 18.h,
-                              width: 18.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10.h,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => NotificationScreen()))
-
-                    print(authProvider.eth);
-                  },
-                  child: Container(
-                    height: size.width * 0.10,
-                    width: size.width * 0.10,
-                    padding: EdgeInsets.all(10.h),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Shade2purple,
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/images/bell_line_icon.svg",
-                      color: Shade2purple,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 7.h,
-          ),
-          Container(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Divider(
-                  // Add the divider widget here
-                  color: Colors.grey,
-                  height: 2,
-                  thickness: 2,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h, right: 10.h),
-                  child: TabBar(
-                    indicatorColor: Shade2purple,
-
-                    onTap: (index) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    },
-                    labelStyle: style.copyWith(fontSize: 14.sp),
-                    padding: EdgeInsets.zero,
-                    labelColor:
-                        Shade2purple, // Set the text color of the selected tab
-                    unselectedLabelColor:
-                        unselectedTabcolor, // Set the text color of unselected tabs
-                    controller: _tabController,
-                    indicatorWeight: 3.0,
-                    labelPadding: EdgeInsets.zero,
-
-                    tabs: [
-                      Tab(
-                        text: 'Best offers',
-                        icon: SvgPicture.asset(
-                          "assets/images/bxs_offer_icon.svg",
-                          height: 30.h,
-                          width: 30.h,
-                          color: currentIndex == 0
-                              ? Shade2purple
-                              : unselectedTabcolor,
-                        ),
-                        iconMargin: EdgeInsets.zero,
-                      ),
-                      Tab(
-                        text: 'Trending',
-                        icon: SvgPicture.asset(
-                          "assets/images/trending_icon.svg",
-                          height: 30.h,
-                          width: 30.h,
-                          color: currentIndex == 1
-                              ? Shade2purple
-                              : unselectedTabcolor,
-                        ),
-                        iconMargin: EdgeInsets.zero,
-                      ),
-                      Tab(
-                        text: 'Latest',
-                        icon: SvgPicture.asset(
-                          "assets/images/time_icon.svg",
-                          height: 30.h,
-                          width: 30.h,
-                          color: currentIndex == 2
-                              ? Shade2purple
-                              : unselectedTabcolor,
-                        ),
-                        iconMargin: EdgeInsets.zero,
-                      ),
-                      Tab(
-                        text: 'Off-plan',
-                        icon: SvgPicture.asset(
-                          "assets/images/plan_icon.svg",
-                          height: 30.h,
-                          width: 30.h,
-                          color: currentIndex == 3
-                              ? Shade2purple
-                              : unselectedTabcolor,
-                        ),
-                        iconMargin: EdgeInsets.zero,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              children: [
-                ViewIconContainer(
-                    isSelected: currentViewIndex == 0 ? true : false,
-                    child: SvgPicture.asset("assets/images/grid_icon.svg",
-                        color: currentViewIndex == 0
-                            ? Shade2purple
-                            : unselectedTabcolor),
-                    onTap: () {
-                      setState(() {
-                        currentViewIndex = 0;
-                      });
-                    }),
-                SizedBox(
-                  width: 10.w,
-                ),
-                ViewIconContainer(
-                    isSelected: currentViewIndex == 1 ? true : false,
-                    child: SvgPicture.asset(
-                        "assets/images/horizontal_lines_icon.svg",
-                        color: currentViewIndex == 1
-                            ? Shade2purple
-                            : unselectedTabcolor),
-                    onTap: () {
-                      setState(() {
-                        currentViewIndex = 1;
-                      });
-                    }),
-                Expanded(child: SizedBox()),
-                GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.r)),
-                          builder: (context) {
-                            return StatefulBuilder(
-                                builder: (context, setstate1) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  Text(
-                                    'Select Currency Type',
-                                    style: style.copyWith(
-                                        color: const Color(0xff0D2769),
-                                        fontSize: 24.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 22.w),
-                                    width: MediaQuery.of(context)
-                                        .size
-                                        .width, // Set the width of the dropdown as needed
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Adjust border radius as needed
-                                      border: Border.all(
-                                        color: Colors.black, // Border color
-                                        width: 0.5, // Border width
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "I'm looking for",
+                                        style: style.copyWith(
+                                          color: Shade2purple,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: MediaQuery.of(context)
+                                                      .orientation ==
+                                                  Orientation.portrait
+                                              ? 15.sp
+                                              : 9.sp,
+                                        ),
                                       ),
-                                    ),
+                                      Text(
+                                        "Appartment,Studio,Office",
+                                        style: style.copyWith(
+                                            color:
+                                                Shade2purple.withOpacity(0.7),
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 12.sp),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  "assets/images/menu_icon.svg",
+                                  color: Shade2purple,
+                                  height: 18.h,
+                                  width: 18.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.h,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => NotificationScreen()))
 
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: DropdownButtonHideUnderline(
-                                          child: ButtonTheme(
-                                            alignedDropdown: true,
-                                            child: DropdownButton(
-                                              hint:
-                                                  const Text("Select currency"),
-                                              value: selectedValue,
-                                              onChanged: (newValue) {
-                                                fileProvider.updateCurrency(
-                                                    newValue! as String);
-
-                                                fileProvider.updateCurrencySign(
-                                                    newValue! as String == 'USD'
-                                                        ? '\$'
-                                                        : newValue! as String ==
-                                                                'EUR'
-                                                            ? '\E'
-                                                            : newValue! as String ==
-                                                                    'REBL'
-                                                                ? '\د.إ.'
-                                                                : newValue! as String ==
-                                                                        'AED'
-                                                                    ? '\د.إ.'
-                                                                    : ""
-                                                    // fileProvider
-                                                    //             .currency ==
-                                                    //         'EUR'
-                                                    //     ? _list[0]['image']
-                                                    //     : fileProvider
-                                                    //                 .currency ==
-                                                    //             'REBL'
-                                                    //         ? _list[2]['image']
-                                                    //         : fileProvider
-                                                    //                     .currency ==
-                                                    //                 'AED'
-                                                    //             ? _list[1]
-                                                    //                 ['image']
-                                                    //             : fileProvider
-                                                    //                         .currency ==
-                                                    //                     'USD'
-                                                    //                 ? _list[3][
-                                                    //                     'image']
-                                                    //                 : ''
-                                                    );
-
-                                                print(newValue);
-                                                setstate1(() {
-                                                  selectedValue =
-                                                      newValue! as String?;
-                                                });
-                                              },
-                                              items: _list.map((bankItem) {
-                                                return DropdownMenuItem(
-                                                  value: bankItem['name'],
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        CachedNetworkImage(
-                                                          imageUrl:
-                                                              bankItem['image'],
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 10),
-                                                          child: Text(
-                                                              bankItem['name']),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ),
-                                        )),
-                                  )
-                                ],
-                              );
-                            });
-                          });
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(7.h),
-                        height: 50.h,
-                        width: 60.h,
+                        print(authProvider.eth);
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? size.width * 0.10
+                            : size.width * 0.07,
+                        width: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? size.width * 0.10
+                            : size.width * 0.07,
+                        padding: EdgeInsets.all(10.h),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: unselectedTabcolor,
-                                blurRadius: 4,
-                                offset: Offset(0, 5), // Shadow position
-                              ),
-                            ],
-                            border: Border.all(color: Shade2purple),
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: Image.network(fileProvider.currency == 'USD'
-                            ? _list[3]['image']
-                            : fileProvider.currency == 'AED'
-                                ? _list[1]['image']
-                                : fileProvider.currency == 'EUR'
-                                    ? _list[0]['image']
-                                    : fileProvider.currency == 'REBL'
-                                        ? _list[2]['image']
-                                        : ''))),
-                SizedBox(
-                  width: 5.w,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Shade2purple,
+                          ),
+                        ),
+                        child: SvgPicture.asset(
+                          "assets/images/bell_line_icon.svg",
+                          color: Shade2purple,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.r)),
-                        builder: (context) {
-                          return StatefulBuilder(
-                            builder: (context, setstate1) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  Text(
-                                    'Select Crypto Currency Type',
-                                    style: style.copyWith(
-                                        color: const Color(0xff0D2769),
-                                        fontSize: 24.sp,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 22.w),
-                                    width: MediaQuery.of(context)
-                                        .size
-                                        .width, // Set the width of the dropdown as needed
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Adjust border radius as needed
-                                      border: Border.all(
-                                        color: Colors.black, // Border color
-                                        width: 0.5, // Border width
+              ),
+              SizedBox(
+                height: 7.h,
+              ),
+              Container(
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Divider(
+                      // Add the divider widget here
+                      color: Colors.grey,
+                      height: 2,
+                      thickness: 2,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.h, right: 10.h),
+                      child: TabBar(
+                        indicatorColor: Shade2purple,
+
+                        onTap: (index) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        labelStyle: style.copyWith(fontSize: 14.sp),
+                        padding: EdgeInsets.zero,
+                        labelColor:
+                            Shade2purple, // Set the text color of the selected tab
+                        unselectedLabelColor:
+                            unselectedTabcolor, // Set the text color of unselected tabs
+                        controller: _tabController,
+                        indicatorWeight: 3.0,
+                        labelPadding: EdgeInsets.zero,
+
+                        tabs: [
+                          Tab(
+                            text: 'Best offers',
+                            icon: SvgPicture.asset(
+                              "assets/images/bxs_offer_icon.svg",
+                              height: 30.h,
+                              width: 30.h,
+                              color: currentIndex == 0
+                                  ? Shade2purple
+                                  : unselectedTabcolor,
+                            ),
+                            iconMargin: EdgeInsets.zero,
+                          ),
+                          Tab(
+                            text: 'Trending',
+                            icon: SvgPicture.asset(
+                              "assets/images/trending_icon.svg",
+                              height: 30.h,
+                              width: 30.h,
+                              color: currentIndex == 1
+                                  ? Shade2purple
+                                  : unselectedTabcolor,
+                            ),
+                            iconMargin: EdgeInsets.zero,
+                          ),
+                          Tab(
+                            text: 'Latest',
+                            icon: SvgPicture.asset(
+                              "assets/images/time_icon.svg",
+                              height: 30.h,
+                              width: 30.h,
+                              color: currentIndex == 2
+                                  ? Shade2purple
+                                  : unselectedTabcolor,
+                            ),
+                            iconMargin: EdgeInsets.zero,
+                          ),
+                          Tab(
+                            text: 'Off-plan',
+                            icon: SvgPicture.asset(
+                              "assets/images/plan_icon.svg",
+                              height: 30.h,
+                              width: 30.h,
+                              color: currentIndex == 3
+                                  ? Shade2purple
+                                  : unselectedTabcolor,
+                            ),
+                            iconMargin: EdgeInsets.zero,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    ViewIconContainer(
+                        isSelected: currentViewIndex == 0 ? true : false,
+                        child: SvgPicture.asset("assets/images/grid_icon.svg",
+                            color: currentViewIndex == 0
+                                ? Shade2purple
+                                : unselectedTabcolor),
+                        onTap: () {
+                          setState(() {
+                            currentViewIndex = 0;
+                          });
+                        }),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    ViewIconContainer(
+                        isSelected: currentViewIndex == 1 ? true : false,
+                        child: SvgPicture.asset(
+                            "assets/images/horizontal_lines_icon.svg",
+                            color: currentViewIndex == 1
+                                ? Shade2purple
+                                : unselectedTabcolor),
+                        onTap: () {
+                          setState(() {
+                            currentViewIndex = 1;
+                          });
+                        }),
+                    Expanded(child: SizedBox()),
+                    GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.r)),
+                              builder: (context) {
+                                return StatefulBuilder(
+                                    builder: (context, setstate1) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
                                       ),
-                                    ),
-
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: DropdownButtonHideUnderline(
-                                          child: ButtonTheme(
-                                            alignedDropdown: true,
-                                            child: DropdownButton(
-                                              hint: const Text(
-                                                  "Select crypto currency"),
-                                              value: selectedValue1,
-                                              onChanged: (newValue) {
-                                                fileProvider.updateCurrency1(
-                                                    newValue! as String);
-
-                                                fileProvider.updateCurrencySign1(
-                                                    newValue! as String ==
-                                                            'Usdt'
-                                                        ? 'USDT'
-                                                        : newValue! as String ==
-                                                                'Usdc'
-                                                            ? "USDC"
-                                                            : newValue! as String ==
-                                                                    'Eth'
-                                                                ? "ETH"
-                                                                : newValue! as String ==
-                                                                        'Btc'
-                                                                    ? "BTC"
-                                                                    : ""
-                                                    // : newValue! as String ==
-                                                    //         'Eth'
-                                                    //     ? ''
-                                                    //     : newValue! as String ==
-                                                    //             'Guds'
-                                                    //         ? ''
-                                                    //         : ''
-                                                    // fileProvider.currencySign ==
-                                                    //         "\$"
-                                                    //     ? "\د.إ."
-                                                    //     : '\$'
-
-                                                    //to do here
-
-                                                    );
-
-                                                print(newValue);
-                                                setstate1(() {
-                                                  selectedValue1 =
-                                                      newValue! as String?;
-                                                });
-                                              },
-                                              items: list1.map((bankItem) {
-                                                return DropdownMenuItem(
-                                                  value: bankItem['name'],
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        CachedNetworkImage(
-                                                          imageUrl:
-                                                              bankItem['image'],
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 10),
-                                                          child: Text(
-                                                              bankItem['name']),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                            ),
+                                      Text(
+                                        'Select Currency Type',
+                                        style: style.copyWith(
+                                            color: const Color(0xff0D2769),
+                                            fontSize: 24.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 22.w),
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width, // Set the width of the dropdown as needed
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Adjust border radius as needed
+                                          border: Border.all(
+                                            color: Colors.black, // Border color
+                                            width: 0.5, // Border width
                                           ),
-                                        )),
-                                  )
+                                        ),
+
+                                        child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: DropdownButtonHideUnderline(
+                                              child: ButtonTheme(
+                                                alignedDropdown: true,
+                                                child: DropdownButton(
+                                                  hint: const Text(
+                                                      "Select currency"),
+                                                  value: selectedValue,
+                                                  onChanged: (newValue) {
+                                                    fileProvider.updateCurrency(
+                                                        newValue! as String);
+
+                                                    fileProvider.updateCurrencySign(
+                                                        newValue! as String ==
+                                                                'USD'
+                                                            ? '\$'
+                                                            : newValue! as String ==
+                                                                    'EUR'
+                                                                ? '\E'
+                                                                : newValue! as String ==
+                                                                        'REBL'
+                                                                    ? '\د.إ.'
+                                                                    : newValue! as String ==
+                                                                            'AED'
+                                                                        ? '\د.إ.'
+                                                                        : ""
+                                                        // fileProvider
+                                                        //             .currency ==
+                                                        //         'EUR'
+                                                        //     ? _list[0]['image']
+                                                        //     : fileProvider
+                                                        //                 .currency ==
+                                                        //             'REBL'
+                                                        //         ? _list[2]['image']
+                                                        //         : fileProvider
+                                                        //                     .currency ==
+                                                        //                 'AED'
+                                                        //             ? _list[1]
+                                                        //                 ['image']
+                                                        //             : fileProvider
+                                                        //                         .currency ==
+                                                        //                     'USD'
+                                                        //                 ? _list[3][
+                                                        //                     'image']
+                                                        //                 : ''
+                                                        );
+
+                                                    print(newValue);
+                                                    setstate1(() {
+                                                      selectedValue =
+                                                          newValue! as String?;
+                                                    });
+                                                  },
+                                                  items: _list.map((bankItem) {
+                                                    return DropdownMenuItem(
+                                                      value: bankItem['name'],
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Row(
+                                                          children: [
+                                                            CachedNetworkImage(
+                                                              imageUrl:
+                                                                  bankItem[
+                                                                      'image'],
+                                                            ),
+                                                            Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 10),
+                                                              child: Text(
+                                                                  bankItem[
+                                                                      'name']),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                            )),
+                                      )
+                                    ],
+                                  );
+                                });
+                              });
+                        },
+                        child: Container(
+                            padding: EdgeInsets.all(7.h),
+                            height: 50.h,
+                            width: 60.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: unselectedTabcolor,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 5), // Shadow position
+                                  ),
                                 ],
+                                border: Border.all(color: Shade2purple),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Image.network(fileProvider.currency == 'USD'
+                                ? _list[3]['image']
+                                : fileProvider.currency == 'AED'
+                                    ? _list[1]['image']
+                                    : fileProvider.currency == 'EUR'
+                                        ? _list[0]['image']
+                                        : fileProvider.currency == 'REBL'
+                                            ? _list[2]['image']
+                                            : ''))),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.r)),
+                            builder: (context) {
+                              return StatefulBuilder(
+                                builder: (context, setstate1) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Text(
+                                        'Select Crypto Currency Type',
+                                        style: style.copyWith(
+                                            color: const Color(0xff0D2769),
+                                            fontSize: 24.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 22.w),
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width, // Set the width of the dropdown as needed
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Adjust border radius as needed
+                                          border: Border.all(
+                                            color: Colors.black, // Border color
+                                            width: 0.5, // Border width
+                                          ),
+                                        ),
+
+                                        child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: DropdownButtonHideUnderline(
+                                              child: ButtonTheme(
+                                                alignedDropdown: true,
+                                                child: DropdownButton(
+                                                  hint: const Text(
+                                                      "Select crypto currency"),
+                                                  value: selectedValue1,
+                                                  onChanged: (newValue) {
+                                                    fileProvider
+                                                        .updateCurrency1(
+                                                            newValue!
+                                                                as String);
+
+                                                    fileProvider.updateCurrencySign1(
+                                                        newValue! as String ==
+                                                                'Usdt'
+                                                            ? 'USDT'
+                                                            : newValue! as String ==
+                                                                    'Usdc'
+                                                                ? "USDC"
+                                                                : newValue! as String ==
+                                                                        'Eth'
+                                                                    ? "ETH"
+                                                                    : newValue! as String ==
+                                                                            'Btc'
+                                                                        ? "BTC"
+                                                                        : ""
+                                                        // : newValue! as String ==
+                                                        //         'Eth'
+                                                        //     ? ''
+                                                        //     : newValue! as String ==
+                                                        //             'Guds'
+                                                        //         ? ''
+                                                        //         : ''
+                                                        // fileProvider.currencySign ==
+                                                        //         "\$"
+                                                        //     ? "\د.إ."
+                                                        //     : '\$'
+
+                                                        //to do here
+
+                                                        );
+
+                                                    print(newValue);
+                                                    setstate1(() {
+                                                      selectedValue1 =
+                                                          newValue! as String?;
+                                                    });
+                                                  },
+                                                  items: list1.map((bankItem) {
+                                                    return DropdownMenuItem(
+                                                      value: bankItem['name'],
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Row(
+                                                          children: [
+                                                            CachedNetworkImage(
+                                                              imageUrl:
+                                                                  bankItem[
+                                                                      'image'],
+                                                            ),
+                                                            Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 10),
+                                                              child: Text(
+                                                                  bankItem[
+                                                                      'name']),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                            )),
+                                      )
+                                    ],
+                                  );
+                                },
                               );
                             },
                           );
                         },
-                      );
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(7.h),
-                        height: 50.h,
-                        width: 60.h,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: unselectedTabcolor,
-                                blurRadius: 4,
-                                offset: Offset(0, 5), // Shadow position
-                              ),
-                            ],
-                            border: Border.all(color: Shade2purple),
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: Image.network(fileProvider.currency1 == 'Btc'
-                            ? list1[1]['image']
-                            : fileProvider.currency1 == 'Eth'
-                                ? list1[2]['image']
-                                : fileProvider.currency1 == 'Guds'
-                                    ? list1[0]['image']
-                                    : fileProvider.currency1 == 'Usdc'
-                                        ? list1[3]['image']
-                                        : "")))
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Widget for Explore tab
-                BestOffers(
-                  postFeature: bestofferPf,
-                  currentViewIndex: currentViewIndex,
+                        child: Container(
+                            padding: EdgeInsets.all(7.h),
+                            height: 50.h,
+                            width: 60.h,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: unselectedTabcolor,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 5), // Shadow position
+                                  ),
+                                ],
+                                border: Border.all(color: Shade2purple),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Image.network(fileProvider.currency1 == 'Btc'
+                                ? list1[1]['image']
+                                : fileProvider.currency1 == 'Eth'
+                                    ? list1[2]['image']
+                                    : fileProvider.currency1 == 'Guds'
+                                        ? list1[0]['image']
+                                        : fileProvider.currency1 == 'Usdc'
+                                            ? list1[3]['image']
+                                            : "")))
+                  ],
                 ),
-                // Widget for Wishlist tab
-                BestOffers(
-                    postFeature: trendingPf,
-                    currentViewIndex: currentViewIndex),
-                // Widget for Inbox tab
-                BestOffers(
-                    postFeature: latestPf, currentViewIndex: currentViewIndex),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // Widget for Explore tab
+                    BestOffers(
+                      postFeature: bestofferPf,
+                      currentViewIndex: currentViewIndex,
+                    ),
+                    // Widget for Wishlist tab
+                    BestOffers(
+                        postFeature: trendingPf,
+                        currentViewIndex: currentViewIndex),
+                    // Widget for Inbox tab
+                    BestOffers(
+                        postFeature: latestPf,
+                        currentViewIndex: currentViewIndex),
 
-                BestOffers(
-                    postFeature: offPlanPf, currentViewIndex: currentViewIndex),
-              ],
-            ),
+                    BestOffers(
+                        postFeature: offPlanPf,
+                        currentViewIndex: currentViewIndex),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        );
+      });
 
   Widget ViewIconContainer(
       {required Widget child,

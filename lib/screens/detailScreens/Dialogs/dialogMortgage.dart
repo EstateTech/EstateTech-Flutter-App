@@ -63,7 +63,10 @@ class _MortgageDialogState extends State<MortgageDialog> {
             Text(
               "Mortgage calculator",
               style: style.copyWith(
-                  fontSize: 20.sp,
+                  fontSize:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 20.sp
+                          : 9.sp,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5),
             ),
@@ -72,7 +75,12 @@ class _MortgageDialogState extends State<MortgageDialog> {
             ),
             Text(
               "Your gross annual income",
-              style: style.copyWith(fontSize: 15.sp),
+              style: style.copyWith(
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 15.sp
+                        : 9.sp,
+              ),
             ),
             SizedBox(
               height: 20.h,
@@ -100,7 +108,10 @@ class _MortgageDialogState extends State<MortgageDialog> {
                 child: Text(
                   "Next",
                   style: style.copyWith(
-                    fontSize: 18,
+                    fontSize: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 18
+                        : 9,
                     fontWeight: FontWeight.w400,
                     color: Shade2purple,
                   ),

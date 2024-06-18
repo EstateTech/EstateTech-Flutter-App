@@ -26,8 +26,12 @@ class AnimetiesContainer extends StatelessWidget {
         children: [
           Text(
             "Animeties",
-            style:
-                style.copyWith(color: const Color(0xff3A3153), fontSize: 20.sp),
+            style: style.copyWith(
+                color: const Color(0xff3A3153),
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20.sp
+                        : 12.sp),
           ),
           SizedBox(height: 5.h),
           SizedBox(
@@ -42,7 +46,7 @@ class AnimetiesContainer extends StatelessWidget {
               ),
               itemCount: postModel.utilities!.length,
               itemBuilder: (context, index) {
-                return _buildItemWidget(postModel.utilities![index]);
+                return _buildItemWidget(postModel.utilities![index], context);
               },
             ),
           ),
@@ -53,14 +57,14 @@ class AnimetiesContainer extends StatelessWidget {
 
   Widget getWidgetByKey(String key) {
     if (selectPropertyFeaturesMap.containsKey(key)) {
-      return  SvgPicture.asset(selectPropertyFeaturesMap[key]!);
+      return SvgPicture.asset(selectPropertyFeaturesMap[key]!);
     } else {
       // Return a default widget or handle the missing key case
       return Container();
     }
   }
 
-  _buildItemWidget(String item) {
+  _buildItemWidget(String item, context) {
     return Container(
       decoration: const BoxDecoration(),
       child: Row(
@@ -74,8 +78,12 @@ class AnimetiesContainer extends StatelessWidget {
           ),
           Text(
             item,
-            style:
-                style.copyWith(fontSize: 15.sp, color: const Color(0xff4E4A59)),
+            style: style.copyWith(
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 14.sp
+                        : 8.sp,
+                color: const Color(0xff4E4A59)),
           ),
         ],
       ),

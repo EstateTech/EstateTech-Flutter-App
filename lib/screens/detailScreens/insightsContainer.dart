@@ -103,7 +103,12 @@ class _InsightsContainerState extends State<InsightsContainer> {
                   ]),
               child: Text(
                 "Find More Insights",
-                style: style.copyWith(color: Colors.white, fontSize: 18.sp),
+                style: style.copyWith(
+                    color: Colors.white,
+                    fontSize: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 18.sp
+                        : 10.sp),
               ),
             ),
           ),
@@ -134,7 +139,10 @@ class _InsightsContainerState extends State<InsightsContainer> {
             Text(
               "This property cost 13% less \nthan the average size of \nvillas in the same area.",
               style: style.copyWith(
-                fontSize: 16.sp,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 16.sp
+                        : 10.sp,
                 color: Colors.white,
               ),
               textAlign: TextAlign.left,

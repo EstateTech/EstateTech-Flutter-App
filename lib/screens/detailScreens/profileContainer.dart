@@ -88,7 +88,10 @@ class _profileContainerState extends State<profileContainer> {
                     userPost.firstName ?? "Andera",
                     style: style.copyWith(
                       fontFamily: "Circular Std",
-                      fontSize: 22,
+                      fontSize: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? 22
+                          : 12,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xff3a3153),
                     ),
@@ -103,7 +106,10 @@ class _profileContainerState extends State<profileContainer> {
                           userPost.about ??
                               "Area Manager at White & Co Real Estate",
                           style: style.copyWith(
-                            fontSize: 15.sp,
+                            fontSize: MediaQuery.of(context).orientation ==
+                                    Orientation.portrait
+                                ? 15.sp
+                                : 9.sp,
                             fontWeight: FontWeight.w300,
                             color: const Color(0xff4e4a59),
                           ),
@@ -122,7 +128,10 @@ class _profileContainerState extends State<profileContainer> {
           RichText(
             text: TextSpan(
               style: style.copyWith(
-                fontSize: 18.sp,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 18.sp
+                        : 9.sp,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xff3a3153),
               ),
@@ -135,7 +144,10 @@ class _profileContainerState extends State<profileContainer> {
                   style: style.copyWith(
                     fontWeight: FontWeight.normal,
                     color: const Color(0xff4e4a59),
-                    fontSize: 18.sp,
+                    fontSize: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 18.sp
+                        : 9.sp,
                   ),
                 ),
               ],
@@ -147,7 +159,10 @@ class _profileContainerState extends State<profileContainer> {
           RichText(
             text: TextSpan(
               style: style.copyWith(
-                fontSize: 18.sp,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 18.sp
+                        : 9.sp,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xff3a3153),
               ),
@@ -160,7 +175,10 @@ class _profileContainerState extends State<profileContainer> {
                   style: style.copyWith(
                     fontWeight: FontWeight.normal,
                     color: const Color(0xff4e4a59),
-                    fontSize: 18.sp,
+                    fontSize: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 18.sp
+                        : 9.sp,
                   ),
                 ),
               ],
@@ -185,7 +203,10 @@ class _profileContainerState extends State<profileContainer> {
                   style: style.copyWith(
                     fontWeight: FontWeight.normal,
                     color: const Color(0xff4e4a59),
-                    fontSize: 18.sp,
+                    fontSize: MediaQuery.of(context).orientation ==
+                            Orientation.portrait
+                        ? 18.sp
+                        : 9.sp,
                   ),
                 ),
               ],
@@ -199,7 +220,9 @@ class _profileContainerState extends State<profileContainer> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return  CustomDialog(userdata: userPost,); // Your custom dialog content
+                  return CustomDialog(
+                    userdata: userPost,
+                  ); // Your custom dialog content
                 },
               );
             },
@@ -220,7 +243,13 @@ class _profileContainerState extends State<profileContainer> {
                   ]),
               child: Text(
                 "User Properties",
-                style: style.copyWith(color: Colors.white, fontSize: 18.sp),
+                style: style.copyWith(
+                  color: Colors.white,
+                  fontSize:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 18.sp
+                          : 9.sp,
+                ),
               ),
             ),
           ),

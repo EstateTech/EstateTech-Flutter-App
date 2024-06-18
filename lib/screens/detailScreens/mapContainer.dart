@@ -101,17 +101,26 @@ class _MapContainerState extends State<MapContainer> {
     final fileProvider = Provider.of<XFileProvider>(context, listen: true);
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 450.h,
+      height: MediaQuery.of(context).orientation == Orientation.portrait
+          ? 450.h
+          : 550.h,
       padding: EdgeInsets.only(left: 20.h, right: 20.h),
       child: Column(
         children: [
           Text(
             "Map",
-            style: style.copyWith(color: Shade2purple, fontSize: 20.sp),
+            style: style.copyWith(
+                color: Shade2purple,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20.sp
+                        : 15.sp),
           ),
           SizedBox(height: 10.h),
           Container(
-            height: 170.h,
+            height: MediaQuery.of(context).orientation == Orientation.portrait
+                ? 170.h
+                : 200.h,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 1.0),
                 borderRadius: BorderRadius.circular(20.r)),
@@ -132,7 +141,12 @@ class _MapContainerState extends State<MapContainer> {
           ),
           Text(
             "Price Comparsions",
-            style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+            style: style.copyWith(
+                color: Shade2purple,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20.sp
+                        : 15.sp),
           ),
           SizedBox(
             height: 10.h,
@@ -201,7 +215,13 @@ class _MapContainerState extends State<MapContainer> {
                   ]),
               child: Text(
                 "Mortgage Calculator",
-                style: style.copyWith(color: Colors.white, fontSize: 18.sp),
+                style: style.copyWith(
+                  color: Colors.white,
+                  fontSize:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 18.sp
+                          : 9.sp,
+                ),
               ),
             ),
           )
@@ -228,7 +248,12 @@ class PriceContainers extends StatelessWidget {
         children: [
           Text(
             text,
-            style: style.copyWith(color: Shade2purple, fontSize: 18.sp),
+            style: style.copyWith(
+                color: Shade2purple,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 18.sp
+                        : 9.sp),
           )
         ],
       ),
