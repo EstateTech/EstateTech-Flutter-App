@@ -35,6 +35,75 @@ class _postDetailScreenState extends State<postDetailScreen> {
   final CarouselController carouselController = CarouselController();
 
   int currentIndex = 0;
+  void _showThirdModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 20.h),
+              Center(
+                child: Container(
+                  width: 50.w,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFD9D9D9),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Enter your offer',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              GestureDetector(
+                onTap: () {
+                  // Add your offer handling code here
+                },
+                child: Container(
+                  height: 50.h,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [mainAppColor, Colors.black],
+                    ),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Text(
+                    "Make Offer",
+                    style: style2.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void _showSecondModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -663,7 +732,9 @@ class _postDetailScreenState extends State<postDetailScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    w3mServiceProvider.connect(context);
+                                    // w3mServiceProvider.connect(context);
+
+                                    _showThirdModalBottomSheet(context);
                                   },
                                   child: Container(
                                     height: 50.h,
