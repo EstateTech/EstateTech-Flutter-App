@@ -15,6 +15,7 @@ import 'package:crypto_estate_tech/screens/walkthroughScreens/walkthroughPostScr
 import 'package:crypto_estate_tech/screens/detailScreens/services.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/policies.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/offerScreen.dart';
+import 'package:crypto_estate_tech/screens/detailScreens/clientOfferScreen.dart';
 import 'package:crypto_estate_tech/screens/detailScreens/postOffers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto_estate_tech/components/custom_button.dart';
@@ -511,6 +512,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PostListScreen()));
+                      },
+                    ),
+                    ListTileProfileOptions(
+                      text: "Accepted Offers",
+                      imagepath: 'assets/images/legal_icon.svg',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClientOffersScreen()));
                       },
                     ),
                     ListTileProfileOptions(
