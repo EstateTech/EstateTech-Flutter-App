@@ -20,6 +20,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:crypto_estate_tech/provider/authProvider.dart';
 import 'package:crypto_estate_tech/provider/walletProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class postDetailScreen extends StatefulWidget {
   final PostModel postModel;
@@ -33,9 +34,14 @@ class postDetailScreen extends StatefulWidget {
 
 class _postDetailScreenState extends State<postDetailScreen> {
   final CarouselController carouselController = CarouselController();
+  bool _isOfferSubmitted = false;
+  bool _isOfferAccepted =
+      false; // This should be set based on your logic when the offer is accepted
 
   int currentIndex = 0;
   void _showThirdModalBottomSheet(BuildContext context) {
+    TextEditingController offerController = TextEditingController();
+
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -61,48 +67,121 @@ class _postDetailScreenState extends State<postDetailScreen> {
                 ),
               ),
               SizedBox(height: 20.h),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Enter your offer',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              GestureDetector(
-                onTap: () {
-                  // Add your offer handling code here
-                },
-                child: Container(
-                  height: 50.h,
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [mainAppColor, Colors.black],
-                    ),
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                  child: Text(
-                    "Make Offer",
-                    style: style2.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16.sp,
+              if (!_isOfferSubmitted) ...[
+                TextField(
+                  controller: offerController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your offer',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
+                GestureDetector(
+                  onTap: () async {
+                    String offer = offerController.text.trim();
+                    if (offer.isNotEmpty) {
+                      await _saveOfferToDatabase(widget.postId, offer);
+                      setState(() {
+                        _isOfferSubmitted = true;
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Please enter an offer amount");
+                    }
+                  },
+                  child: Container(
+                    height: 50.h,
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [mainAppColor, Colors.black],
+                      ),
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Text(
+                      "Make Offer",
+                      style: style2.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                  ),
+                ),
+              ] else if (_isOfferAccepted) ...[
+                SizedBox(height: 20.h),
+                GestureDetector(
+                  onTap: () {
+                    // Handle buy action
+                  },
+                  child: Container(
+                    height: 50.h,
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [mainAppColor, Colors.black],
+                      ),
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Text(
+                      "Buy",
+                      style: style2.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                  ),
+                ),
+              ] else ...[
+                SizedBox(height: 20.h),
+                Text(
+                  "Your offer has been submitted, please wait for acceptance.",
+                  style: TextStyle(color: Colors.green, fontSize: 16.sp),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20.h),
+              ],
             ],
           ),
         );
       },
     );
+  }
+
+  Future<void> _saveOfferToDatabase(String postId, String offer) async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    Map<String, dynamic> offerData = {
+      'userId': userId,
+      'status': 'pending',
+      'offer': offer,
+    };
+
+    try {
+      await FirebaseFirestore.instance.collection('posts').doc(postId).update({
+        'offers': FieldValue.arrayUnion([offerData]),
+      }).then((_) {
+        Fluttertoast.showToast(
+            msg: "Your offer has been submitted, please wait for acceptance.");
+        setState(() {
+          _isOfferSubmitted = true;
+        });
+      }).catchError((error) {
+        Fluttertoast.showToast(msg: "Failed to submit offer: $error");
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: "An error occurred: $e");
+    }
   }
 
   void _showSecondModalBottomSheet(BuildContext context) {
